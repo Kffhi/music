@@ -3,22 +3,16 @@ import { Link } from 'dva/router';
 import { Button } from 'antd-mobile';
 import styles from './style.less'
 
-class AAA extends Component {
+class Home extends Component {
   render() {
     return (
       <div>
         <p className={styles.text}>
-          AAA页
+          Home页
         </p>
-        <Link to={'/aaa/bbb'}>
+        <Link to={'/search'}>
           <Button type={'primary'} icon={'link'}>
-            去BBB页面
-          </Button>
-        </Link>
-        <br />
-        <Link to={'/ccc'}>
-          <Button type={'default'} icon={'enter'}>
-            去CCC页面
+            点击搜索
           </Button>
         </Link>
       </div>
@@ -26,4 +20,4 @@ class AAA extends Component {
   }
 }
 
-export default AAA;
+export default Home;

@@ -1,10 +1,9 @@
-
 export default {
 
-  namespace: 'ccc',
+  namespace: 'home',
 
   state: {
-    name: '这是ccc的model'
+    name: '这是home的model'
   },
 
   subscriptions: {
