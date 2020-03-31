@@ -1,6 +1,8 @@
 
 import dva from 'dva';
 import createHistory from 'history/createBrowserHistory'
+import './index.css'
+import './iconfont.css'
 
 // 1. Initialize
 const app = dva({

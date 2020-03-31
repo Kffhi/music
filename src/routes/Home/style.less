@@ -1,3 +1,74 @@
-.text {
-  color: red;
+.header {
+  width: 100%;
+  height: 3rem;
+  z-index: 1001;
+  position: relative;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+
+  .userPic {
+    width: 3rem;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .imgWrapper {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px #eee solid;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 80%;
+      height: 90%;
+    }
+  }
+
+  .search {
+    width: 3rem;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+  }
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  height: 90vh;
+
+  .mainWrapper{}
+}
+
+.footer {
+  background: #777;
+  width: 100%;
+  height: 3rem;
+  z-index: 1001;
+  position: fixed;
+  bottom: 0;
 }
