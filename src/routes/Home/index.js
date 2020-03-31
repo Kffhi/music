@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'dva/router'
 import { Tabs, WhiteSpace } from 'antd-mobile'
+import Toast from '../../components/Toast'
 import styles from './style.less'
 
 class Home extends Component {
