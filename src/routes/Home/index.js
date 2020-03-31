@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'dva/router'
-import { Tabs, WhiteSpace } from 'antd-mobile'
-import Toast from '../../components/Toast'
+import { Tabs } from 'antd-mobile'
+import { get } from '../../utils/request'
 import styles from './style.less'
 
 class Home extends Component {
+
+  componentDidMount() {
+    get('/api/tencent/songList/hot?categoryId=10000000&sortId=5&pageSize=10&page=1').then(data=>{console.log(data)})
+  }
 
   renderFooter = () => {
     return (
