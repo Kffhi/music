@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'dva/router'
 import { Tabs, Carousel } from 'antd-mobile'
 import { getNetBanner, getNetSongList } from '../../services/netease'
+import SongList from '../../components/SongList'
+import MiniPlay from '../../components/miniPlay'
 import styles from './style.less'
 // class Home extends Component {
 
@@ -16,8 +18,8 @@ const Home = () => {
   }, [])
 
   // 获取歌单
-  const getSongList = () => {
-    getNetSongList().then(res => { setNetSongList(res.data) })
+  const getSongList = async () => {
+    await getNetSongList().then(res => { setNetSongList(res.data) })
   }
 
   // 获取轮播图
@@ -25,20 +27,17 @@ const Home = () => {
     getNetBanner().then(res => { setNetBanner(res.data) })
   }
 
-  const renderFooter = () => {
-    return (
-      <div className={styles.footer}>底部</div>
-    )
-  }
-
   const renderSongList = () => {
     return (
       <div className={styles.songListWrapper}>
         <div className={styles.header}>
-          <span>推荐歌单</span>
-          <span>歌单广场</span>
+          <span className={styles.text}>推荐歌单</span>
+          <span className={styles.more}>
+            歌单广场
+            <i className="iconfont icon-jump" style={{ 'fontSize': '1.3rem', 'marginLeft': '0.2rem' }} />
+          </span>
         </div>
-        <div className={styles.getSongList}></div>
+        <SongList songList={netSongList}></SongList>
       </div>
     )
   }
@@ -113,7 +112,7 @@ const Home = () => {
     <div>
       {renderHeader()}
       {renderContainer()}
-      {renderFooter()}
+      <MiniPlay></MiniPlay>
     </div>
   );
   // }

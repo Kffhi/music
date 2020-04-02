@@ -1,0 +1,34 @@
+.songList {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .songListBox {
+    width: 28vw;
+    margin: 0.5rem;
+
+    .pic {
+      height: 28vw;
+      width: 28vw;
+      overflow: hidden;
+      border-radius: 0.5rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .title {
+      width: 30vw;
+      height: 4rem;
+      font-size: 1.3rem;
+      line-height: 2rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+}
