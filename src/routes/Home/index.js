@@ -1,21 +1,49 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'dva/router'
-import { Tabs } from 'antd-mobile'
-import { get } from '../../utils/request'
+import { Tabs, Carousel } from 'antd-mobile'
+import { getNetBanner, getNetSongList } from '../../services/netease'
 import styles from './style.less'
-class Home extends Component {
+// class Home extends Component {
 
-  componentDidMount() {
-    // get('/api/tencent/songList/hot?categoryId=10000000&sortId=5&pageSize=10&page=1').then(data => { console.log(data) })
+const Home = () => {
+  const [netBanner, setNetBanner] = useState([])
+  const [netSongList, setNetSongList] = useState([])
+
+  /** 初始化执行 */
+  useEffect(() => {
+    getBanner()
+    getSongList()
+  }, [])
+
+  // 获取歌单
+  const getSongList = () => {
+    getNetSongList().then(res => { setNetSongList(res.data) })
   }
 
-  renderFooter = () => {
+  // 获取轮播图
+  const getBanner = () => {
+    getNetBanner().then(res => { setNetBanner(res.data) })
+  }
+
+  const renderFooter = () => {
     return (
       <div className={styles.footer}>底部</div>
     )
   }
 
-  renderContainer = () => {
+  const renderSongList = () => {
+    return (
+      <div className={styles.songListWrapper}>
+        <div className={styles.header}>
+          <span>推荐歌单</span>
+          <span>歌单广场</span>
+        </div>
+        <div className={styles.getSongList}></div>
+      </div>
+    )
+  }
+
+  const renderContainer = () => {
 
     const tabs = [
       { title: '我的', sub: '1' },
@@ -28,11 +56,33 @@ class Home extends Component {
       <div className={styles.container}>
         <Tabs tabs={tabs}
           initialPage={1}
+          swipeable={false}
           onChange={(tab, index) => { console.log('onChange', index, tab); }}
           onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
         >
-          <div className={styles.mainWrapper}>Content of first tab</div>
           <div>Content of first tab</div>
+          <div className={styles.mainWrapper}>
+            <div className={styles.bannerWrapper}>
+              <Carousel
+                autoplay={true}
+                infinite
+              >
+                {netBanner.map(item => (
+                  <a
+                    key={item.id}
+                    href={item.url}
+                  >
+                    <img
+                      onLoad={() => { window.dispatchEvent(new Event('resize')); }}
+                      src={item.pic_url}
+                      alt=""
+                    />
+                  </a>
+                ))}
+              </Carousel>
+            </div>
+            {renderSongList()}
+          </div>
           <div>Content of first tab</div>
           <div>Content of first tab</div>
         </Tabs>
@@ -40,7 +90,7 @@ class Home extends Component {
     )
   }
 
-  renderHeader = () => {
+  const renderHeader = () => {
     return (
       <div className={styles.header}>
         <div className={styles.userPic}>
@@ -52,21 +102,21 @@ class Home extends Component {
           <img src="https://kffhi.com/public/images/end/name.png" alt="" />
         </div>
         <div className={styles.search}>
-          <i className="iconfont icon-search" style={{ 'fontSize': '1.5rem' }} />
+          <i className="iconfont icon-search" style={{ 'fontSize': '2.2rem' }} />
         </div>
       </div>
     )
   }
 
-  render() {
-    return (
-      <div>
-        {this.renderHeader()}
-        {this.renderContainer()}
-        {this.renderFooter()}
-      </div>
-    );
-  }
+  // render() {
+  return (
+    <div>
+      {renderHeader()}
+      {renderContainer()}
+      {renderFooter()}
+    </div>
+  );
+  // }
 }
 
 export default Home;
