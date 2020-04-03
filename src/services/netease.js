@@ -7,3 +7,7 @@ export const getNetBanner = () => {
 export const getNetSongList = () => {
   return get('/mock/songlist.json')
 }
+
+export const getNetSongListDetail = () => {
+  return get('/mock/songlistdetail.json')
+}

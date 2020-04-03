@@ -1,0 +1,99 @@
+{
+  "errorCode": 200,
+  "data": {
+    "id": "354654",
+    "url": "https://p.qpic.cn/music_cover/j50Ihtp2h2UwaRgJuNjmRzeDcEa5a0fbGDZtFywKd0MJnJh8O7O19g/300?n=1",
+    "title": "等着等着就老了",
+    "author": "卡夫海",
+    "authorPic": "https://p.qpic.cn/music_cover/Z89aLA93LOSOicz0QOnMboqgLaiaFohjweglHh6JSoL8hrjOfFOC6DXw/300?n=1",
+    "commentNum": 34,
+    "shareNum":237,
+    "description": "爱上一首歌，常常是因为某句歌词，但真正动人的不是那句歌词，而是在你生命里那些关于这首歌的故事。",
+    "songList": [
+      {
+        "id": "534543",
+        "title": "Mrs. Potato Head",
+        "pic_url": "",
+        "singer": "Melanie Martinez",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "カサネテク",
+        "pic_url": "",
+        "singer": "中村千尋",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "樱花树下",
+        "pic_url": "",
+        "singer": "张敬轩",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "风的季节",
+        "pic_url": "",
+        "singer": "Soler",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "句号",
+        "pic_url": "",
+        "singer": "G.E.M.邓紫棋",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "泥中に咲く",
+        "pic_url": "",
+        "singer": "ウォルピスカーター",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "苦瓜",
+        "pic_url": "",
+        "singer": "陈奕迅",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "Cruel Summer",
+        "pic_url": "",
+        "singer": "Taylor Swift",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "句号",
+        "pic_url": "",
+        "singer": "G.E.M.邓紫棋",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "カサネテク",
+        "pic_url": "",
+        "singer": "中村千尋",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "Mrs. Potato Head",
+        "pic_url": "",
+        "singer": "Melanie Martinez",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      },
+      {
+        "id": "534543",
+        "title": "苦瓜",
+        "pic_url": "",
+        "singer": "陈奕迅",
+        "url": "https://www.kffhi.com/public/images/audio/test.mp3"
+      }
+    ]
+  }
+}
