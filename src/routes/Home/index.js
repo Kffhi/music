@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { Link } from 'dva/router'
 import { Tabs, Carousel } from 'antd-mobile'
 import { getNetBanner, getNetSongList } from '../../services/netease'
@@ -162,17 +162,17 @@ const Home = props => {
       <div className={styles.myMusic}>
         <Accordion title={'创建的歌单'} render={() => {
           return (
-            <div>
+            <Fragment>
               {mySongList && mySongList.map((item, index) => (<SongListItem listItem={item} history={history} key={index} />))}
-            </div>
+            </Fragment>
           )
         }}>
         </Accordion>
         <Accordion title={'收藏的歌单'} render={() => {
           return (
-            <div>
+            <Fragment>
               {myCollList && myCollList.map((item, index) => (<SongListItem listItem={item} history={history} key={index} />))}
-            </div>
+            </Fragment>
           )
         }}>
         </Accordion>
