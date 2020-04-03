@@ -23,6 +23,13 @@ const menuGlobal = [
     component: () => import('../routes/SongListInfo/index'),
   },
   {
+    id: 'player',
+    name: '歌曲播放',
+    path: '/player',
+    models: () => [import('../models/home')],
+    component: () => import('../routes/Player/index'),
+  },
+  {
     id: 'search',
     name: '搜索页',
     path: '/search',

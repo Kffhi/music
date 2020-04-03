@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getNetSongListDetail } from '../../services/netease'
 import Header from '../../components/Header'
 import MiniPlay from '../../components/miniPlay'
+import SongItem from '../../components/SongItem'
 import styles from './style.less'
 
 const SongListInfo = props => {
@@ -72,7 +73,13 @@ const SongListInfo = props => {
 
   const renderSongList = () => {
     return (
-      <div className={styles.songList}>歌曲列表</div>
+      <div className={styles.songList}>
+        {songListDetail.songList ?
+          songListDetail.songList.map((item, index) => (
+            <SongItem history={history} songListDetail={item} key={index} num={index + 1} />
+          ))
+          : null}
+      </div>
     )
   }
 
