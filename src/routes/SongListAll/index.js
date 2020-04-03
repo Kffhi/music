@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styles from './style.less'
 
-const Search = () => {
+const SongListAll = () => {
 
   return (
-    <div>搜索</div>
+    <div>歌单广场</div>
   )
 }
-export default Search
+export default SongListAll

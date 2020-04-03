@@ -4,11 +4,12 @@ import styles from './style.less'
 const SongListItem = props => {
 
   const {
-    listItem = {}
+    listItem = {},
+    history
   } = props
 
   return (
-    <div className={styles.songListItem}>
+    <div className={styles.songListItem} onClick={()=>{history.push('/songlistinfo')}}>
       <div className={styles.imgWrapper}>
         <img src={listItem.url} alt="" />
       </div>

@@ -11,7 +11,8 @@ import SongListItem from '../../components/SongListItem'
 import styles from './style.less'
 // class Home extends Component {
 
-const Home = () => {
+const Home = props => {
+  const { history } = props
   const [banner, setBanner] = useState([])
   const [songList, setSongList] = useState([])
   const tabs = [
@@ -146,12 +147,12 @@ const Home = () => {
       <div className={styles.songListWrapper}>
         <div className={styles.header}>
           <span className={styles.text}>推荐歌单</span>
-          <span className={styles.more}>
+          <span className={styles.more} onClick={() => { history.push('/songlistall') }}>
             歌单广场
             <i className="iconfont icon-jump" style={{ 'fontSize': '1.3rem', 'marginLeft': '0.2rem' }} />
           </span>
         </div>
-        <SongList songList={songList}></SongList>
+        <SongList songList={songList} history={history}></SongList>
       </div>
     )
   }
@@ -162,7 +163,7 @@ const Home = () => {
         <Accordion title={'创建的歌单'} render={() => {
           return (
             <div>
-              {mySongList && mySongList.map((item, index) => (<SongListItem listItem={item} key={index} />))}
+              {mySongList && mySongList.map((item, index) => (<SongListItem listItem={item} history={history} key={index} />))}
             </div>
           )
         }}>
@@ -170,7 +171,7 @@ const Home = () => {
         <Accordion title={'收藏的歌单'} render={() => {
           return (
             <div>
-              {myCollList && myCollList.map((item, index) => (<SongListItem listItem={item} key={index} />))}
+              {myCollList && myCollList.map((item, index) => (<SongListItem listItem={item} history={history} key={index} />))}
             </div>
           )
         }}>
@@ -211,7 +212,7 @@ const Home = () => {
     return (
       <div className={styles.container}>
         <Tabs tabs={tabs}
-          initialPage={0}
+          initialPage={1}
           swipeable={false}
           onChange={tab => { console.log(tab) }}
           onTabClick={tab => { changeData(tab) }}
@@ -228,7 +229,7 @@ const Home = () => {
   const renderHeader = () => {
     return (
       <div className={styles.header}>
-        <div className={styles.userPic}>
+        <div className={styles.userPic} onClick={() => { history.push('userinfo') }}>
           <div className={styles.imgWrapper}>
             <img src="https://kffhi.com/public/images/end/logo.jpg" alt="" />
           </div>
@@ -236,8 +237,8 @@ const Home = () => {
         <div className={styles.name}>
           <img src="https://kffhi.com/public/images/end/name.png" alt="" />
         </div>
-        <div className={styles.search}>
-          <i className="iconfont icon-search" style={{ 'fontSize': '2.2rem' }} />
+        <div className={styles.search} onClick={() => { history.push('/search') }}>
+          <i className="iconfont icon-search" />
         </div>
       </div>
     )
