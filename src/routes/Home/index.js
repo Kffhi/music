@@ -152,7 +152,7 @@ const Home = props => {
             <i className="iconfont icon-jump" style={{ 'fontSize': '1.3rem', 'marginLeft': '0.2rem' }} />
           </span>
         </div>
-        <SongList songList={songList} history={history}></SongList>
+        <SongList songList={songList} history={history} showAll={false}></SongList>
       </div>
     )
   }
