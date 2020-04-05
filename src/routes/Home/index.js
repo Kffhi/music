@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { Link } from 'dva/router'
 import { Tabs, Carousel } from 'antd-mobile'
 import { getNetBanner, getNetSongList } from '../../services/netease'
 import { getTencentBanner, getTencentSongList } from '../../services/tencent'
@@ -249,7 +248,7 @@ const Home = props => {
     <div>
       {renderHeader()}
       {renderContainer()}
-      <MiniPlay></MiniPlay>
+      <MiniPlay history={history}></MiniPlay>
     </div>
   );
   // }

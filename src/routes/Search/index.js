@@ -145,7 +145,7 @@ const Search = props => {
     <div className={styles.search}>
       {renderHeader()}
       {isSearch ? renderReault() : renderNoSearch()}
-      <MiniPlay />
+      <MiniPlay history={history} />
     </div>
   )
 }

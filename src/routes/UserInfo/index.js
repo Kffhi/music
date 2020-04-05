@@ -140,7 +140,7 @@ const UserInfo = props => {
       <Header history={history} title={'个人中心'} />
       {renderDetail()}
       {renderMyMusic()}
-      <MiniPlay />
+      <MiniPlay history={history} />
     </div>
   )
 }

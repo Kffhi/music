@@ -82,7 +82,7 @@ const SingerInfo = props => {
       <Header history={history} title={'歌手详情'}></Header>
       {renderDetail()}
       {renderSongList()}
-      <MiniPlay />
+      <MiniPlay history={history} />
     </div>
   )
 }

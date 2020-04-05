@@ -88,7 +88,7 @@ const SongListInfo = props => {
       <Header history={history} title={'歌单详情'}></Header>
       {renderDetail()}
       {renderSongList()}
-      <MiniPlay />
+      <MiniPlay history={history} />
     </div>
   )
 }

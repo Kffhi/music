@@ -55,7 +55,7 @@ const SongListAll = props => {
             ))}
         </Tabs>
       </div>
-      <MiniPlay />
+      <MiniPlay history={history} />
     </div>
   )
 }

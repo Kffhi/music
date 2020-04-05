@@ -1,8 +1,70 @@
 .miniPlay {
-  background: #777;
+  background: #ffffff;
   width: 100%;
   height: 5rem;
   z-index: 1001;
   position: fixed;
   bottom: 0;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 0.1rem #dddddd;
+
+  .imgWrapper {
+    height: 100%;
+    width: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    margin-left: 1rem;
+
+    img {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+    }
+  }
+
+  .imgWrapperPlaying {
+    animation: rotate 10s linear infinite;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .title {
+      font-size: 1.4rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .singer {
+      font-size: 1.2rem;
+      color: #666666;
+      margin-top: 0.2rem;
+    }
+  }
+
+  .iconWrapper {
+    position: absolute;
+    display: flex;
+    right: 0;
+    align-items: center;
+
+    i {
+      font-size: 2.8rem;
+      margin-right: 1rem;
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg)
+    }
+
+    to {
+      transform: rotate(359deg)
+    }
+  }
 }
