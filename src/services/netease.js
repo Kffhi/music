@@ -27,6 +27,12 @@ export const getHotSearch = () => {
   return get('/mock/hotsearch.json')
 }
 
+// 搜索
 export const getSearchResult = () => {
   return get('/mock/searchresult.json')
+}
+
+// 获取歌手详情
+export const getNetSingerInfo = () => {
+  return get('/mock/singerinfo.json')
 }

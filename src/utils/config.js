@@ -37,6 +37,13 @@ const menuGlobal = [
     component: () => import('../routes/Search/index'),
   },
   {
+    id: 'singerinfo',
+    name: '歌手详情',
+    path: '/singerinfo',
+    models: () => [import('../models/home')],
+    component: () => import('../routes/SingerInfo/index'),
+  },
+  {
     id: 'userinfo',
     name: '个人中心',
     path: '/userinfo',

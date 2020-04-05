@@ -57,7 +57,7 @@ const Search = props => {
             {JSON.stringify(searchResult.singer) !== '{}' ?
               <Fragment>
                 <div className={styles.titleText}>歌手</div>
-                <div className={styles.singerWrapper} >
+                <div className={styles.singerWrapper} onClick={()=>{history.push('/singerinfo')}}>
                   <img src={searchResult.singer.url} alt="" />
                   <div className={styles.singerName}>{searchResult.singer.name}</div>
                 </div>
