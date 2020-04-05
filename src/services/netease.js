@@ -26,3 +26,7 @@ export const getNetSongListCategory = () => {
 export const getHotSearch = () => {
   return get('/mock/hotsearch.json')
 }
+
+export const getSearchResult = () => {
+  return get('/mock/searchresult.json')
+}

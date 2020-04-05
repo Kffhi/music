@@ -1,15 +1,17 @@
 import React, { useState, Fragment, useEffect } from 'react'
-import { getHotSearch } from '../../services/netease'
+import { getHotSearch, getSearchResult } from '../../services/netease'
 import MiniPlay from '../../components/miniPlay'
+import SongItem from '../../components/SongItem'
 import styles from './style.less'
 
 const Search = props => {
   const {
     history
   } = props
-  const [isSearch, setIsSearch] = useState(true)
+  const [isSearch, setIsSearch] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [hotSearch, setHotSearch] = useState([])
+  const [searchResult, setSearchResult] = useState({})
   const historySearch = ['樱花树下', '陈奕迅', 'Aimer', 'enough', 'leave me alone', '碧梨', 'white alience']
 
   /** 初始化执行 */
@@ -23,12 +25,14 @@ const Search = props => {
     getHotSearch().then(res => { setHotSearch(res.data) })
   }
 
-  const search = () => {
+  const search = async () => {
     if (searchValue === '') {
       return null
     } else {
-      console.log(searchValue)
-      setIsSearch(true)
+      await getSearchResult().then(res => {
+        setSearchResult({ ...res.data })
+        setIsSearch(true)
+      })
     }
   }
 
@@ -47,7 +51,33 @@ const Search = props => {
 
   const renderReault = () => {
     return (
-      <div className={styles.resultWrapper}>result</div>
+      <Fragment>
+        {JSON.stringify(searchResult) !== '{}' ?
+          <div className={styles.resultWrapper}>
+            {JSON.stringify(searchResult.singer) !== '{}' ?
+              <Fragment>
+                <div className={styles.titleText}>歌手</div>
+                <div className={styles.singerWrapper} >
+                  <img src={searchResult.singer.url} alt="" />
+                  <div className={styles.singerName}>{searchResult.singer.name}</div>
+                </div>
+              </Fragment>
+              : null}
+            <div className={styles.titleText}>
+              <div>单曲</div>
+              <div className={styles.playAll}>
+                <i className="iconfont icon-video-play"></i>
+                播放全部
+              </div>
+            </div>
+            <div className={styles.songWrapper}>
+              {searchResult.song && searchResult.song.map((item, index) => (
+                <SongItem history={history} songListDetail={item} key={index} num={index + 1} />
+              ))}
+            </div>
+          </div>
+          : null}
+      </Fragment>
     )
   }
 

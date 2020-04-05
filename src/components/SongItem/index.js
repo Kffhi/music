@@ -3,7 +3,7 @@ import styles from './style.less'
 
 const SongItem = props => {
   const {
-    songListDetail,
+    songListDetail = {},
     history,
     num
   } = props
@@ -12,7 +12,9 @@ const SongItem = props => {
       <div className={styles.num}>{num}</div>
       <div className={styles.textWrapper}>
         <div className={styles.title}>{songListDetail.title}</div>
-        <div className={styles.singer}>{songListDetail.singer}</div>
+        <div className={styles.singer}>{songListDetail.singer}
+          {songListDetail.description ? <span>&nbsp;-&nbsp;{songListDetail.description}&nbsp;</span> : null}
+        </div>
       </div>
       <div className={styles.iconWrapper}>
         <i className="iconfont icon-more" />
