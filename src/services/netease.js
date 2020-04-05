@@ -21,3 +21,8 @@ export const getNetSongListDetail = () => {
 export const getNetSongListCategory = () => {
   return get('/mock/category.json')
 }
+
+// 获取热搜数据
+export const getHotSearch = () => {
+  return get('/mock/hotsearch.json')
+}
