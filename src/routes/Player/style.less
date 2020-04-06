@@ -1,0 +1,196 @@
+.player {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+
+  .backgroundWrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    transform: scale(1.5);
+    filter: blur(2.5rem);
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .containerWrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    .header {
+      width: 100%;
+      height: 4.8rem;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      position: fixed;
+      z-index: 100;
+      color: white;
+
+      .goBack {
+        width: 4.8rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          font-size: 2.1rem;
+        }
+      }
+
+      .text {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 1rem;
+
+        .title {
+          font-size: 1.4rem;
+        }
+
+        .singer {
+          font-size: 1rem;
+          color: #aaaaaa;
+          display: flex;
+          align-items: center;
+
+          i {
+            font-size: 1rem;
+            margin-top: 0.1rem;
+          }
+        }
+      }
+    }
+
+    .picAndLyricWrapper {
+      height: calc(~"100vh - 21.8rem");
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .imgWrapper {
+        width: 60vw;
+        height: 60vw;
+        border-radius: 50%;
+        overflow: hidden;
+        animation: rotate 20s linear infinite;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    .bottomWrapper {
+      height: 17rem;
+      position: fixed;
+      bottom: 0;
+      color: #dddddd;
+
+      .iconBar {
+        height: 5rem;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+
+        .iconWrapper {
+          width: 16vw;
+          height: 100%;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .commentNum {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+          }
+
+          i {
+            font-size: 2.4rem;
+          }
+        }
+      }
+
+      .progressBar {
+        height: 4rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        .time {
+          height: 100%;
+          width: 11%;
+          display: flex;
+          align-items: center;
+          font-size: 1.1rem;
+          justify-content: center;
+        }
+
+        .line {
+          width: 70%;
+          height: 0.2rem;
+          background: #dddddd;
+        }
+      }
+
+      .playCtrlBar {
+        height: 8rem;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+      }
+
+      .ctrlIconWrapper {
+        width: 16vw;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          font-size: 2.5rem;
+        }
+      }
+
+      .playIconWrapper {
+        width: 20vw;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          font-size: 4.5rem;
+        }
+      }
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(359deg);
+    }
+  }
+}
