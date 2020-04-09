@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react'
 import className from 'classnames';
+import { format } from '../../utils/format'
 import styles from './style.less'
 
 const Player = props => {
@@ -7,6 +8,7 @@ const Player = props => {
     history,
     currentIndex = 0
   } = props
+  const [currentTime, setCurrentTime] = useState('0:00')
   const [showLyric, setShowLyric] = useState(false)
   const [isPlay, setIsPlay] = useState(false)
   // const [playSong, setPlaySong] = useState({})
@@ -44,14 +46,7 @@ const Player = props => {
   ]
   const audioRef = useRef()
 
-  /** 初始化执行 */
   useEffect(() => {
-    // setPlaySong(playList[0])
-    // playList.map((item, index) => {
-    //   if (currentIndex === index) {
-    //     setPlaySong(item)
-    //   }
-    // })
   }, [])
 
   const handleChangePlayState = () => {
@@ -61,6 +56,10 @@ const Player = props => {
       audioRef.current.play()
     }
     setIsPlay(!isPlay)
+  }
+
+  const handleChangeCurrentTime = () => {
+    setCurrentTime(format(audioRef.current.currentTime))
   }
 
   const renderHeader = () => {
@@ -85,7 +84,6 @@ const Player = props => {
     )
   }
 
-  console.log(isPlay)
   const renderPicAndLyric = () => {
     return (
       <div className={styles.picAndLyricWrapper}>
@@ -124,9 +122,14 @@ const Player = props => {
           </div>
         </div>
         <div className={styles.progressBar}>
-          <div className={styles.time}>00:00</div>
-          <div className={styles.line}></div>
-          <div className={styles.time}>{playSong.time}</div>
+          <div className={`${styles.time} ${styles.left}`}>{currentTime}</div>
+          <div className={styles.backLine}>
+            <div className={styles.prograssLine}></div>
+            <div className={styles.dot}>
+              <div className={styles.dotColor}></div>
+            </div>
+          </div>
+          <div className={`${styles.time} ${styles.right}`}>{playSong.time}</div>
         </div>
         <div className={styles.playCtrlBar}>
           <div className={styles.ctrlIconWrapper}>
@@ -157,7 +160,7 @@ const Player = props => {
 
   const renderAudio = () => {
     return (
-      <audio src={playSong.url} ref={audioRef}></audio>
+      <audio src={playSong.url} ref={audioRef} onTimeUpdate={() => { handleChangeCurrentTime() }}></audio>
     )
   }
 
