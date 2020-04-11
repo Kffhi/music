@@ -177,24 +177,34 @@
             border-bottom-right-radius: 0.2rem;
           }
 
-          .dot {
+          .dotWrapper {
+            background: transparent;
             position: absolute;
+            width: 2rem;
+            height: 2rem;
             // 偏移left = -0.3 + prograssLine.width
-            top: -0.3rem;
-            z-index: 10;
-            width: 0.8rem;
-            height: 0.8rem;
-            border-radius: 50%;
-            background: #ffffff;
+            top: -0.9rem;
             display: flex;
+            z-index: 10;
             align-items: center;
             justify-content: center;
 
-            .dotColor {
-              height: 0.2rem;
-              width: 0.2rem;
+            .dot {
+              position: absolute;
+              width: 0.8rem;
+              height: 0.8rem;
               border-radius: 50%;
-              background: #108ee9;
+              background: #ffffff;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              .dotColor {
+                height: 0.2rem;
+                width: 0.2rem;
+                border-radius: 50%;
+                background: #108ee9;
+              }
             }
           }
         }

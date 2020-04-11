@@ -10,13 +10,10 @@ const Player = props => {
     currentIndex = 0
   } = props
   const audioRef = useRef()
-  const progressBarRef = useRef()
-  const dotRef = useRef()
   const [currentTime, setCurrentTime] = useState('0:00')
   const [showLyric, setShowLyric] = useState(false)
   const [isPlay, setIsPlay] = useState(false)
   const [offsetWidth, setOffsetWidth] = useState(0)
-  const [touchStart, setTouchStart] = useState(0)
   // const [playSong, setPlaySong] = useState({})
   const playSong = {
     "name": "虹の彼方 (feat. Lasah)",
@@ -55,9 +52,9 @@ const Player = props => {
       "time": "02:57"
     }
   ]
-  let touchOffset = 0
 
   const handleClickProgessBar = e => {
+    e.stopPropagation()
     setOffsetWidth(e.nativeEvent.offsetX / 10)
     audioRef.current.currentTime = (e.nativeEvent.offsetX / 10) / 25 * playSong.time
     audioRef.current.play()
@@ -65,19 +62,20 @@ const Player = props => {
   }
 
   const handleDotTouchStart = e => {
-    setTouchStart(e.nativeEvent.touches[0].pageX / 10)
-    console.log('touchStart', touchStart)
+    e.stopPropagation()
     audioRef.current.pause()
   }
 
   const handleDotTouchMove = e => {
-    console.log('touchMove', touchStart)
-    touchOffset = e.nativeEvent.touches[0].pageX / 10 - touchStart
-    setOffsetWidth(touchOffset > 25 ? 25 : touchOffset)
+    e.stopPropagation()
+    let touchOffset = e.nativeEvent.touches[0].pageX / 10 - 6.1 // 6.1为进度条为0的位置dotWrapper的e.nativeEvent.touches[0].pageX值
+    touchOffset = touchOffset > 25 ? 25 : touchOffset
+    setOffsetWidth(touchOffset)
     audioRef.current.currentTime = touchOffset / 25 * playSong.time
   }
 
-  const handleDotTouchEnd = () => {
+  const handleDotTouchEnd = e => {
+    e.stopPropagation()
     audioRef.current.play()
     setIsPlay(true)
   }
@@ -157,10 +155,13 @@ const Player = props => {
         </div>
         <div className={styles.progressBar}>
           <div className={`${styles.time} ${styles.left}`}>{currentTime}</div>
-          <div className={styles.backLine} ref={progressBarRef} onClick={e => { handleClickProgessBar(e) }}>
+          <div className={styles.backLine} onClick={e => { handleClickProgessBar(e) }}>
             <div className={styles.prograssLine} style={{ "width": offsetWidth + 'rem' }}></div>
-            <div className={styles.dot} style={{ "left": offsetWidth - 0.3 + 'rem' }} ref={dotRef} onTouchEnd={() => { handleDotTouchEnd() }} onTouchMove={e => { handleDotTouchMove(e) }} onTouchStart={e => { handleDotTouchStart(e) }}>
-              <div className={styles.dotColor}></div>
+            {/* 使用dotWrapper增大能touch的面积 */}
+            <div className={styles.dotWrapper} style={{ "left": offsetWidth - 0.9 + 'rem' }} onTouchEnd={e => { handleDotTouchEnd(e) }} onTouchMove={e => { handleDotTouchMove(e) }} onTouchStart={e => { handleDotTouchStart(e) }}>
+              <div className={styles.dot}>
+                <div className={styles.dotColor}></div>
+              </div>
             </div>
           </div>
           <div className={`${styles.time} ${styles.right}`}>{format(playSong.time)}</div>
