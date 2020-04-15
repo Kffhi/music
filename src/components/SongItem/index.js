@@ -1,14 +1,23 @@
 import React from 'react'
+import { connect } from 'dva'
 import styles from './style.less'
 
 const SongItem = props => {
   const {
+    dispatch,
     songListDetail = {},
     history,
     num
   } = props
+
+  const handleGoPlayer = () => {
+    dispatch({
+      type: 'player/changeShowMiniState',
+    })
+  }
+
   return (
-    <div className={styles.songItem} onClick={() => { history.push('/player') }}>
+    <div className={styles.songItem} onClick={() => { handleGoPlayer() }}>
       <div className={styles.num}>{num}</div>
       <div className={styles.textWrapper}>
         <div className={styles.title}>{songListDetail.title}</div>
@@ -22,4 +31,6 @@ const SongItem = props => {
     </div>
   )
 }
-export default SongItem;
+export default connect(({ player }) => ({
+  player
+}))(SongItem)

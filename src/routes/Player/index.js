@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react'
-import className from 'classnames';
+import className from 'classnames'
+import { connect } from 'dva'
 import Toast from '../../components/Toast'
 import MiniPlay from '../../components/miniPlay'
 import { format } from '../../utils/format'
@@ -8,10 +9,11 @@ import styles from './style.less'
 const Player = props => {
   const {
     history,
-    currentIndex = 0
+    dispatch,
+    currentIndex = 0,
+    player
   } = props
   const audioRef = useRef()
-  const [showMini, setShowMini] = useState(true)
   const [currentTime, setCurrentTime] = useState('0:00')
   const [showLyric, setShowLyric] = useState(false)
   const [isPlay, setIsPlay] = useState(false)
@@ -97,11 +99,17 @@ const Player = props => {
     setCurrentTime(format(audioRef.current.currentTime))
   }
 
+  const handleShowMini = () => {
+    dispatch({
+      type: 'player/changeShowMiniState',
+    })
+  }
+
   const renderHeader = () => {
     return (
       <Fragment>
         <div className={styles.header}>
-          <div className={styles.goBack} onClick={() => { setShowMini(true) }}>
+          <div className={styles.goBack} onClick={() => { handleShowMini() }}>
             <i className="iconfont icon-arrow-down" />
           </div>
           {JSON.stringify(playSong) !== '{}' ?
@@ -204,10 +212,10 @@ const Player = props => {
 
   return (
     <Fragment>
-      {showMini ?
+      {player.showMini ?
         <MiniPlay
           history={history}
-          showBig={() => { setShowMini(false) }}
+          showBig={() => { handleShowMini() }}
           playSong={playSong}
           isPlay={isPlay}
           changePlayState={handleChangePlayState}
@@ -227,4 +235,6 @@ const Player = props => {
     </Fragment>
   )
 }
-export default Player;
+export default connect(({ player }) => ({
+  player
+}))(Player);
