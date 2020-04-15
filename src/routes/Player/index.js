@@ -82,7 +82,8 @@ const Player = props => {
     setIsPlay(true)
   }
 
-  const handleChangePlayState = () => {
+  const handleChangePlayState = e => {
+    e.stopPropagation()
     if (isPlay) {
       audioRef.current.pause()
     } else {
@@ -177,7 +178,7 @@ const Player = props => {
           <div className={styles.ctrlIconWrapper}>
             <i className="iconfont icon-voice-last" />
           </div>
-          <div className={styles.playIconWrapper} onClick={() => { handleChangePlayState() }}>
+          <div className={styles.playIconWrapper} onClick={e => { handleChangePlayState(e) }}>
             {isPlay ?
               <i className="iconfont icon-video-pause" />
               :
@@ -204,7 +205,13 @@ const Player = props => {
   return (
     <Fragment>
       {showMini ?
-        <MiniPlay history={history} showBig={() => { setShowMini(false) }} /> :
+        <MiniPlay
+          history={history}
+          showBig={() => { setShowMini(false) }}
+          playSong={playSong}
+          isPlay={isPlay}
+          changePlayState={handleChangePlayState}
+        /> :
         <div className={styles.player}>
           <div className={styles.backgroundWrapper}>
             <img src={playSong.picUrl} alt="" />
@@ -213,10 +220,10 @@ const Player = props => {
             {renderHeader()}
             {renderPicAndLyric()}
             {renderBottom()}
-            {renderAudio()}
           </div>
         </div>
       }
+      {renderAudio()}
     </Fragment>
   )
 }
