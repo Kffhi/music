@@ -3,59 +3,24 @@ import className from 'classnames'
 import { connect } from 'dva'
 import Toast from '../../components/Toast'
 import MiniPlay from '../../components/miniPlay'
-import { format } from '../../utils/format'
+import { format, shuffle } from '../../utils/format'
 import styles from './style.less'
 
 const Player = props => {
   const {
     history,
     dispatch,
-    currentIndex = 0,
     player
   } = props
   const audioRef = useRef()
+  const isFirstLoad = useRef(true)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [currentTime, setCurrentTime] = useState('0:00')
   const [showLyric, setShowLyric] = useState(false)
   const [isPlay, setIsPlay] = useState(false)
   const [offsetWidth, setOffsetWidth] = useState(0)
-  // const [playSong, setPlaySong] = useState({})
-  const playSong = {
-    "name": "虹の彼方 (feat. Lasah)",
-    "singer": "小瀬村晶 / lasah",
-    "picUrl": "https://i.ytimg.com/vi/KIL_kmtcNcU/maxresdefault.jpg",
-    "url": "https://www.kffhi.com/public/images/audio/test.mp3",
-    "time": "446"
-  }
-  const playList = [
-    {
-      "name": "虹の彼方 (feat. Lasah)",
-      "singer": "小瀬村晶 / lasah",
-      "picUrl": "https://i.ytimg.com/vi/KIL_kmtcNcU/maxresdefault.jpg",
-      "url": "https://www.kffhi.com/public/images/audio/test.mp3",
-      "time": "446"
-    },
-    {
-      "name": "baby I love you",
-      "singer": "Shiggy Jr.",
-      "picUrl": "https://i.ytimg.com/vi/suTPx6M8vTQ/hqdefault.jpg",
-      "url": "https://www.kffhi.com/public/images/audio/1.mp3",
-      "time": "03:44"
-    },
-    {
-      "name": "Enough",
-      "singer": "Maisy Kay",
-      "picUrl": "https://i.kfs.io/album/global/7241972,0v1/fit/500x500.jpg",
-      "url": "https://www.kffhi.com/public/images/audio/2.mp3",
-      "time": "04:34"
-    },
-    {
-      "name": "长恨歌",
-      "singer": "五色石南叶",
-      "picUrl": "https://p2.music.126.net/0rDEqHG2be0xmPs8AiAS5A==/2545369418305520.jpg",
-      "url": "https://www.kffhi.com/public/images/audio/3.mp3",
-      "time": "02:57"
-    }
-  ]
+  const [playMode, setPlayMode] = useState(1)
+  const [playSong, setPlaySong] = useState(player.playList[currentIndex])
 
   const handleClickProgessBar = e => {
     e.stopPropagation()
@@ -103,6 +68,91 @@ const Player = props => {
     dispatch({
       type: 'player/changeShowMiniState',
     })
+  }
+
+  const nextSong = e => {
+    e.stopPropagation()
+    isFirstLoad.current = false
+    if (playMode === 2) {
+      audioRef.current.currentTime = 0;
+      setIsPlay(true)
+      audioRef.current.play()
+    } else {
+      if (currentIndex < player.playList.length - 1) {
+        setCurrentIndex(currentIndex + 1)
+        setPlaySong(player.playList[currentIndex + 1])
+      } else {
+        setCurrentIndex(0)
+        setPlaySong(player.playList[0])
+      }
+    }
+  }
+
+  const prevSong = e => {
+    e.stopPropagation()
+    isFirstLoad.current = false
+    if (playMode === 2) {
+      audioRef.current.currentTime = 0
+      setIsPlay(true)
+      audioRef.current.play()
+    } else {
+      if (currentIndex > 0) {
+        setCurrentIndex(currentIndex - 1)
+        setPlaySong(player.playList[currentIndex - 1])
+      } else {
+        setCurrentIndex(player.playList.length - 1)
+        setPlaySong(player.playList[player.playList.length - 1])
+      }
+    }
+  }
+
+  // 期望：当playSong改变调用播放方法
+  // 问题：第一次render初始化时也会调用
+  // 解决方式：通过useRef避开
+  useEffect(() => {
+    if (!isFirstLoad.current) {
+      setIsPlay(true)
+      audioRef.current.play()
+    }
+  }, [playSong])
+
+
+  // console.log('player.playList', player.playList)
+  // console.log('player.sequenceList', player.sequenceList)
+  const handleChangePlayMode = async () => {
+    // 1:顺序播放 2.单曲循环 3.随机播放
+    // 数字表示当前状态，但是点击后进入下一状态，所以实际上playList应按下一状态的播放逻辑修改
+    playMode === 3 ? setPlayMode(1) : setPlayMode(playMode + 1)
+    switch (playMode) {
+      case 1:
+        await dispatch({
+          type: 'player/changePlayList',
+          payLoad: {
+            playList: [playSong]
+          }
+        })
+        break
+      case 2:
+        const randomList = shuffle(player.sequenceList)
+        dispatch({
+          type: 'player/changePlayList',
+          payLoad: {
+            playList: [...randomList]
+          }
+        })
+        break
+      case 3:
+        const loopList = player.sequenceList
+        dispatch({
+          type: 'player/changePlayList',
+          payLoad: {
+            playList: [...loopList]
+          }
+        })
+        break
+      default:
+        return undefined
+    }
   }
 
   const renderHeader = () => {
@@ -178,12 +228,14 @@ const Player = props => {
           <div className={`${styles.time} ${styles.right}`}>{format(playSong.time)}</div>
         </div>
         <div className={styles.playCtrlBar}>
-          <div className={styles.ctrlIconWrapper}>
-            <i className="iconfont icon-random-play" />
-            {/* <i className="iconfont icon-round-play" />
-            <i className="iconfont icon-single-play" /> */}
+          <div className={styles.ctrlIconWrapper} onClick={() => { handleChangePlayMode() }}>
+            {playMode === 1 ?
+              <i className="iconfont icon-round-play" /> :
+              playMode === 2 ?
+                <i className="iconfont icon-single-play" /> :
+                <i className="iconfont icon-random-play" />}
           </div>
-          <div className={styles.ctrlIconWrapper}>
+          <div className={styles.ctrlIconWrapper} onClick={e => { prevSong(e) }}>
             <i className="iconfont icon-voice-last" />
           </div>
           <div className={styles.playIconWrapper} onClick={e => { handleChangePlayState(e) }}>
@@ -193,7 +245,7 @@ const Player = props => {
               <i className="iconfont icon-video-play" />
             }
           </div>
-          <div className={styles.ctrlIconWrapper}>
+          <div className={styles.ctrlIconWrapper} onClick={e => { nextSong(e) }}>
             <i className="iconfont icon-voice-next" />
           </div>
           <div className={styles.ctrlIconWrapper}>
