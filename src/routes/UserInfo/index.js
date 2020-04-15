@@ -1,6 +1,5 @@
 import React, { useState, Fragment } from 'react'
 import Header from '../../components/Header'
-import MiniPlay from '../../components/miniPlay'
 import Accordion from '../../components/Accordion'
 import SongListItem from '../../components/SongListItem'
 import styles from './style.less'
@@ -140,7 +139,6 @@ const UserInfo = props => {
       <Header history={history} title={'个人中心'} />
       {renderDetail()}
       {renderMyMusic()}
-      <MiniPlay history={history} />
     </div>
   )
 }

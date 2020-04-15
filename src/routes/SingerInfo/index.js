@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getNetSingerInfo } from '../../services/netease'
 import Header from '../../components/Header'
-import MiniPlay from '../../components/miniPlay'
 import SongItem from '../../components/SongItem'
 import styles from './style.less'
 
@@ -82,7 +81,6 @@ const SingerInfo = props => {
       <Header history={history} title={'歌手详情'}></Header>
       {renderDetail()}
       {renderSongList()}
-      <MiniPlay history={history} />
     </div>
   )
 }

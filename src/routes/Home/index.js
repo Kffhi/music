@@ -4,7 +4,6 @@ import { getNetBanner, getNetSongList } from '../../services/netease'
 import { getTencentBanner, getTencentSongList } from '../../services/tencent'
 import { getXiamiBanner, getXiamiSongList } from '../../services/xiami'
 import SongList from '../../components/SongList'
-import MiniPlay from '../../components/miniPlay'
 import Accordion from '../../components/Accordion'
 import SongListItem from '../../components/SongListItem'
 import styles from './style.less'
@@ -248,7 +247,6 @@ const Home = props => {
     <div>
       {renderHeader()}
       {renderContainer()}
-      <MiniPlay history={history}></MiniPlay>
     </div>
   );
   // }

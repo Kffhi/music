@@ -1,6 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import { getHotSearch, getSearchResult } from '../../services/netease'
-import MiniPlay from '../../components/miniPlay'
 import SongItem from '../../components/SongItem'
 import styles from './style.less'
 
@@ -145,7 +144,6 @@ const Search = props => {
     <div className={styles.search}>
       {renderHeader()}
       {isSearch ? renderReault() : renderNoSearch()}
-      <MiniPlay history={history} />
     </div>
   )
 }

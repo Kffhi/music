@@ -2,7 +2,6 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { getNetSongListCategory, getNetSongList } from '../../services/netease'
 import { Tabs } from 'antd-mobile'
 import Header from '../../components/Header'
-import MiniPlay from '../../components/miniPlay'
 import SongList from '../../components/SongList'
 import styles from './style.less'
 
@@ -55,7 +54,6 @@ const SongListAll = props => {
             ))}
         </Tabs>
       </div>
-      <MiniPlay history={history} />
     </div>
   )
 }

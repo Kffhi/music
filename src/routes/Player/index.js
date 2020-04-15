@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react'
 import className from 'classnames';
 import Toast from '../../components/Toast'
+import MiniPlay from '../../components/miniPlay'
 import { format } from '../../utils/format'
 import styles from './style.less'
 
@@ -10,6 +11,7 @@ const Player = props => {
     currentIndex = 0
   } = props
   const audioRef = useRef()
+  const [showMini, setShowMini] = useState(true)
   const [currentTime, setCurrentTime] = useState('0:00')
   const [showLyric, setShowLyric] = useState(false)
   const [isPlay, setIsPlay] = useState(false)
@@ -98,8 +100,8 @@ const Player = props => {
     return (
       <Fragment>
         <div className={styles.header}>
-          <div className={styles.goBack} onClick={() => { history.goBack(-1) }}>
-            <i className="iconfont icon-app_back" />
+          <div className={styles.goBack} onClick={() => { setShowMini(true) }}>
+            <i className="iconfont icon-arrow-down" />
           </div>
           {JSON.stringify(playSong) !== '{}' ?
             <div className={styles.text}>
@@ -200,17 +202,22 @@ const Player = props => {
   }
 
   return (
-    <div className={styles.player}>
-      <div className={styles.backgroundWrapper}>
-        <img src={playSong.picUrl} alt="" />
-      </div>
-      <div className={styles.containerWrapper}>
-        {renderHeader()}
-        {renderPicAndLyric()}
-        {renderBottom()}
-        {renderAudio()}
-      </div>
-    </div>
+    <Fragment>
+      {showMini ?
+        <MiniPlay history={history} showBig={() => { setShowMini(false) }} /> :
+        <div className={styles.player}>
+          <div className={styles.backgroundWrapper}>
+            <img src={playSong.picUrl} alt="" />
+          </div>
+          <div className={styles.containerWrapper}>
+            {renderHeader()}
+            {renderPicAndLyric()}
+            {renderBottom()}
+            {renderAudio()}
+          </div>
+        </div>
+      }
+    </Fragment>
   )
 }
 export default Player;

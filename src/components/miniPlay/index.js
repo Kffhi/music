@@ -4,7 +4,8 @@ import styles from './style.less'
 
 const MiniPlay = props => {
   const {
-    history
+    history,
+    showBig
   } = props
   const [palyingList, setPlayingList] = useState([])
   const [palying, setPalying] = useState({})
@@ -13,7 +14,7 @@ const MiniPlay = props => {
     if (JSON.stringify === '{}') {
       Toast.info('播放列表为空')
     } else {
-      history.push('/player')
+      showBig()
     }
   }
 
