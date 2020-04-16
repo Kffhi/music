@@ -34,5 +34,5 @@ export const getSearchResult = () => {
 
 // 获取歌手详情
 export const getNetSingerInfo = () => {
-  return get('/mock/singerinfo.json')
+  return get('/mock/singerInfo.json')
 }

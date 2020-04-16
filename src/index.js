@@ -6,7 +6,9 @@ import './iconfont.css'
 
 // 1. Initialize
 const app = dva({
-  history: createHistory()
+  history: createHistory({
+    basename: "/kmusic"
+  })
 });
 
 // 2. Plugins

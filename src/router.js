@@ -1,7 +1,7 @@
 
 import React, { Fragment } from 'react';
 import { Router, Route, Switch, Redirect } from 'dva/router';
-import  Player from './routes/Player'
+import Player from './routes/Player'
 import dynamic from 'dva/dynamic'
 
 import { config } from './utils'
@@ -13,7 +13,7 @@ function RouterConfig({ history, app }) {
   return (
     <Router history={history}>
       <Fragment>
-      <Player history={history}></Player>
+        <Player history={history}></Player>
         <Switch>
           {/* <Route path="/" exact component={Home} /> */}
           <Redirect from="/" to="/home" exact></Redirect>
