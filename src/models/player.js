@@ -8,7 +8,7 @@ export default {
       {
         "name": "虹の彼方 (feat. Lasah)",
         "singer": "小瀬村晶 / lasah",
-        "picUrl": "https://i.ytimg.com/vi/KIL_kmtcNcU/maxresdefault.jpg",
+        "picUrl": "https://p1.music.126.net/NShWcSXDGYUT3k_ZNP3Gtw==/5650390255271022.jpg",
         "url": "https://www.kffhi.com/public/images/audio/test.mp3",
         "time": "446"
       },
@@ -38,7 +38,7 @@ export default {
       {
         "name": "虹の彼方 (feat. Lasah)",
         "singer": "小瀬村晶 / lasah",
-        "picUrl": "https://i.ytimg.com/vi/KIL_kmtcNcU/maxresdefault.jpg",
+        "picUrl": "https://p1.music.126.net/NShWcSXDGYUT3k_ZNP3Gtw==/5650390255271022.jpg",
         "url": "https://www.kffhi.com/public/images/audio/test.mp3",
         "time": "446"
       },
