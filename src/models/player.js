@@ -83,7 +83,6 @@ export default {
       }
     },
     changePlayList(state, action) {
-      console.log(state, action)
       return {
         ...state,
         playList: action.payLoad.playList

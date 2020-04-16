@@ -133,7 +133,8 @@ const Player = props => {
         })
         break
       case 2:
-        const randomList = shuffle(player.sequenceList)
+        const newSequenceList = [...player.sequenceList]
+        const randomList = shuffle(newSequenceList)
         dispatch({
           type: 'player/changePlayList',
           payLoad: {
@@ -258,7 +259,7 @@ const Player = props => {
 
   const renderAudio = () => {
     return (
-      <audio src={playSong.url} ref={audioRef} onTimeUpdate={() => { handleChangeCurrentTime() }}></audio>
+      <audio src={playSong.url} ref={audioRef} onTimeUpdate={() => { handleChangeCurrentTime() }} onEnded={e => { nextSong(e) }}></audio>
     )
   }
 
