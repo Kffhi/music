@@ -164,7 +164,7 @@ const Player = props => {
             <i className="iconfont icon-arrow-down" />
           </div>
           {JSON.stringify(playSong) !== '{}' ?
-            <div className={styles.text}>
+            <div className={styles.text} onClick={()=> {history.push('/singerinfo'); handleShowMini()}}>
               <div className={styles.title}>{playSong.name}</div>
               <div className={styles.singer}>
                 {playSong.singer}
