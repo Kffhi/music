@@ -34,6 +34,10 @@ export const getTencentSongList = () => {
  * sortId: 最新, 最热,评分, 默认为5
  * 接口地址: /getSongLists
  */
+export const getTencentCartSongList = (categoryId = '', page = '1', limit = 21, sortId = '5') => {
+  const URL = `/api/tencent/getSongLists?categoryId=${categoryId}&page=${page}&limit=${limit}&sortId=${sortId}`
+  return get(URL)
+}
 
 
 // 获取歌单详情
@@ -55,7 +59,7 @@ export const getTencentSongListDetail = () => {
  * 接口地址: /getSongListCategories
  */
 export const getTencentSongListCategory = () => {
-  return get('/mock/category.json')
+  return get('/api/tencent/getSongListCategories')
 }
 
 // 获取热搜数据

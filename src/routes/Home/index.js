@@ -13,6 +13,7 @@ const Home = props => {
   const { history } = props
   const [banner, setBanner] = useState([])
   const [songList, setSongList] = useState([])
+  const [tab, setTab] = useState('NETEASE')
   const tabs = [
     { title: '我的', sub: 'MY_MUSIC' },
     { title: '网易云音乐', sub: 'NETEASE' },
@@ -167,7 +168,7 @@ const Home = props => {
       <div className={styles.songListWrapper}>
         <div className={styles.header}>
           <span className={styles.text}>推荐歌单</span>
-          <span className={styles.more} onClick={() => { history.push('/songlistall') }}>
+          <span className={styles.more} onClick={() => { history.push(`/songlistall/${tab}`) }}>
             歌单广场
             <i className="iconfont icon-jump" style={{ 'fontSize': '1.3rem', 'marginLeft': '0.2rem' }} />
           </span>
@@ -234,7 +235,7 @@ const Home = props => {
         <Tabs tabs={tabs}
           initialPage={1}
           swipeable={false}
-          onChange={tab => { console.log(tab) }}
+          onChange={tab => { console.log(tab.sub); setTab(tab.sub) }}
           onTabClick={tab => { changeData(tab) }}
         >
           {renderMyMusic()}

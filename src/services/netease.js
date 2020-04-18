@@ -26,8 +26,10 @@ export const getNetBanner = () => {
  * before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
  * 接口地址 : /top/playlist/highquality
  */
-export const getNetSongList = () => {
-  return get('/api/netease/top/playlist/highquality?limit=20')
+export const getNetSongList = (cat = '', limit = '21', before = '') => {
+  // const url = `/api/netease/top/playlist/highquality?${cat ? 'cat=' + cat : ''}${limit ? '&limit=' + limit : ''}${before ? '&before=' + before : ''}`
+  const url = `/api/netease/top/playlist/highquality?${'cat=' + cat}${'&limit=' + limit}${'&before=' + before}`
+  return get(url)
 }
 
 
@@ -50,7 +52,7 @@ export const getNetSongListDetail = () => {
  * 接口地址 : /playlist/hot
  */
 export const getNetSongListCategory = () => {
-  return get('/mock/category.json')
+  return get('/api/netease/playlist/hot')
 }
 
 // 获取热搜数据

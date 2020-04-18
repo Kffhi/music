@@ -10,7 +10,7 @@ const menuGlobal = [
   {
     id: 'songlistall',
     name: '歌单广场',
-    path: '/songlistall',
+    path: '/songlistall/:tab',
     component: () => import('../routes/SongListAll/index'),
   },
   {
