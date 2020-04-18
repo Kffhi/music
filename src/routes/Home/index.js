@@ -105,14 +105,36 @@ const Home = props => {
 
   // 获取网易云数据
   const getNetData = () => {
-    getNetBanner().then(res => { setBanner(res.data) })
-    getNetSongList().then(res => { setSongList(res.data) })
+    getNetBanner().then(res => {
+      setBanner(res.banners)
+    })
+    getNetSongList().then(res => {
+      const newSongList = [...res.playlists]
+      newSongList.forEach(item => {
+        item.pic = item.coverImgUrl
+        item.title = item.name
+      })
+      setSongList(newSongList)
+    })
   }
 
   // 获取QQ音乐数据
   const getTencentData = () => {
-    getTencentBanner().then(res => { setBanner(res.data) })
-    getTencentSongList().then(res => { setSongList(res.data) })
+    getTencentBanner().then(res => {
+      const newBanner = [...res.response.data.banner]
+      newBanner.forEach(item => {
+        item.url = item.jumpurl
+        item.pic = item.picurl
+      })
+      setBanner(newBanner)
+    })
+    getTencentSongList().then(res => {
+      const newSongList = [...res.response.recomPlaylist.data.v_hot]
+      newSongList.forEach(item => {
+        item.pic = item.cover
+      })
+      setSongList(newSongList)
+    })
   }
 
   // 获取虾米音乐数据
@@ -186,14 +208,14 @@ const Home = props => {
             autoplay={true}
             infinite
           >
-            {banner.map(item => (
+            {banner.map((item, index) => (
               <a
-                key={item.id}
+                key={index}
                 href={item.url}
               >
                 <img
                   onLoad={() => { window.dispatchEvent(new Event('resize')); }}
-                  src={item.pic_url}
+                  src={item.pic}
                   alt=""
                 />
               </a>

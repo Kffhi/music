@@ -7,7 +7,7 @@ import { get } from '../utils/request'
  * 接口地址: /getDigitalAlbumLists
  */
 export const getTencentBanner = () => {
-  return get('/mock/banner.json')
+  return get('/api/tencent/getDigitalAlbumLists')
 }
 
 
@@ -18,7 +18,7 @@ export const getTencentBanner = () => {
  * 接口地址: /getRecommend
  */
 export const getTencentSongList = () => {
-  return get('/mock/song.json')
+  return get('/api/tencent/getRecommend')
 }
 
 // 获取歌单分类下的歌单列表
@@ -44,7 +44,7 @@ export const getTencentSongList = () => {
  * disstid: 歌单id
  * 接口地址: /getSongListDetail
  */
-export const getNetSongListDetail = () => {
+export const getTencentSongListDetail = () => {
   return get('/mock/songlistdetail.json')
 }
 
@@ -54,7 +54,7 @@ export const getNetSongListDetail = () => {
  * 接口说明: 调用此接口, 可获取歌单分类, 包含category信息
  * 接口地址: /getSongListCategories
  */
-export const getNetSongListCategory = () => {
+export const getTencentSongListCategory = () => {
   return get('/mock/category.json')
 }
 
@@ -64,7 +64,7 @@ export const getNetSongListCategory = () => {
  * 接口说明: 调用此接口, 可获取搜索热词
  * 接口地址: /getHotkey
  */
-export const getNetHotSearch = () => {
+export const getTencentHotSearch = () => {
   return get('/mock/hotsearch.json')
 }
 
@@ -81,7 +81,7 @@ export const getNetHotSearch = () => {
  * limit: 取出歌单数量, 默认为 10
  * 接口地址: /getSearchByKey
  */
-export const getNetSearchResult = () => {
+export const getTencentSearchResult = () => {
   return get('/mock/searchresult.json')
 }
 
@@ -97,7 +97,7 @@ export const getNetSearchResult = () => {
  * limit: 取出歌单数量, 默认为 20
  * 接口地址: /getSingerAlbum
  */
-export const getNetSingerInfo = () => {
+export const getTencentSingerInfo = () => {
   return get('/mock/singerInfo.json')
 }
 

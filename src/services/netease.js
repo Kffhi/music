@@ -13,7 +13,7 @@ import { get } from '../utils/request'
  * 接口地址 : /banner
  */
 export const getNetBanner = () => {
-  return get('/mock/banner.json')
+  return get('/api/netease/banner?type=1')
 }
 
 
@@ -27,7 +27,7 @@ export const getNetBanner = () => {
  * 接口地址 : /top/playlist/highquality
  */
 export const getNetSongList = () => {
-  return get('/mock/songlist.json')
+  return get('/api/netease/top/playlist/highquality?limit=20')
 }
 
 
