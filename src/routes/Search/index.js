@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react'
-import { getHotSearch, getSearchResult } from '../../services/netease'
+import { getNetHotSearch, getNetSearchResult } from '../../services/netease'
 import SongItem from '../../components/SongItem'
 import styles from './style.less'
 
@@ -21,14 +21,14 @@ const Search = props => {
 
   // 获取网易云数据
   const getNetData = () => {
-    getHotSearch().then(res => { setHotSearch(res.data) })
+    getNetHotSearch().then(res => { setHotSearch(res.data) })
   }
 
   const search = async () => {
     if (searchValue === '') {
       return null
     } else {
-      await getSearchResult().then(res => {
+      await getNetSearchResult().then(res => {
         setSearchResult({ ...res.data })
         setIsSearch(true)
       })
