@@ -6,6 +6,7 @@ import { getXiamiBanner, getXiamiSongList } from '../../services/xiami'
 import SongList from '../../components/SongList'
 import Accordion from '../../components/Accordion'
 import SongListItem from '../../components/SongListItem'
+import Loading from '../../components/Loading'
 import styles from './style.less'
 // class Home extends Component {
 
@@ -173,7 +174,7 @@ const Home = props => {
             <i className="iconfont icon-jump" style={{ 'fontSize': '1.3rem', 'marginLeft': '0.2rem' }} />
           </span>
         </div>
-        <SongList songList={songList} history={history} showAll={false}></SongList>
+        {JSON.stringify(songList) !== '[]' ? <SongList songList={songList} history={history} showAll={false}></SongList> : <Loading />}
       </div>
     )
   }
@@ -267,7 +268,7 @@ const Home = props => {
 
   // render() {
   return (
-    <div>
+    <div className={styles.rootContainer}>
       {renderHeader()}
       {renderContainer()}
     </div>

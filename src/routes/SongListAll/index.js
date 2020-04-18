@@ -4,6 +4,7 @@ import { getTencentSongListCategory, getTencentCartSongList } from '../../servic
 import { Tabs } from 'antd-mobile'
 import Header from '../../components/Header'
 import SongList from '../../components/SongList'
+import Loading from '../../components/Loading'
 import styles from './style.less'
 
 const SongListAll = props => {
@@ -110,7 +111,7 @@ const SongListAll = props => {
   const renderSongList = () => {
     return (
       <div className={styles.songList}>
-        <SongList songList={songList} history={history} />
+        {JSON.stringify(songList) !== '[]' ? <SongList songList={songList} history={history} /> : <Loading />}
       </div>
     )
   }
