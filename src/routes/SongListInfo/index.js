@@ -1,23 +1,64 @@
-import React, { useState, useEffect } from 'react'
-import { getNetSongListDetail } from '../../services/netease'
+import React, { useState, useEffect, Fragment } from 'react'
+import { getNetSongListDetail, getNetSongDetail } from '../../services/netease'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
+import Loading from '../../components/Loading'
 import styles from './style.less'
 
 const SongListInfo = props => {
   const {
-    history
+    history,
+    match
   } = props
+  const tabSub = match.params.tab
+  const songListId = match.params.id
   const [songListDetail, setSongListDetail] = useState({})
 
   /** 初始化执行 */
   useEffect(() => {
     // 获取歌单详情
-    getSongListDetail()
-  }, [])
+    switch (tabSub) {
+      case 'NETEASE':
+        let ids = []
+        getNetSongListDetail(songListId).then(res => {
+          const newSongListDetail = { ...res.playlist }
+          newSongListDetail.title = newSongListDetail.name
+          newSongListDetail.url = newSongListDetail.coverImgUrl
+          newSongListDetail.author = newSongListDetail.creator.nickname
+          newSongListDetail.authorPic = newSongListDetail.creator.avatarUrl
+          newSongListDetail.shareNum = newSongListDetail.shareCount
+          newSongListDetail.commentNum = newSongListDetail.commentCount
+          newSongListDetail.songList = newSongListDetail.tracks
+          newSongListDetail.songList.forEach(item => {
+            item.title = item.name
+            item.singer = item.ar[0].name
+            item.description = item.al.name
+          })
+          newSongListDetail.trackIds.map(item => {
+            return ids.push(item.id)
+          })
+          getNetSongDetail(ids.join(',')).then(res => {
+            let newSongList = [...res.data]
+            newSongListDetail.songList.forEach((item, index) => {
+              Object.assign(item, newSongList[index])
+            })
+          })
+          setSongListDetail(newSongListDetail)
+        })
+        // getNetData()
+        break
+      case 'TENCENT':
+        // getTencentData()
+        break
+      case 'XIAMI':
+        break
+      default:
+        return null
+    }
+  }, [songListId, tabSub])
 
-  const getSongListDetail = () => {
-    getNetSongListDetail().then(res => { setSongListDetail(res.data) })
+  const getNetData = () => {
+    getNetSongListDetail(songListId).then(res => { setSongListDetail(res.playlist) })
   }
 
   const renderDetail = () => {
@@ -85,8 +126,13 @@ const SongListInfo = props => {
   return (
     <div className={styles.songListInfo}>
       <Header history={history} title={'歌单详情'}></Header>
-      {renderDetail()}
-      {renderSongList()}
+      {JSON.stringify(songListDetail) !== '{}' ?
+        <Fragment>
+          {renderDetail()}
+          {renderSongList()}
+        </Fragment> :
+        <Loading />
+      }
     </div>
   )
 }

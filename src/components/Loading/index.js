@@ -6,7 +6,7 @@ const Loading = () => {
   return (
     <div className={styles.loadingWrapper}>
       <img src="https://www.kffhi.com/public/images/loading.gif" alt=""/>
-      <div>哎呀，一定是你的网不好 ┗|｀O′|┛</div>
+      <div>哎呀，数据去哪了 ┗|｀O′|┛</div>
     </div>
   )
 }

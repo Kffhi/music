@@ -16,7 +16,7 @@ const menuGlobal = [
   {
     id: 'songlistinfo',
     name: '歌单详情',
-    path: '/songlistinfo',
+    path: '/songlistinfo/:tab/:id',
     component: () => import('../routes/SongListInfo/index'),
   },
   {

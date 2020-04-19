@@ -28,8 +28,8 @@ export const getNetBanner = () => {
  */
 export const getNetSongList = (cat = '', limit = '21', before = '') => {
   // const url = `/api/netease/top/playlist/highquality?${cat ? 'cat=' + cat : ''}${limit ? '&limit=' + limit : ''}${before ? '&before=' + before : ''}`
-  const url = `/api/netease/top/playlist/highquality?${'cat=' + cat}${'&limit=' + limit}${'&before=' + before}`
-  return get(url)
+  const URL = `/api/netease/top/playlist/highquality?${'cat=' + cat}${'&limit=' + limit}${'&before=' + before}`
+  return get(URL)
 }
 
 
@@ -41,8 +41,10 @@ export const getNetSongList = (cat = '', limit = '21', before = '') => {
  * 可选参数 : s : 歌单最近的 s 个收藏者
  * 接口地址 : /playlist/detail
  */
-export const getNetSongListDetail = () => {
-  return get('/mock/songlistdetail.json')
+export const getNetSongListDetail = id => {
+  console.log(id)
+  const URL = `/api/netease//playlist/detail?id=${id}`
+  return get(URL)
 }
 
 // 获取歌单分类
@@ -100,3 +102,7 @@ export const getNetSingerInfo = () => {
  * 可选参数 : br: 码率,默认设置了 999000 即最大码率,如果要 320k 则可设置为 320000,其他类推
  * 接口地址 : /song/url
  */
+export const getNetSongDetail = ids => {
+  const URL = `/api/netease/song/url?id=${ids}`
+  return get(URL)
+}

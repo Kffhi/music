@@ -174,7 +174,7 @@ const Home = props => {
             <i className="iconfont icon-jump" style={{ 'fontSize': '1.3rem', 'marginLeft': '0.2rem' }} />
           </span>
         </div>
-        {JSON.stringify(songList) !== '[]' ? <SongList songList={songList} history={history} showAll={false}></SongList> : <Loading />}
+        {JSON.stringify(songList) !== '[]' ? <SongList tab={tab} songList={songList} history={history} showAll={false}></SongList> : <Loading />}
       </div>
     )
   }

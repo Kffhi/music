@@ -58,10 +58,16 @@
             width: 60%;
 
             .title {
-              font-size: 1.7rem;
+              font-size: 1.5rem;
               height: 3rem;
+              line-height: 3rem;
               font-weight: bold;
               color: #fff;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 1;
+              -webkit-box-orient: vertical;
             }
 
             .author {
