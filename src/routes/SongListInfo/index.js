@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
+import { connect } from 'dva'
 import { getNetSongListDetail, getNetSongDetail } from '../../services/netease'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
@@ -8,7 +9,9 @@ import styles from './style.less'
 const SongListInfo = props => {
   const {
     history,
-    match
+    match,
+    player,
+    dispatch
   } = props
   const tabSub = match.params.tab
   const songListId = match.params.id
@@ -33,6 +36,8 @@ const SongListInfo = props => {
             item.title = item.name
             item.singer = item.ar[0].name
             item.description = item.al.name
+            item.picUrl = item.al.picUrl
+            item.time = Number.parseInt((item.dt) / 1000)
           })
           newSongListDetail.trackIds.map(item => {
             return ids.push(item.id)
@@ -56,10 +61,6 @@ const SongListInfo = props => {
         return null
     }
   }, [songListId, tabSub])
-
-  const getNetData = () => {
-    getNetSongListDetail(songListId).then(res => { setSongListDetail(res.playlist) })
-  }
 
   const renderDetail = () => {
     return (
@@ -116,7 +117,13 @@ const SongListInfo = props => {
       <div className={styles.songList}>
         {songListDetail.songList ?
           songListDetail.songList.map((item, index) => (
-            <SongItem history={history} songListDetail={item} key={index} num={index + 1} />
+            <SongItem
+              tab={tabSub}
+              songDetail={item}
+              playList={songListDetail.songList}
+              key={index}
+              num={index + 1}
+            />
           ))
           : null}
       </div>
@@ -136,4 +143,6 @@ const SongListInfo = props => {
     </div>
   )
 }
-export default SongListInfo
+export default connect(({ player }) => ({
+  player
+}))(SongListInfo)

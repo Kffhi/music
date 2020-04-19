@@ -13,7 +13,7 @@ const MiniPlay = props => {
   } = props
 
   const handleClick = () => {
-    if (JSON.stringify === '{}') {
+    if (!playSong) {
       Toast.info('播放列表为空')
     } else {
       showBig()
@@ -23,14 +23,14 @@ const MiniPlay = props => {
   return (
     <div className={styles.miniPlay} onClick={() => { handleClick() }}>
       <div className={className(styles.imgWrapper, { [styles.imgWrapperPlaying]: isPlay })}>
-        <img src={playSong.picUrl ? playSong.picUrl : 'https://images.haiwainet.cn/20160428/1461790811999686.jpg'} alt="" />
+        <img src={playSong ? playSong.picUrl : 'https://images.haiwainet.cn/20160428/1461790811999686.jpg'} alt="" />
       </div>
       <div className={styles.text}>
         <div className={styles.title}>
-          {playSong.name ? playSong.name : '发现新音乐'}
+          {playSong ? playSong.name : '发现新音乐'}
         </div>
         <div className={styles.singer}>
-          {playSong.singer ? playSong.singer : '歌手'}
+          {playSong ? playSong.singer : '歌手'}
         </div>
       </div>
       <div className={styles.iconWrapper}>

@@ -14,13 +14,20 @@ const Player = props => {
   } = props
   const audioRef = useRef()
   const isFirstLoad = useRef(true)
-  const [currentIndex, setCurrentIndex] = useState(0)
   const [currentTime, setCurrentTime] = useState('0:00')
   const [showLyric, setShowLyric] = useState(false)
   const [isPlay, setIsPlay] = useState(false)
   const [offsetWidth, setOffsetWidth] = useState(0)
   const [playMode, setPlayMode] = useState(1)
-  const [playSong, setPlaySong] = useState(player.playList[currentIndex])
+  const [currentIndex, setCurrentIndex] = useState([])
+  const [playSong, setPlaySong] = useState([])
+
+  useEffect((() => {
+    if (isFirstLoad.current) {
+      setCurrentIndex(player.currentIndex)
+      setPlaySong(player.playList[currentIndex])
+    }
+  }), [currentIndex, player.currentIndex, player.playList])
 
   const handleClickProgessBar = e => {
     e.stopPropagation()
@@ -116,9 +123,6 @@ const Player = props => {
     }
   }, [playSong])
 
-
-  // console.log('player.playList', player.playList)
-  // console.log('player.sequenceList', player.sequenceList)
   const handleChangePlayMode = async () => {
     // 1:顺序播放 2.单曲循环 3.随机播放
     // 数字表示当前状态，但是点击后进入下一状态，所以实际上playList应按下一状态的播放逻辑修改
@@ -164,10 +168,10 @@ const Player = props => {
             <i className="iconfont icon-arrow-down" />
           </div>
           {JSON.stringify(playSong) !== '{}' ?
-            <div className={styles.text} onClick={()=> {history.push('/singerinfo'); handleShowMini()}}>
-              <div className={styles.title}>{playSong.name}</div>
+            <div className={styles.text} onClick={() => { history.push('/singerinfo'); handleShowMini() }}>
+              <div className={styles.title}>{playSong ? playSong.name : '发现新音乐'}</div>
               <div className={styles.singer}>
-                {playSong.singer}
+                {playSong ? playSong.singer : '歌手'}
                 <i className="iconfont icon-jump" />
               </div>
             </div>
@@ -187,7 +191,7 @@ const Player = props => {
           <div className={className(styles.imgWrapper, {
             [styles.imgWrapperPlaying]: isPlay
           })}>
-            <img src={playSong.picUrl} alt="" />
+            <img src={playSong ? playSong.picUrl : 'https://images.haiwainet.cn/20160428/1461790811999686.jpg'} alt="" />
           </div>
         }
       </div>
@@ -226,7 +230,7 @@ const Player = props => {
               </div>
             </div>
           </div>
-          <div className={`${styles.time} ${styles.right}`}>{format(playSong.time)}</div>
+          <div className={`${styles.time} ${styles.right}`}>{playSong ? format(playSong.time) : '0:00'}</div>
         </div>
         <div className={styles.playCtrlBar}>
           <div className={styles.ctrlIconWrapper} onClick={() => { handleChangePlayMode() }}>
@@ -275,7 +279,7 @@ const Player = props => {
         /> :
         <div className={styles.player}>
           <div className={styles.backgroundWrapper}>
-            <img src={playSong.picUrl} alt="" />
+            <img src={playSong ? playSong.picUrl : 'https://www.kffhi.com/public/images/portfolio/4.png'} alt="" />
           </div>
           <div className={styles.containerWrapper}>
             {renderHeader()}
@@ -284,7 +288,7 @@ const Player = props => {
           </div>
         </div>
       }
-      {renderAudio()}
+      {playSong ? renderAudio() : null}
     </Fragment>
   )
 }
