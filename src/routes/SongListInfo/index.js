@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'dva'
-import { getNetSongListDetail, getNetSongDetail } from '../../services/netease'
+import { getNetSongListDetail } from '../../services/netease'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
@@ -10,8 +10,6 @@ const SongListInfo = props => {
   const {
     history,
     match,
-    player,
-    dispatch
   } = props
   const tabSub = match.params.tab
   const songListId = match.params.id
@@ -22,7 +20,6 @@ const SongListInfo = props => {
     // 获取歌单详情
     switch (tabSub) {
       case 'NETEASE':
-        let ids = []
         getNetSongListDetail(songListId).then(res => {
           const newSongListDetail = { ...res.playlist }
           newSongListDetail.title = newSongListDetail.name
@@ -38,15 +35,6 @@ const SongListInfo = props => {
             item.description = item.al.name
             item.picUrl = item.al.picUrl
             item.time = Number.parseInt((item.dt) / 1000)
-          })
-          newSongListDetail.trackIds.map(item => {
-            return ids.push(item.id)
-          })
-          getNetSongDetail(ids.join(',')).then(res => {
-            let newSongList = [...res.data]
-            newSongListDetail.songList.forEach((item, index) => {
-              Object.assign(item, newSongList[index])
-            })
           })
           setSongListDetail(newSongListDetail)
         })

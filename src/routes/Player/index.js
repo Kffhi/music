@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react'
 import className from 'classnames'
 import { connect } from 'dva'
+import { getNetSongDetail } from '../../services/netease'
 import Toast from '../../components/Toast'
 import MiniPlay from '../../components/miniPlay'
 import { format, shuffle } from '../../utils/format'
@@ -19,8 +20,12 @@ const Player = props => {
   const [isPlay, setIsPlay] = useState(false)
   const [offsetWidth, setOffsetWidth] = useState(0)
   const [playMode, setPlayMode] = useState(1)
-  const [playSong, setPlaySong] = useState([])
+  const [playSong, setPlaySong] = useState({})
   const currentIndex = player.currentIndex
+
+  useEffect((() => {
+    setPlaySong(player.playList[currentIndex])
+  }), [currentIndex, player.playList])
 
   const changeCurrentIndex = index => {
     dispatch({
@@ -31,9 +36,13 @@ const Player = props => {
     })
   }
 
-  useEffect((() => {
-    setPlaySong(player.playList[currentIndex])
-  }), [currentIndex, player.playList])
+  const getPlayUrl = async song => {
+    await getNetSongDetail(song.id).then(res => {
+      const newPlaySong = { ...song }
+      newPlaySong.url = res.data[0].url
+      setPlaySong(newPlaySong)
+    })
+  }
 
   const handleClickProgessBar = e => {
     e.stopPropagation()
@@ -64,12 +73,14 @@ const Player = props => {
 
   const handleChangePlayState = e => {
     e.stopPropagation()
-    if (isPlay) {
-      audioRef.current.pause()
-    } else {
-      audioRef.current.play()
+    if (playSong.url) {
+      if (isPlay) {
+        audioRef.current.pause()
+      } else {
+        audioRef.current.play()
+      }
+      setIsPlay(!isPlay)
     }
-    setIsPlay(!isPlay)
   }
 
   const handleChangeCurrentTime = () => {
@@ -84,7 +95,6 @@ const Player = props => {
   }
 
   const nextSong = e => {
-    console.log(' 下一首')
     e.stopPropagation()
     isFirstLoad.current = false
     if (playMode === 2) {
@@ -94,10 +104,10 @@ const Player = props => {
     } else {
       if (currentIndex < player.playList.length - 1) {
         changeCurrentIndex(currentIndex + 1)
-        setPlaySong(player.playList[currentIndex + 1])
+        getPlayUrl(player.playList[currentIndex + 1])
       } else {
         changeCurrentIndex(0)
-        setPlaySong(player.playList[0])
+        getPlayUrl(player.playList[0])
       }
     }
   }
@@ -112,10 +122,10 @@ const Player = props => {
     } else {
       if (currentIndex > 0) {
         changeCurrentIndex(currentIndex - 1)
-        setPlaySong(player.playList[currentIndex - 1])
+        getPlayUrl(player.playList[currentIndex - 1])
       } else {
         changeCurrentIndex(player.playList.length - 1)
-        setPlaySong(player.playList[player.playList.length - 1])
+        getPlayUrl(player.playList[player.playList.length - 1])
       }
     }
   }
@@ -124,7 +134,7 @@ const Player = props => {
   // 问题：第一次render初始化时也会调用
   // 解决方式：通过useRef避开
   useEffect(() => {
-    if (!isFirstLoad.current) {
+    if (!isFirstLoad.current && playSong.url) {
       setIsPlay(true)
       audioRef.current.play()
     }

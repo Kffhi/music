@@ -42,7 +42,6 @@ export const getNetSongList = (cat = '', limit = '21', before = '') => {
  * 接口地址 : /playlist/detail
  */
 export const getNetSongListDetail = id => {
-  console.log(id)
   const URL = `/api/netease//playlist/detail?id=${id}`
   return get(URL)
 }
