@@ -19,15 +19,21 @@ const Player = props => {
   const [isPlay, setIsPlay] = useState(false)
   const [offsetWidth, setOffsetWidth] = useState(0)
   const [playMode, setPlayMode] = useState(1)
-  const [currentIndex, setCurrentIndex] = useState([])
   const [playSong, setPlaySong] = useState([])
+  const currentIndex = player.currentIndex
+
+  const changeCurrentIndex = index => {
+    dispatch({
+      type: 'player/chageCurrentIndex',
+      payLoad: {
+        currentIndex: index
+      }
+    })
+  }
 
   useEffect((() => {
-    if (isFirstLoad.current) {
-      setCurrentIndex(player.currentIndex)
-      setPlaySong(player.playList[currentIndex])
-    }
-  }), [currentIndex, player.currentIndex, player.playList])
+    setPlaySong(player.playList[currentIndex])
+  }), [currentIndex, player.playList])
 
   const handleClickProgessBar = e => {
     e.stopPropagation()
@@ -78,6 +84,7 @@ const Player = props => {
   }
 
   const nextSong = e => {
+    console.log(' 下一首')
     e.stopPropagation()
     isFirstLoad.current = false
     if (playMode === 2) {
@@ -86,10 +93,10 @@ const Player = props => {
       audioRef.current.play()
     } else {
       if (currentIndex < player.playList.length - 1) {
-        setCurrentIndex(currentIndex + 1)
+        changeCurrentIndex(currentIndex + 1)
         setPlaySong(player.playList[currentIndex + 1])
       } else {
-        setCurrentIndex(0)
+        changeCurrentIndex(0)
         setPlaySong(player.playList[0])
       }
     }
@@ -104,10 +111,10 @@ const Player = props => {
       audioRef.current.play()
     } else {
       if (currentIndex > 0) {
-        setCurrentIndex(currentIndex - 1)
+        changeCurrentIndex(currentIndex - 1)
         setPlaySong(player.playList[currentIndex - 1])
       } else {
-        setCurrentIndex(player.playList.length - 1)
+        changeCurrentIndex(player.playList.length - 1)
         setPlaySong(player.playList[player.playList.length - 1])
       }
     }
