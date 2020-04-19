@@ -111,7 +111,7 @@ const SongListAll = props => {
   const renderSongList = () => {
     return (
       <div className={styles.songList}>
-        {JSON.stringify(songList) !== '[]' ? <SongList songList={songList} history={history} /> : <Loading />}
+        {JSON.stringify(songList) !== '[]' ? <SongList tab={tabSub} songList={songList} history={history} /> : <Loading />}
       </div>
     )
   }
