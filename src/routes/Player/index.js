@@ -14,6 +14,7 @@ const Player = props => {
     player
   } = props
   const audioRef = useRef()
+  const isChangeMode = useRef(false)
   const isFirstLoad = useRef(true)
   const [currentTime, setCurrentTime] = useState('0:00')
   const [showLyric, setShowLyric] = useState(false)
@@ -24,13 +25,13 @@ const Player = props => {
   const currentIndex = player.currentIndex
 
   useEffect((() => {
-    if (playMode !== 3) {
-      setPlaySong(player.playList[currentIndex])
+    if (!isChangeMode.current) {
+    setPlaySong(player.playList[currentIndex])
     }
-  }), [currentIndex, playMode, player.playList])
+  }), [currentIndex, player.playList])
 
   useEffect((() => {
-    if (player.playUrl.length !== 0 && player.showMini === false && isFirstLoad.current) {
+    if (player.playUrl.length !== 0 && player.showMini === false) {
       setIsPlay(true)
       audioRef.current.play()
     }
@@ -145,6 +146,7 @@ const Player = props => {
 
   const handleShowMini = () => {
     isFirstLoad.current = false
+    isChangeMode.current = false
     dispatch({
       type: 'player/changeShowMiniState',
     })
@@ -159,7 +161,6 @@ const Player = props => {
       audioRef.current.play()
     } else {
       if (playMode === 1) {
-        console.log('顺序')
         if (currentIndex < player.playList.length - 1) {
           changeCurrentIndex(currentIndex + 1)
           getPlayUrl(player.playList[currentIndex + 1])
@@ -168,8 +169,6 @@ const Player = props => {
           getPlayUrl(player.playList[0])
         }
       } else {
-        console.log('随机')
-        console.log(currentIndex, player.playList)
         if (currentIndex < player.playList.length - 1) {
           changeCurrentIndex(currentIndex + 1)
           getPlayUrl(player.playList[currentIndex + 1])
@@ -217,6 +216,7 @@ const Player = props => {
     // 1:顺序播放 2.单曲循环 3.随机播放
     // 数字表示当前状态，但是点击后进入下一状态，所以实际上playList应按下一状态的播放逻辑修改
     playMode === 3 ? setPlayMode(1) : setPlayMode(playMode + 1)
+    isChangeMode.current = true
     switch (playMode) {
       case 1:
         dispatch({

@@ -120,7 +120,7 @@ const SongListInfo = props => {
 
   return (
     <div className={styles.songListInfo}>
-      <Header history={history} title={'歌单详情'}></Header>
+      <Header tab={tabSub} history={history} title={'歌单详情'}></Header>
       {JSON.stringify(songListDetail) !== '{}' ?
         <Fragment>
           {renderDetail()}

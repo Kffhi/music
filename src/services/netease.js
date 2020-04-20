@@ -63,7 +63,7 @@ export const getNetSongListCategory = () => {
  * 接口地址 : /search/hot/detail
  */
 export const getNetHotSearch = () => {
-  return get('/mock/hotsearch.json')
+  return get('/api/netease/search/hot/detail')
 }
 
 // 搜索
@@ -77,8 +77,9 @@ export const getNetHotSearch = () => {
  * type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
  * 接口地址 : /search
  */
-export const getNetSearchResult = () => {
-  return get('/mock/searchresult.json')
+export const getNetSearchResult = keyword => {
+  const URL = `/api/netease/search?keywords=${keyword}`
+  return get(URL)
 }
 
 // 获取歌手详情
@@ -103,5 +104,17 @@ export const getNetSingerInfo = () => {
  */
 export const getNetSongDetail = ids => {
   const URL = `/api/netease/song/url?id=${ids}`
+  return get(URL)
+}
+
+// 获取歌曲详情
+/**
+ * http://localhost:8000/api/netease/song/detail?ids=551816010,65766,65533,65538
+ * 说明 : 调用此接口 , 传入音乐 id(支持多个 id, 用 , 隔开), 可获得歌曲详情(注意:歌曲封面现在需要通过专辑内容接口获取)
+ * 必选参数 : ids: 音乐 id, 如 ids=347230
+ * 接口地址 : /song/detail
+ */
+export const getSongDetail = ids => {
+  const URL = `/api/netease/song/detail?ids=${ids}`
   return get(URL)
 }

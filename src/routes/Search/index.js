@@ -1,37 +1,89 @@
 import React, { useState, Fragment, useEffect } from 'react'
-import { getNetHotSearch, getNetSearchResult } from '../../services/netease'
+import { getNetHotSearch, getNetSearchResult, getSongDetail } from '../../services/netease'
 import SongItem from '../../components/SongItem'
+import Loading from '../../components/Loading'
 import styles from './style.less'
 
 const Search = props => {
   const {
-    history
+    history,
+    match
   } = props
   const [isSearch, setIsSearch] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [hotSearch, setHotSearch] = useState([])
   const [searchResult, setSearchResult] = useState({})
+  const tab = match.params.tab
   const historySearch = ['樱花树下', '陈奕迅', 'Aimer', 'enough', 'leave me alone', '碧梨', 'white alience']
 
   /** 初始化执行 */
   useEffect(() => {
-    // 默认tab为网易音乐
-    getNetData()
-  }, [])
+    switch (tab) {
+      case 'NETEASE':
+        getNetData()
+        break
+      case 'TENCENT':
+        // getTencentData()
+        break
+      case 'XIAMI':
+        break
+      default:
+        return null
+    }
+  }, [tab])
 
   // 获取网易云数据
   const getNetData = () => {
-    getNetHotSearch().then(res => { setHotSearch(res.data) })
+    getNetHotSearch().then(res => {
+      const newHotSearch = res.data
+      newHotSearch.forEach((item, index) => {
+        item.id = index
+        item.title = item.searchWord
+        item.description = item.content
+        item.num = item.score
+      })
+      setHotSearch(newHotSearch)
+    })
   }
 
   const search = async () => {
     if (searchValue === '') {
       return null
     } else {
-      await getNetSearchResult().then(res => {
-        setSearchResult({ ...res.data })
-        setIsSearch(true)
-      })
+      switch (tab) {
+        case 'NETEASE':
+          let ids = []
+          let newResult = {}
+          await getNetSearchResult(searchValue).then(res => {
+            newResult = { ...res.result }
+            newResult.songs.forEach(item => {
+              ids.push(item.id)
+            })
+          })
+          await getSongDetail(ids.join(',')).then(res => {
+            let newSongList = [...res.songs]
+            newResult.songs.forEach((item, index) => {
+              Object.assign(item, newSongList[index])
+            })
+          })
+          newResult.songs.forEach(item => {
+            item.title = item.name
+            item.singer = item.artists[0].name
+            item.description = item.album.name
+            item.time = Number.parseInt((item.duration) / 1000)
+            item.picUrl = item.al.picUrl
+          })
+          setSearchResult(newResult)
+          setIsSearch(true)
+          break
+        case 'TENCENT':
+          // getTencentData()
+          break
+        case 'XIAMI':
+          break
+        default:
+          return null
+      }
     }
   }
 
@@ -53,10 +105,10 @@ const Search = props => {
       <Fragment>
         {JSON.stringify(searchResult) !== '{}' ?
           <div className={styles.resultWrapper}>
-            {JSON.stringify(searchResult.singer) !== '{}' ?
+            {searchResult.singer && JSON.stringify(searchResult.singer) !== '{}' ?
               <Fragment>
                 <div className={styles.titleText}>歌手</div>
-                <div className={styles.singerWrapper} onClick={()=>{history.push('/singerinfo')}}>
+                <div className={styles.singerWrapper} onClick={() => { history.push('/singerinfo') }}>
                   <img src={searchResult.singer.url} alt="" />
                   <div className={styles.singerName}>{searchResult.singer.name}</div>
                 </div>
@@ -70,9 +122,10 @@ const Search = props => {
               </div>
             </div>
             <div className={styles.songWrapper}>
-              {searchResult.song && searchResult.song.map((item, index) => (
-                <SongItem history={history} songListDetail={item} key={index} num={index + 1} />
-              ))}
+              {searchResult.songs && searchResult.songs.map((item, index) => (
+                <SongItem history={history} playList={searchResult.songs} songDetail={item} key={index} num={index + 1} tab={tab} />
+              )
+              )}
             </div>
           </div>
           : null}
@@ -119,23 +172,27 @@ const Search = props => {
   const renderHot = () => {
     return (
       <div className={styles.hotWrapper}>
-        <div className={styles.text}>热搜榜</div>
-        <div className={styles.itemWrapper}>
-          {hotSearch && hotSearch.map((item, index) => (
-            <div className={styles.hotItem} key={index}>
-              <div className={styles.num} style={index < 3 ? { "color": "#ed4014" } : null}>{index + 1}</div>
-              <div className={styles.container}>
-                <div className={styles.title}>
-                  {item.title}
-                  <span className={styles.hotNum}>{item.num}</span>
-                </div>
-                <div className={styles.description}>
-                  {item.description}
+        <div className={styles.text}>
+          {tab === 'NETEASE' ? '网易' : tab === 'TENCENT' ? 'QQ音乐' : '虾米'}热搜榜
+          </div>
+        {hotSearch ?
+          <div className={styles.itemWrapper}>
+            {hotSearch && hotSearch.map((item, index) => (
+              <div className={styles.hotItem} key={index}>
+                <div className={styles.num} style={index < 3 ? { "color": "#ed4014" } : null}>{index + 1}</div>
+                <div className={styles.container}>
+                  <div className={styles.title}>
+                    {item.title}
+                    <span className={styles.hotNum}>{item.num}</span>
+                  </div>
+                  <div className={styles.description}>
+                    {item.description}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          : <Loading />}
       </div>
     )
   }

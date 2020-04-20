@@ -259,7 +259,7 @@ const Home = props => {
         <div className={styles.name}>
           <img src="https://kffhi.com/public/images/end/name.png" alt="" />
         </div>
-        <div className={styles.search} onClick={() => { history.push('/search') }}>
+        <div className={styles.search} onClick={() => { history.push(`/search/${tab}`) }}>
           <i className="iconfont icon-search" />
         </div>
       </div>

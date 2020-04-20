@@ -35,12 +35,6 @@ const SongItem = props => {
           }
         })
         dispatch({
-          type: 'player/chageCurrentIndex',
-          payLoad: {
-            currentIndex: num - 1
-          }
-        })
-        dispatch({
           type: 'player/changePlayList',
           payLoad: {
             playList: playList

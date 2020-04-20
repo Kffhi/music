@@ -22,7 +22,7 @@ const menuGlobal = [
   {
     id: 'search',
     name: '搜索页',
-    path: '/search',
+    path: '/search/:tab',
     component: () => import('../routes/Search/index'),
   },
   {

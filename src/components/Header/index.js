@@ -3,7 +3,7 @@ import styles from './style.less'
 
 const Header = props => {
 
-  const { history, title } = props
+  const { history, title, tab = 'NETEASE' } = props
 
   return (
     <Fragment>
@@ -12,7 +12,7 @@ const Header = props => {
           <i className="iconfont icon-app_back" />
         </div>
         <div className={styles.title}>{title}</div>
-        <div className={styles.search} onClick={() => { history.push('/search') }}>
+        <div className={styles.search} onClick={() => { history.push(`/search/${tab}`) }}>
           <i className="iconfont icon-search" style={{ 'fontSize': '2.2rem' }} />
         </div>
       </div>

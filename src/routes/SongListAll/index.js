@@ -118,7 +118,7 @@ const SongListAll = props => {
 
   return (
     <div className={styles.songListAll}>
-      <Header title={'歌单广场'} history={history} />
+      <Header title={'歌单广场'} tab={tabSub} history={history} />
       <div className={styles.tabs}>
         <Tabs
           tabs={tabs}
