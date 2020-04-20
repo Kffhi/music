@@ -30,7 +30,7 @@ const Player = props => {
   }), [currentIndex, playMode, player.playList])
 
   useEffect((() => {
-    if (player.playUrl.length !== 0) {
+    if (player.playUrl.length !== 0 && player.showMini === false && isFirstLoad.current) {
       setIsPlay(true)
       audioRef.current.play()
     }
@@ -144,6 +144,7 @@ const Player = props => {
   }
 
   const handleShowMini = () => {
+    isFirstLoad.current = false
     dispatch({
       type: 'player/changeShowMiniState',
     })
