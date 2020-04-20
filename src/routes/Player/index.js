@@ -34,7 +34,7 @@ const Player = props => {
       setIsPlay(true)
       audioRef.current.play()
     }
-  }), [player.playUrl.length, player.showMini])
+  }), [player.playUrl, player.showMini])
 
   // 期望：当playSong改变调用播放方法
   // 问题：第一次render初始化时也会调用
@@ -57,40 +57,71 @@ const Player = props => {
 
   const getPlayUrl = async song => {
     await getNetSongDetail(song.id).then(res => {
-      dispatch({
-        type: 'player/changePlayUrl',
-        payLoad: {
-          playUrl: res.data[0].url
-        }
-      })
+      if (res.data[0].url === null) {
+        dispatch({
+          type: 'player/changePlayUrl',
+          payLoad: {
+            playUrl: ''
+          }
+        })
+        setIsPlay(false)
+        return (Toast.info('啊哦，这首歌拿不到播放歌曲地址(；′⌒`)'))
+      } else {
+        dispatch({
+          type: 'player/changePlayUrl',
+          payLoad: {
+            playUrl: res.data[0].url
+          }
+        })
+      }
     })
   }
 
   const handleClickProgessBar = e => {
     e.stopPropagation()
-    setOffsetWidth(e.nativeEvent.offsetX / 10)
-    audioRef.current.currentTime = (e.nativeEvent.offsetX / 10) / 25 * playSong.time
-    audioRef.current.play()
-    setIsPlay(true)
+    if (player.playUrl.length === 0) {
+      setIsPlay(false)
+      return (Toast.info('没有播放地址'))
+    } else {
+      setOffsetWidth(e.nativeEvent.offsetX / 10)
+      audioRef.current.currentTime = (e.nativeEvent.offsetX / 10) / 25 * playSong.time
+      audioRef.current.play()
+      setIsPlay(true)
+    }
   }
 
   const handleDotTouchStart = e => {
-    e.stopPropagation()
-    audioRef.current.pause()
+    if (player.playUrl.length === 0) {
+      setIsPlay(false)
+      return (Toast.info('没有播放地址'))
+    } else {
+      e.stopPropagation()
+      audioRef.current.pause()
+    }
   }
 
   const handleDotTouchMove = e => {
-    e.stopPropagation()
-    let touchOffset = e.nativeEvent.touches[0].pageX / 10 - 6.1 // 6.1为进度条为0的位置dotWrapper的e.nativeEvent.touches[0].pageX值
-    touchOffset = touchOffset > 25 ? 25 : touchOffset
-    setOffsetWidth(touchOffset)
-    audioRef.current.currentTime = touchOffset / 25 * playSong.time
+    if (player.playUrl.length === 0) {
+      setIsPlay(false)
+      return (Toast.info('没有播放地址'))
+    } else {
+      e.stopPropagation()
+      let touchOffset = e.nativeEvent.touches[0].pageX / 10 - 6.1 // 6.1为进度条为0的位置dotWrapper的e.nativeEvent.touches[0].pageX值
+      touchOffset = touchOffset > 25 ? 25 : touchOffset
+      setOffsetWidth(touchOffset)
+      audioRef.current.currentTime = touchOffset / 25 * playSong.time
+    }
   }
 
   const handleDotTouchEnd = e => {
-    e.stopPropagation()
-    audioRef.current.play()
-    setIsPlay(true)
+    if (player.playUrl.length === 0) {
+      setIsPlay(false)
+      return (Toast.info('没有播放地址'))
+    } else {
+      e.stopPropagation()
+      audioRef.current.play()
+      setIsPlay(true)
+    }
   }
 
   const handleChangePlayState = e => {
@@ -103,7 +134,7 @@ const Player = props => {
       }
       setIsPlay(!isPlay)
     } else {
-      Toast.info('播放列表为空')
+      Toast.info('没有播放地址')
     }
   }
 
@@ -126,7 +157,8 @@ const Player = props => {
       setIsPlay(true)
       audioRef.current.play()
     } else {
-      if (playMode === 2) {
+      if (playMode === 1) {
+        console.log('顺序')
         if (currentIndex < player.playList.length - 1) {
           changeCurrentIndex(currentIndex + 1)
           getPlayUrl(player.playList[currentIndex + 1])
@@ -135,6 +167,8 @@ const Player = props => {
           getPlayUrl(player.playList[0])
         }
       } else {
+        console.log('随机')
+        console.log(currentIndex, player.playList)
         if (currentIndex < player.playList.length - 1) {
           changeCurrentIndex(currentIndex + 1)
           getPlayUrl(player.playList[currentIndex + 1])
@@ -156,7 +190,7 @@ const Player = props => {
       setIsPlay(true)
       audioRef.current.play()
     } else {
-      if (playMode === 2) {
+      if (playMode === 1) {
         if (currentIndex > 0) {
           changeCurrentIndex(currentIndex - 1)
           getPlayUrl(player.playList[currentIndex - 1])
