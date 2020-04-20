@@ -6,7 +6,8 @@ export default {
     showMini: true,
     playList: [],
     sequenceList: [],
-    currentIndex: 0
+    currentIndex: 0,
+    playUrl: ''
   },
 
   subscriptions: {
@@ -25,7 +26,7 @@ export default {
         showMini: !showMini,
       }
     },
-    chageCurrentIndex(state, action){
+    chageCurrentIndex(state, action) {
       return {
         ...state,
         currentIndex: action.payLoad.currentIndex
@@ -35,6 +36,12 @@ export default {
       return {
         ...state,
         playList: action.payLoad.playList
+      }
+    },
+    changePlayUrl(state, action) {
+      return {
+        ...state,
+        playUrl: action.payLoad.playUrl
       }
     },
     changeSequenceList(state, action) {

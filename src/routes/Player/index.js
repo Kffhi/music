@@ -24,8 +24,27 @@ const Player = props => {
   const currentIndex = player.currentIndex
 
   useEffect((() => {
-    setPlaySong(player.playList[currentIndex])
-  }), [currentIndex, player.playList])
+    if (playMode !== 3) {
+      setPlaySong(player.playList[currentIndex])
+    }
+  }), [currentIndex, playMode, player.playList])
+
+  useEffect((() => {
+    if (player.playUrl.length !== 0) {
+      setIsPlay(true)
+      audioRef.current.play()
+    }
+  }), [player.playUrl.length, player.showMini])
+
+  // 期望：当playSong改变调用播放方法
+  // 问题：第一次render初始化时也会调用
+  // 解决方式：通过useRef避开
+  // useEffect(() => {
+  //   if (!isFirstLoad.current && player.playUrl.length !== 0) {
+  //     setIsPlay(true)
+  //     audioRef.current.play()
+  //   }
+  // }, [playSong, player.playUrl.length])
 
   const changeCurrentIndex = index => {
     dispatch({
@@ -38,9 +57,12 @@ const Player = props => {
 
   const getPlayUrl = async song => {
     await getNetSongDetail(song.id).then(res => {
-      const newPlaySong = { ...song }
-      newPlaySong.url = res.data[0].url
-      setPlaySong(newPlaySong)
+      dispatch({
+        type: 'player/changePlayUrl',
+        payLoad: {
+          playUrl: res.data[0].url
+        }
+      })
     })
   }
 
@@ -73,13 +95,15 @@ const Player = props => {
 
   const handleChangePlayState = e => {
     e.stopPropagation()
-    if (playSong.url) {
+    if (player.playUrl.length !== 0) {
       if (isPlay) {
         audioRef.current.pause()
       } else {
         audioRef.current.play()
       }
       setIsPlay(!isPlay)
+    } else {
+      Toast.info('播放列表为空')
     }
   }
 
@@ -102,12 +126,24 @@ const Player = props => {
       setIsPlay(true)
       audioRef.current.play()
     } else {
-      if (currentIndex < player.playList.length - 1) {
-        changeCurrentIndex(currentIndex + 1)
-        getPlayUrl(player.playList[currentIndex + 1])
+      if (playMode === 2) {
+        if (currentIndex < player.playList.length - 1) {
+          changeCurrentIndex(currentIndex + 1)
+          getPlayUrl(player.playList[currentIndex + 1])
+        } else {
+          changeCurrentIndex(0)
+          getPlayUrl(player.playList[0])
+        }
       } else {
-        changeCurrentIndex(0)
-        getPlayUrl(player.playList[0])
+        if (currentIndex < player.playList.length - 1) {
+          changeCurrentIndex(currentIndex + 1)
+          getPlayUrl(player.playList[currentIndex + 1])
+          setPlaySong(player.playList[currentIndex + 1])
+        } else {
+          changeCurrentIndex(0)
+          getPlayUrl(player.playList[0])
+          setPlaySong(player.playList[0])
+        }
       }
     }
   }
@@ -120,25 +156,27 @@ const Player = props => {
       setIsPlay(true)
       audioRef.current.play()
     } else {
-      if (currentIndex > 0) {
-        changeCurrentIndex(currentIndex - 1)
-        getPlayUrl(player.playList[currentIndex - 1])
+      if (playMode === 2) {
+        if (currentIndex > 0) {
+          changeCurrentIndex(currentIndex - 1)
+          getPlayUrl(player.playList[currentIndex - 1])
+        } else {
+          changeCurrentIndex(player.playList.length - 1)
+          getPlayUrl(player.playList[player.playList.length - 1])
+        }
       } else {
-        changeCurrentIndex(player.playList.length - 1)
-        getPlayUrl(player.playList[player.playList.length - 1])
+        if (currentIndex > 0) {
+          changeCurrentIndex(currentIndex - 1)
+          getPlayUrl(player.playList[currentIndex - 1])
+          setPlaySong(player.playList[currentIndex - 1])
+        } else {
+          changeCurrentIndex(player.playList.length - 1)
+          getPlayUrl(player.playList[player.playList.length - 1])
+          setPlaySong(player.playList[player.playList.length - 1])
+        }
       }
     }
   }
-
-  // 期望：当playSong改变调用播放方法
-  // 问题：第一次render初始化时也会调用
-  // 解决方式：通过useRef避开
-  useEffect(() => {
-    if (!isFirstLoad.current && playSong.url) {
-      setIsPlay(true)
-      audioRef.current.play()
-    }
-  }, [playSong])
 
   const handleChangePlayMode = async () => {
     // 1:顺序播放 2.单曲循环 3.随机播放
@@ -146,6 +184,12 @@ const Player = props => {
     playMode === 3 ? setPlayMode(1) : setPlayMode(playMode + 1)
     switch (playMode) {
       case 1:
+        dispatch({
+          type: 'player/chageCurrentIndex',
+          payLoad: {
+            currentIndex: 0
+          }
+        })
         await dispatch({
           type: 'player/changePlayList',
           payLoad: {
@@ -280,7 +324,7 @@ const Player = props => {
 
   const renderAudio = () => {
     return (
-      <audio src={playSong.url} ref={audioRef} onTimeUpdate={() => { handleChangeCurrentTime() }} onEnded={e => { nextSong(e) }}></audio>
+      <audio src={player.playUrl} ref={audioRef} onTimeUpdate={() => { handleChangeCurrentTime() }} onEnded={e => { nextSong(e) }}></audio>
     )
   }
 
@@ -305,7 +349,7 @@ const Player = props => {
           </div>
         </div>
       }
-      {playSong ? renderAudio() : null}
+      {player.playUrl.length !== 0 ? renderAudio() : null}
     </Fragment>
   )
 }

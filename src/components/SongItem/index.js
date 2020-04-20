@@ -18,13 +18,21 @@ const SongItem = props => {
     })
     switch (tab) {
       case 'NETEASE':
-        const newPlayList = [...playList]
+        let newPlayUrl = ''
         await getNetSongDetail(songDetail.id).then(res => {
-          newPlayList.forEach(item => {
-            if (item.id === songDetail.id) {
-              item.url = res.data[0].url
-            }
-          })
+          newPlayUrl = res.data[0].url
+        })
+        dispatch({
+          type: 'player/changePlayUrl',
+          payLoad: {
+            playUrl: newPlayUrl
+          }
+        })
+        dispatch({
+          type: 'player/chageCurrentIndex',
+          payLoad: {
+            currentIndex: num - 1
+          }
         })
         dispatch({
           type: 'player/chageCurrentIndex',
@@ -35,13 +43,13 @@ const SongItem = props => {
         dispatch({
           type: 'player/changePlayList',
           payLoad: {
-            playList: newPlayList
+            playList: playList
           }
         })
         dispatch({
           type: 'player/changeSequenceList',
           payLoad: {
-            sequenceList: newPlayList
+            sequenceList: playList
           }
         })
         break
