@@ -109,12 +109,24 @@ export const getNetSongDetail = ids => {
 
 // 获取歌曲详情
 /**
- * http://localhost:8000/api/netease/song/detail?ids=551816010,65766,65533,65538
+ * http://www.kffhi.com/api/netease/song/detail?ids=551816010,65766,65533,65538
  * 说明 : 调用此接口 , 传入音乐 id(支持多个 id, 用 , 隔开), 可获得歌曲详情(注意:歌曲封面现在需要通过专辑内容接口获取)
  * 必选参数 : ids: 音乐 id, 如 ids=347230
  * 接口地址 : /song/detail
  */
-export const getSongDetail = ids => {
+export const getNetSongDetailData = ids => {
   const URL = `/api/netease/song/detail?ids=${ids}`
+  return get(URL)
+}
+
+// 获取歌词
+/**
+ * http://www.kffhi.com/api/netease/lyric?id=386538
+ * 说明 : 调用此接口 , 传入音乐 id 可获得对应音乐的歌词 ( 不需要登录 )
+ * 必选参数 : id: 音乐 id
+ * 接口地址 : /lyric
+ */
+export const getNetSongLyric = id => {
+  const URL = `/api/netease/lyric?id=${id}`
   return get(URL)
 }

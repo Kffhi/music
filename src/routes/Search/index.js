@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react'
-import { getNetHotSearch, getNetSearchResult, getSongDetail } from '../../services/netease'
+import { getNetHotSearch, getNetSearchResult, getNetSongDetailData } from '../../services/netease'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
 import styles from './style.less'
@@ -60,7 +60,7 @@ const Search = props => {
               ids.push(item.id)
             })
           })
-          await getSongDetail(ids.join(',')).then(res => {
+          await getNetSongDetailData(ids.join(',')).then(res => {
             let newSongList = [...res.songs]
             newResult.songs.forEach((item, index) => {
               Object.assign(item, newSongList[index])
