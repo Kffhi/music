@@ -1,7 +1,8 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react'
 import className from 'classnames'
+import Lyric from 'lyric-parser'
 import { connect } from 'dva'
-import { getNetSongDetail } from '../../services/netease'
+import { getNetSongDetail, getNetSongLyric } from '../../services/netease'
 import Toast from '../../components/Toast'
 import MiniPlay from '../../components/miniPlay'
 import { format, shuffle } from '../../utils/format'
@@ -17,16 +18,18 @@ const Player = props => {
   const isChangeMode = useRef(false)
   const isFirstLoad = useRef(true)
   const [currentTime, setCurrentTime] = useState('0:00')
-  const [showLyric, setShowLyric] = useState(false)
+  const [showLyric, setShowLyric] = useState(true)
   const [isPlay, setIsPlay] = useState(false)
   const [offsetWidth, setOffsetWidth] = useState(0)
   const [playMode, setPlayMode] = useState(1)
   const [playSong, setPlaySong] = useState({})
+  const [lyric, setLyric] = useState({})
+  const [currentLyricNum, setCurrentLyrucNum] = useState(0)
   const currentIndex = player.currentIndex
 
   useEffect((() => {
     if (!isChangeMode.current) {
-    setPlaySong(player.playList[currentIndex])
+      setPlaySong(player.playList[currentIndex])
     }
   }), [currentIndex, player.playList])
 
@@ -36,6 +39,16 @@ const Player = props => {
       audioRef.current.play()
     }
   }), [player.playUrl, player.showMini])
+
+  useEffect((() => {
+    if (playSong && JSON.stringify(playSong) !== '{}') {
+      getNetSongLyric(playSong.id).then(res => {
+        let newLyric = new Lyric(res.lrc.lyric)
+        console.log(newLyric)
+        setLyric(newLyric)
+      })
+    }
+  }), [playSong])
 
   // 期望：当playSong改变调用播放方法
   // 问题：第一次render初始化时也会调用
@@ -282,11 +295,19 @@ const Player = props => {
     return (
       <div className={styles.picAndLyricWrapper}>
         {showLyric ?
-          <div className={styles.lyricWrapeer}></div>
+          <div className={styles.lyricWrapeer} onClick={() => {
+            setShowLyric(false)
+          }}>
+            <div className={styles.linWrapper}>
+              {lyric.lines !== undefined && lyric.lines.map((item, index) => (
+                <div key={index} className={className(styles.lyricLine, { [styles.currentLine]: currentLyricNum === index })}>{item.txt}</div>
+              ))}
+            </div>
+          </div>
           :
           <div className={className(styles.imgWrapper, {
             [styles.imgWrapperPlaying]: isPlay
-          })}>
+          })} onClick={() => { setShowLyric(true) }}>
             <img src={playSong ? playSong.picUrl : 'https://images.haiwainet.cn/20160428/1461790811999686.jpg'} alt="" />
           </div>
         }
