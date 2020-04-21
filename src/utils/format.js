@@ -27,3 +27,16 @@ export const shuffle = arr => {
   }
   return arr
 }
+
+/**
+ * 根据 pageBean 判断是否存在下一页
+ * @param {Object} pageBean 分页结构
+ */
+export const hasNextPage = pageBean => {
+  const { pageNo, pageSize, totalCount } = pageBean
+
+  return (
+    pageNo <
+    Math.floor(totalCount / pageSize) + (totalCount % pageSize === 0 ? 0 : 1)
+  )
+}

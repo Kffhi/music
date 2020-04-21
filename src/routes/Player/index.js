@@ -15,6 +15,7 @@ const Player = props => {
     player
   } = props
   const audioRef = useRef()
+  // const linWrapperRef = useRef()
   const isChangeMode = useRef(false)
   const isFirstLoad = useRef(true)
   const [currentTime, setCurrentTime] = useState('0:00')
@@ -37,28 +38,23 @@ const Player = props => {
     if (player.playUrl.length !== 0 && player.showMini === false) {
       setIsPlay(true)
       audioRef.current.play()
+      // lyric.play()
     }
   }), [player.playUrl, player.showMini])
 
   useEffect((() => {
     if (playSong && JSON.stringify(playSong) !== '{}') {
       getNetSongLyric(playSong.id).then(res => {
-        let newLyric = new Lyric(res.lrc.lyric)
+        let newLyric = new Lyric(res.lrc.lyric, changeCurrentLyricNum)
         console.log(newLyric)
         setLyric(newLyric)
       })
     }
   }), [playSong])
 
-  // 期望：当playSong改变调用播放方法
-  // 问题：第一次render初始化时也会调用
-  // 解决方式：通过useRef避开
-  // useEffect(() => {
-  //   if (!isFirstLoad.current && player.playUrl.length !== 0) {
-  //     setIsPlay(true)
-  //     audioRef.current.play()
-  //   }
-  // }, [playSong, player.playUrl.length])
+  const changeCurrentLyricNum = ({ lineNum, tex }) => {
+    console.log('lineNum', lineNum)
+  }
 
   const changeCurrentIndex = index => {
     dispatch({
