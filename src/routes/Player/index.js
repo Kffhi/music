@@ -295,6 +295,8 @@ const Player = props => {
             setShowLyric(false)
           }}>
             <div className={styles.linWrapper}>
+              <div className={styles.lyricLine}>当前暂不支持歌词滚动哦</div>
+              <div className={styles.lyricLine}>请对开发者的勤劳充满期待吧~</div>
               {lyric.lines !== undefined && lyric.lines.map((item, index) => (
                 <div key={index} className={className(styles.lyricLine, { [styles.currentLine]: currentLyricNum === index })}>{item.txt}</div>
               ))}
