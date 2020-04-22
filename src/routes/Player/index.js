@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect, useRef } from 'react'
 import className from 'classnames'
 import Lyric from 'lyric-parser'
 import { connect } from 'dva'
+import netLyric from '../../utils/lyric'
 import { getNetSongDetail, getNetSongLyric } from '../../services/netease'
 import Toast from '../../components/Toast'
 import MiniPlay from '../../components/miniPlay'
@@ -45,15 +46,16 @@ const Player = props => {
   useEffect((() => {
     if (playSong && JSON.stringify(playSong) !== '{}') {
       getNetSongLyric(playSong.id).then(res => {
-        let newLyric = new Lyric(res.lrc.lyric, changeCurrentLyricNum)
-        console.log(newLyric)
-        setLyric(newLyric)
+        console.log(JSON.stringify(res.lrc.lyric))
+        let newLyricObj = new netLyric(res.lrc.lyric, changeCurrentLyricNum)
+        // newLyricObj.play()
+        setLyric(newLyricObj)
       })
     }
   }), [playSong])
 
   const changeCurrentLyricNum = ({ lineNum, tex }) => {
-    console.log('lineNum', lineNum)
+    // setCurrentLyrucNum(lineNum)
   }
 
   const changeCurrentIndex = index => {
@@ -295,7 +297,7 @@ const Player = props => {
             setShowLyric(false)
           }}>
             <div className={styles.linWrapper}>
-              <div className={styles.lyricLine}>当前暂不支持歌词滚动哦</div>
+              <div className={styles.lyricLine}>当前暂不支持歌词自动滚动哦</div>
               <div className={styles.lyricLine}>请对开发者的勤劳充满期待吧~</div>
               {lyric.lines !== undefined && lyric.lines.map((item, index) => (
                 <div key={index} className={className(styles.lyricLine, { [styles.currentLine]: currentLyricNum === index })}>{item.txt}</div>
