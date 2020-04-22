@@ -20,7 +20,7 @@ const Player = props => {
   const isChangeMode = useRef(false)
   const isFirstLoad = useRef(true)
   const [currentTime, setCurrentTime] = useState('0:00')
-  const [showLyric, setShowLyric] = useState(true)
+  const [showLyric, setShowLyric] = useState(false)
   const [isPlay, setIsPlay] = useState(false)
   const [offsetWidth, setOffsetWidth] = useState(0)
   const [playMode, setPlayMode] = useState(1)
@@ -46,10 +46,13 @@ const Player = props => {
   useEffect((() => {
     if (playSong && JSON.stringify(playSong) !== '{}') {
       getNetSongLyric(playSong.id).then(res => {
-        console.log(JSON.stringify(res.lrc.lyric))
-        let newLyricObj = new netLyric(res.lrc.lyric, changeCurrentLyricNum)
-        // newLyricObj.play()
-        setLyric(newLyricObj)
+        if (res.nolyric || !res.lrc.lyric) {
+          setLyric({})
+        } else {
+          let newLyricObj = new netLyric(res.lrc.lyric, changeCurrentLyricNum)
+          // newLyricObj.play()
+          setLyric(newLyricObj)
+        }
       })
     }
   }), [playSong])
@@ -296,19 +299,27 @@ const Player = props => {
           <div className={styles.lyricWrapeer} onClick={() => {
             setShowLyric(false)
           }}>
-            <div className={styles.linWrapper}>
-              <div className={styles.lyricLine}>当前暂不支持歌词自动滚动哦</div>
-              <div className={styles.lyricLine}>请对开发者的勤劳充满期待吧~</div>
-              {lyric.lines !== undefined && lyric.lines.map((item, index) => (
-                <div key={index} className={className(styles.lyricLine, { [styles.currentLine]: currentLyricNum === index })}>{item.txt}</div>
-              ))}
+            <div className={className(styles.linWrapper, { [styles.noLyric]: JSON.stringify(lyric) === '{}' })}>
+              {JSON.stringify(lyric) === '{}' ?
+                <div className={styles.lyricLine}>当前歌曲暂无歌词</div>
+                :
+                <Fragment>
+                  <div className={styles.lyricLine}>当前暂不支持歌词自动滚动哦</div>
+                  <div className={styles.lyricLine}>请对开发者的勤劳充满期待吧~</div>
+                  {lyric.lines !== undefined && lyric.lines.map((item, index) => (
+                    <div key={index} className={className(styles.lyricLine, { [styles.currentLine]: currentLyricNum === index })}>{item.txt}</div>
+                  ))}
+                </Fragment>
+              }
             </div>
           </div>
           :
-          <div className={className(styles.imgWrapper, {
-            [styles.imgWrapperPlaying]: isPlay
-          })} onClick={() => { setShowLyric(true) }}>
-            <img src={playSong ? playSong.picUrl : 'https://images.haiwainet.cn/20160428/1461790811999686.jpg'} alt="" />
+          <div className={styles.loop}>
+            <div className={className(styles.imgWrapper, {
+              [styles.imgWrapperPlaying]: isPlay
+            })} onClick={() => { setShowLyric(true) }}>
+              <img src={playSong ? playSong.picUrl : 'https://images.haiwainet.cn/20160428/1461790811999686.jpg'} alt="" />
+            </div>
           </div>
         }
       </div>
@@ -396,7 +407,9 @@ const Player = props => {
         /> :
         <div className={styles.player}>
           <div className={styles.backgroundWrapper}>
-            <img src={playSong ? playSong.picUrl : 'https://www.kffhi.com/public/images/portfolio/4.png'} alt="" />
+            <div className={styles.imgWrapper}>
+              <img src={playSong ? playSong.picUrl : 'https://www.kffhi.com/public/images/portfolio/4.png'} alt="" />
+            </div>
           </div>
           <div className={styles.containerWrapper}>
             {renderHeader()}
