@@ -28,6 +28,11 @@ const Player = props => {
   const [lyric, setLyric] = useState({})
   const [currentLyricNum, setCurrentLyrucNum] = useState(0)
   const currentIndex = player.currentIndex
+  const platform = player.platform
+  let singerId = ''
+  if (playSong && JSON.stringify(playSong) !== '{}') {
+    singerId = playSong.ar[0].id
+  }
 
   useEffect((() => {
     if (!isChangeMode.current) {
@@ -278,7 +283,7 @@ const Player = props => {
             <i className="iconfont icon-arrow-down" />
           </div>
           {JSON.stringify(playSong) !== '{}' ?
-            <div className={styles.text} onClick={() => { history.push('/singerinfo'); handleShowMini() }}>
+            <div className={styles.text} onClick={() => { history.push(`/singerinfo/${platform}/${singerId}`); handleShowMini() }}>
               <div className={styles.title}>{playSong ? playSong.name : '发现新音乐'}</div>
               <div className={styles.singer}>
                 {playSong ? playSong.singer : '歌手'}
@@ -424,4 +429,4 @@ const Player = props => {
 }
 export default connect(({ player }) => ({
   player
-}))(Player);
+}))(Player)

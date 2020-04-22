@@ -7,7 +7,8 @@ export default {
     playList: [],
     sequenceList: [],
     currentIndex: 0,
-    playUrl: ''
+    playUrl: '',
+    platform: 'NETEASE',
   },
 
   subscriptions: {
@@ -53,6 +54,13 @@ export default {
       return {
         ...state,
         sequenceList: action.payLoad.sequenceList
+      }
+    },
+    changePlatform(state, action) {
+      console.log('changePlatform')
+      return {
+        ...state,
+        platform: action.payLoad.platform
       }
     }
   },

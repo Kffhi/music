@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'dva'
 import { getNetSingerInfo } from '../../services/netease'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
@@ -6,18 +7,45 @@ import styles from './style.less'
 
 const SingerInfo = props => {
   const {
-    history
+    history,
+    player,
+    match
   } = props
   const [singerInfo, setSingerInfo] = useState({})
+  const platform = player.platform
+  const singerId = match.params.singerId
+  console.log(singerId, platform)
 
   /** 初始化执行 */
   useEffect(() => {
     // 获取歌单详情
-    getsingerInfo()
-  }, [])
+    switch (platform) {
+      case 'MY_MUSIC':
+        break
+      case 'NETEASE':
+        getNetData(singerId)
+        break
+      case 'TENCENT':
+        // getTencentData()
+        break
+      case 'XIAMI':
+        // getXiamiData()
+        break
+      default:
+        return null
+    }
+  }, [platform, singerId])
 
-  const getsingerInfo = () => {
-    getNetSingerInfo().then(res => { setSingerInfo(res.data) })
+  const getNetData = singerId => {
+    getNetSingerInfo(singerId).then(res => {
+      const newSingerInfo = res.artist
+      console.log(newSingerInfo)
+      newSingerInfo.description = newSingerInfo.briefDesc
+      newSingerInfo.url = newSingerInfo.picUrl
+      newSingerInfo.songList = res.hotSongs
+      console.log(newSingerInfo)
+      setSingerInfo(newSingerInfo)
+    })
   }
 
   const renderDetail = () => {
@@ -84,4 +112,6 @@ const SingerInfo = props => {
     </div>
   )
 }
-export default SingerInfo
+export default connect(({ player }) => ({
+  player
+}))(SingerInfo)

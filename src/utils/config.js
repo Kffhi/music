@@ -28,7 +28,7 @@ const menuGlobal = [
   {
     id: 'singerinfo',
     name: '歌手详情',
-    path: '/singerinfo',
+    path: '/singerinfo/:platform/:singerId',
     component: () => import('../routes/SingerInfo/index'),
   },
   {

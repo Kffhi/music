@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { Tabs, Carousel } from 'antd-mobile'
+import { connect } from 'dva'
 import { getNetBanner, getNetSongList } from '../../services/netease'
 import { getTencentBanner, getTencentSongList } from '../../services/tencent'
 import { getXiamiBanner, getXiamiSongList } from '../../services/xiami'
@@ -11,10 +12,11 @@ import styles from './style.less'
 // class Home extends Component {
 
 const Home = props => {
-  const { history } = props
+  const { history, player, dispatch } = props
   const [banner, setBanner] = useState([])
   const [songList, setSongList] = useState([])
   const [tab, setTab] = useState('NETEASE')
+  const platform = player.platform
   const tabs = [
     { title: '我的', sub: 'MY_MUSIC' },
     { title: '网易云音乐', sub: 'NETEASE' },
@@ -145,7 +147,13 @@ const Home = props => {
     getXiamiSongList().then(res => { setSongList(res.data) })
   }
 
-  const changeData = (tab) => {
+  const changeData = tab => {
+    dispatch({
+      type: 'player/changePlatform',
+      payLoad: {
+        platform: tab
+      }
+    })
     switch (tab.sub) {
       case 'MY_MUSIC':
         console.log('来到了我的音乐', tab.sub)
@@ -276,4 +284,6 @@ const Home = props => {
   // }
 }
 
-export default Home;
+export default connect(({ player }) => ({
+  player
+}))(Home)

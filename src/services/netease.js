@@ -35,14 +35,14 @@ export const getNetSongList = (cat = '', limit = '21', before = '') => {
 
 // 获取歌单详情
 /**
- * http://www.kffhi.com/api/netease//playlist/detail?id=24381616
+ * http://www.kffhi.com/api/netease/playlist/detail?id=24381616
  * 歌单能看到歌单名字 , 但看不到具体歌单内容 , 调用此接口 , 传入歌单 id, 可 以获取对应歌单内的所有的音乐，但是返回的trackIds是完整的，tracks 则是不完整的，可拿全部 trackIds 请求一次 song/detail 接口获取所有歌曲的详情 (https://github.com/Binaryify/NeteaseCloudMusicApi/issues/452)
  * 必选参数 : id : 歌单 id
  * 可选参数 : s : 歌单最近的 s 个收藏者
  * 接口地址 : /playlist/detail
  */
 export const getNetSongListDetail = id => {
-  const URL = `/api/netease//playlist/detail?id=${id}`
+  const URL = `/api/netease/playlist/detail?id=${id}`
   return get(URL)
 }
 
@@ -84,13 +84,14 @@ export const getNetSearchResult = keyword => {
 
 // 获取歌手详情
 /**
- * http://www.kffhi.com/api/netease/artists?id=6452
+ * http://www.kffhi.com/api/netease/artists?id=2116
  * 说明 : 调用此接口 , 传入歌手 id, 可获得歌手部分信息和热门歌曲
  * 必选参数 : id: 歌手 id, 可由搜索接口获得
  * 接口地址 : /artists
  */
-export const getNetSingerInfo = () => {
-  return get('/mock/singerInfo.json')
+export const getNetSingerInfo = id => {
+  const URL = `/api/netease/artists?id=${id}`
+  return get(URL)
 }
 
 // 获取音乐播放地址
