@@ -4,6 +4,7 @@ import { getNetSongListDetail } from '../../services/netease'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
+import Infomation from '../../components/Information'
 import styles from './style.less'
 
 const SongListInfo = props => {
@@ -14,6 +15,7 @@ const SongListInfo = props => {
   const tabSub = match.params.tab
   const songListId = match.params.id
   const [songListDetail, setSongListDetail] = useState({})
+  const [modal, setModal] = useState(false)
 
   /** 初始化执行 */
   useEffect(() => {
@@ -70,7 +72,7 @@ const SongListInfo = props => {
                   </div>
                   <div className={styles.name}>{songListDetail.author}</div>
                 </div>
-                <div className={styles.description}>
+                <div className={styles.description} onClick={() => { setModal(true) }}>
                   <div className={styles.descriptionText}>{songListDetail.description}</div>
                   <i className="iconfont icon-jump" />
                 </div>
@@ -120,6 +122,11 @@ const SongListInfo = props => {
 
   return (
     <div className={styles.songListInfo}>
+      <Infomation
+        modal={modal}
+        info={songListDetail}
+        handleClose={() => { setModal(false) }}
+      />
       <Header tab={tabSub} history={history} title={'歌单详情'}></Header>
       {JSON.stringify(songListDetail) !== '{}' ?
         <Fragment>
