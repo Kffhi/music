@@ -3,6 +3,8 @@ import { connect } from 'dva'
 import { getNetSingerInfo } from '../../services/netease'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
+import Loading from '../../components/Loading'
+import Infomation from '../../components/Information'
 import styles from './style.less'
 
 const SingerInfo = props => {
@@ -14,7 +16,7 @@ const SingerInfo = props => {
   const [singerInfo, setSingerInfo] = useState({})
   const platform = player.platform
   const singerId = match.params.singerId
-  console.log(singerId, platform)
+  const [modal, setModal] = useState(false)
 
   /** 初始化执行 */
   useEffect(() => {
@@ -43,6 +45,13 @@ const SingerInfo = props => {
       newSingerInfo.description = newSingerInfo.briefDesc
       newSingerInfo.url = newSingerInfo.picUrl
       newSingerInfo.songList = res.hotSongs
+      newSingerInfo.songList.forEach(item => {
+        item.title = item.name
+        item.singer = item.ar[0].name
+        item.description = item.al.name
+        item.picUrl = item.al.picUrl
+        item.time = Number.parseInt((item.dt) / 1000)
+      })
       console.log(newSingerInfo)
       setSingerInfo(newSingerInfo)
     })
@@ -62,7 +71,7 @@ const SingerInfo = props => {
               </div>
               <div className={styles.text}>
                 <div className={styles.singer}>{singerInfo.name}</div>
-                <div className={styles.description}>
+                <div className={styles.description} onClick={() => { setModal(true) }}>
                   <div className={styles.descriptionText}>{singerInfo.description}</div>
                   <i className="iconfont icon-jump" />
                 </div>
@@ -71,11 +80,11 @@ const SingerInfo = props => {
             <div className={styles.operation}>
               <div className={styles.box}>
                 <i className="iconfont icon-pinglun" />
-                <div className={styles.boxText}>{singerInfo.commentNum}</div>
+                <div className={styles.boxText}>{singerInfo.commentNum || '评论'}</div>
               </div>
               <div className={styles.box}>
                 <i className="iconfont icon-fenxiang" />
-                <div className={styles.boxText}>{singerInfo.shareNum}</div>
+                <div className={styles.boxText}>{singerInfo.shareNum || '分享'}</div>
               </div>
               <div className={styles.box}>
                 <i className="iconfont icon-video-play" />
@@ -97,15 +106,26 @@ const SingerInfo = props => {
       <div className={styles.songList}>
         {singerInfo.songList ?
           singerInfo.songList.map((item, index) => (
-            <SongItem history={history} songListDetail={item} key={index} num={index + 1} />
+            <SongItem
+              tab={platform}
+              history={history}
+              songDetail={item}
+              playList={singerInfo.songList}
+              key={index}
+              num={index + 1} />
           ))
-          : null}
+          : <Loading />}
       </div>
     )
   }
 
   return (
     <div className={styles.singerInfo}>
+      <Infomation
+        modal={modal}
+        info={singerInfo}
+        handleClose={() => { setModal(false) }}
+      />
       <Header history={history} title={'歌手详情'}></Header>
       {renderDetail()}
       {renderSongList()}

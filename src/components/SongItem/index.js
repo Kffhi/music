@@ -22,6 +22,7 @@ const SongItem = props => {
         await getNetSongDetail(songDetail.id).then(res => {
           newPlayUrl = res.data[0].url
         })
+        console.log('进入了')
         dispatch({
           type: 'player/changePlayUrl',
           payLoad: {
