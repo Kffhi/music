@@ -1,4 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react'
+import { saveSearch, getSearch } from '../../utils/cache'
 import { getNetHotSearch, getNetSearchResult, getNetSongDetailData } from '../../services/netease'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
@@ -13,11 +14,13 @@ const Search = props => {
   const [searchValue, setSearchValue] = useState('')
   const [hotSearch, setHotSearch] = useState([])
   const [searchResult, setSearchResult] = useState({})
+  const [historySearch, setHistorySearch] = useState([])
   const tab = match.params.tab
-  const historySearch = ['樱花树下', '陈奕迅', 'Aimer', 'enough', 'leave me alone', '碧梨', 'white alience']
+  // const historySearch = ['樱花树下', '陈奕迅', 'Aimer', 'enough', 'leave me alone', '碧梨', 'white alience']
 
   /** 初始化执行 */
   useEffect(() => {
+    setHistorySearch(getSearch())
     switch (tab) {
       case 'NETEASE':
         getNetData()
@@ -31,6 +34,11 @@ const Search = props => {
         return null
     }
   }, [tab])
+
+  useEffect(() => {
+    if(searchValue === '')
+    setIsSearch(false)
+  }, [searchValue])
 
   // 获取网易云数据
   const getNetData = () => {
@@ -46,15 +54,25 @@ const Search = props => {
     })
   }
 
-  const search = async () => {
-    if (searchValue === '') {
+  const search = async value => {
+    let newValue = ''
+    if (!value && searchValue === '') {
       return null
     } else {
+      if (value && searchValue === '') {
+        newValue = String(value)
+      } else {
+        newValue = searchValue
+      }
+      let newSearchValue = []
+      newSearchValue.push(newValue)
+      saveSearch(newSearchValue)
+      setHistorySearch(getSearch())
       switch (tab) {
         case 'NETEASE':
           let ids = []
           let newResult = {}
-          await getNetSearchResult(searchValue).then(res => {
+          await getNetSearchResult(newValue).then(res => {
             newResult = { ...res.result }
             newResult.songs.forEach(item => {
               ids.push(item.id)
@@ -94,7 +112,7 @@ const Search = props => {
   const renderNoSearch = () => {
     return (
       <Fragment>
-        {renderHistory()}
+        {historySearch.length > 0 ? renderHistory() : null}
         {renderHot()}
       </Fragment>
     )
@@ -128,7 +146,9 @@ const Search = props => {
               )}
             </div>
           </div>
-          : null}
+          :
+          <Loading />
+        }
       </Fragment>
     )
   }
@@ -141,9 +161,7 @@ const Search = props => {
             <i className="iconfont icon-app_back" />
           </div>
           <div className={styles.inputWrapper}>
-            <input className={styles.input} type="text" placeholder='发现新音乐' onChange={e => {
-              handleChange(e.target.value);
-            }} />
+            <input className={styles.input} type="text" value={searchValue} placeholder='发现新音乐' onChange={e => { handleChange(e.target.value) }} />
           </div>
           <div className={styles.search} onClick={() => { search() }}>
             GO
@@ -158,11 +176,11 @@ const Search = props => {
     return (
       <div className={styles.historyWrapper}>
         <div className={styles.text}>历史记录
-          <i className="iconfont icon-app_delete" />
+          <i className="iconfont icon-app_delete" onClick={() => { window.localStorage.clear(); setHistorySearch([]) }} />
         </div>
         <div className={styles.itemWrapper}>
           {historySearch.map((item, index) => (
-            <span className={styles.tag} key={index}>{item}</span>
+            <span className={styles.tag} key={index} onClick={() => { setSearchValue(item); setIsSearch(true); search(item) }}>{item}</span>
           ))}
         </div>
       </div>
@@ -178,7 +196,7 @@ const Search = props => {
         {hotSearch ?
           <div className={styles.itemWrapper}>
             {hotSearch && hotSearch.map((item, index) => (
-              <div className={styles.hotItem} key={index}>
+              <div className={styles.hotItem} key={index} onClick={() => { setSearchValue(item.title); setIsSearch(true); search(item.title) }}>
                 <div className={styles.num} style={index < 3 ? { "color": "#ed4014" } : null}>{index + 1}</div>
                 <div className={styles.container}>
                   <div className={styles.title}>
