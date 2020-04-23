@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react'
 import className from 'classnames'
-import Lyric from 'lyric-parser'
+// import Lyric from 'lyric-parser'
 import { connect } from 'dva'
 import netLyric from '../../utils/lyric'
 import { getNetSongDetail, getNetSongLyric } from '../../services/netease'

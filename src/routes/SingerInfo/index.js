@@ -41,7 +41,6 @@ const SingerInfo = props => {
   const getNetData = singerId => {
     getNetSingerInfo(singerId).then(res => {
       const newSingerInfo = res.artist
-      console.log(newSingerInfo)
       newSingerInfo.description = newSingerInfo.briefDesc
       newSingerInfo.url = newSingerInfo.picUrl
       newSingerInfo.songList = res.hotSongs
@@ -52,7 +51,6 @@ const SingerInfo = props => {
         item.picUrl = item.al.picUrl
         item.time = Number.parseInt((item.dt) / 1000)
       })
-      console.log(newSingerInfo)
       setSingerInfo(newSingerInfo)
     })
   }
