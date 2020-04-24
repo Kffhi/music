@@ -17,7 +17,6 @@ const Player = props => {
     player
   } = props
   const audioRef = useRef()
-  // const linWrapperRef = useRef()
   const isChangeMode = useRef(false)
   const isFirstLoad = useRef(true)
   const [currentTime, setCurrentTime] = useState('0:00')
