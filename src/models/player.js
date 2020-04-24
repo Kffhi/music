@@ -9,6 +9,8 @@ export default {
     currentIndex: 0,
     playUrl: '',
     platform: 'NETEASE',
+    loveSong: [],
+    loveSongList: []
   },
 
   subscriptions: {
@@ -61,6 +63,20 @@ export default {
       return {
         ...state,
         platform: action.payLoad.platform
+      }
+    },
+    changeLovaSong(state, action) {
+      console.log('changeLovaSong')
+      return {
+        ...state,
+        loveSong: action.payLoad.loveSong
+      }
+    },
+    changeLovaSongList(state, action) {
+      console.log('changeLovaSongList')
+      return {
+        ...state,
+        loveSongList: action.payLoad.loveSongList
       }
     }
   },

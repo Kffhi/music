@@ -29,18 +29,6 @@ const Home = props => {
       'url': 'https://kffhi.com/public/images/end/myLoveSongList.png',
       'num': 23,
       'author': ''
-    },
-    {
-      'title': '旧事甚欠',
-      'url': 'https://p.qpic.cn/music_cover/PiajxSqBRaEISibhtdxpkLprufpT7OzywmZksgnxoguZwkZxZgIsZYug/300?n=1',
-      'num': 424,
-      'author': ''
-    },
-    {
-      'title': '华语&粤语&日语&韩语',
-      'url': 'https://p.qpic.cn/music_cover/xy585mIRLoGjBb9SibEqA5iaSkRbkvAnJvUzL2EdBAsvCVRLOQkt82Zg/300?n=1',
-      'num': 67,
-      'author': ''
     }
   ]
 

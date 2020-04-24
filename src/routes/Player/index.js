@@ -4,6 +4,7 @@ import className from 'classnames'
 import { connect } from 'dva'
 import netLyric from '../../utils/lyric'
 import { getNetSongDetail, getNetSongLyric } from '../../services/netease'
+import { saveLoveSong, getLoveSong, deleteLoveSong } from '../../utils/cache'
 import Toast from '../../components/Toast'
 import MiniPlay from '../../components/miniPlay'
 import PlayList from '../../components/PlayList'
@@ -28,6 +29,7 @@ const Player = props => {
   const [lyric, setLyric] = useState({})
   const [currentLyricNum, setCurrentLyrucNum] = useState(0)
   const [modal, setModal] = useState(false)
+  const [isLoveSong, setIsloveSong] = useState(false)
   const currentIndex = player.currentIndex
   const platform = player.platform
   let singerId = ''
@@ -60,6 +62,19 @@ const Player = props => {
           setLyric(newLyricObj)
         }
       })
+      const loveSong = getLoveSong()
+      const isLove = loveSong.some(item => {
+        if (item.id === playSong.id) {
+          return true
+        } else {
+          return false
+        }
+      })
+      if (isLove) {
+        setIsloveSong(true)
+      } else {
+        setIsloveSong(false)
+      }
     }
   }), [playSong])
 
@@ -316,6 +331,37 @@ const Player = props => {
     }
   }
 
+  const changeLoveState = () => {
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
+      Toast.info('播放列表为空')
+    } else {
+      if (isLove()) {
+        deleteLoveSong(playSong)
+        setIsloveSong(false)
+      } else {
+        saveLoveSong(playSong)
+        setIsloveSong(true)
+      }
+      dispatch({
+        type: 'player/changeLovaSong',
+        payLoad: {
+          playList: getLoveSong()
+        }
+      })
+    }
+  }
+
+  const isLove = () => {
+    const loveSong = getLoveSong()
+    return loveSong.some(item => {
+      if (item.id === playSong.id) {
+        return true
+      } else {
+        return false
+      }
+    })
+  }
+
   const renderHeader = () => {
     return (
       <Fragment>
@@ -372,24 +418,29 @@ const Player = props => {
     )
   }
 
+  console.log('isLoveSong的变化', isLoveSong)
+
   const renderBottom = () => {
     return (
       <div className={styles.bottomWrapper}>
         <div className={styles.iconBar}>
-          <div className={styles.iconWrapper}>
-            <i className="iconfont icon-shoucang" />
+          <div className={className(styles.iconWrapper, { [styles.isLove]: isLoveSong })} onClick={() => { changeLoveState() }}>
+            {isLoveSong ?
+              <i className="iconfont icon-loveit" /> :
+              <i className="iconfont icon-shoucang" />
+            }
           </div>
-          <div className={styles.iconWrapper}>
+          <div className={styles.iconWrapper} onClick={() => { Toast.info('暂不支持下载哦') }}>
             <i className="iconfont icon-lesson_list_download" />
           </div>
-          <div className={styles.iconWrapper}>
+          <div className={styles.iconWrapper} onClick={() => { Toast.info('暂不支持评论哦~') }}>
             <i className="iconfont icon-pinglun" />
             <span className={styles.commentNum}>567</span>
           </div>
-          <div className={styles.iconWrapper}>
+          <div className={styles.iconWrapper} onClick={() => { Toast.info('暂不支持分享哦~') }}>
             <i className="iconfont icon-fenxiang" />
           </div>
-          <div className={styles.iconWrapper}>
+          <div className={styles.iconWrapper} onClick={() => { Toast.info('好像没有更多信息啦~') }}>
             <i className="iconfont icon-Moreoptionshorizon" />
           </div>
         </div>
