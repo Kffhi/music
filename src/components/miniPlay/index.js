@@ -13,7 +13,7 @@ const MiniPlay = props => {
   } = props
 
   const handleClick = () => {
-    if (playSong !== undefined && JSON.stringify(playSong) !== '{}') {
+    if (playSong === undefined && JSON.stringify(playSong) !== '{}') {
       Toast.info('播放列表为空')
     } else {
       showBig()

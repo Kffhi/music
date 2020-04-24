@@ -218,7 +218,7 @@ const Player = props => {
   const nextSong = e => {
     e.stopPropagation()
     isFirstLoad.current = false
-    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
+    if (!playSong || JSON.stringify(playSong) === '{}') {
       Toast.info('播放列表为空')
     } else {
       if (playMode === 2) {
@@ -252,7 +252,7 @@ const Player = props => {
   const prevSong = e => {
     e.stopPropagation()
     isFirstLoad.current = false
-    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
+    if (!playSong || player.playUrl.length === 0) {
       Toast.info('播放列表为空')
     } else {
       if (playMode === 2) {
