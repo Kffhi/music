@@ -123,7 +123,6 @@ const SongListAll = props => {
         <Tabs
           tabs={tabs}
           initialPage={0}
-          onChange={tab => { console.log(tab) }}
           onTabClick={tab => { changeData(tab) }}
         >
           {

@@ -9,7 +9,7 @@ const SongListItem = props => {
   } = props
 
   return (
-    <div className={styles.songListItem} onClick={()=>{history.push('/songlistinfo')}}>
+    <div className={styles.songListItem} onClick={()=>{history.push(`/songlistinfo/NETEASE/000000`)}}>
       <div className={styles.imgWrapper}>
         <img src={listItem.url} alt="" />
       </div>

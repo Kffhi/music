@@ -12,8 +12,6 @@ const MiniPlay = props => {
     showPlayList
   } = props
 
-  console.log(playSong)
-
   const handleClick = () => {
     if (playSong !== undefined && JSON.stringify(playSong) !== '{}') {
       Toast.info('播放列表为空')

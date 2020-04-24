@@ -345,7 +345,7 @@ const Player = props => {
       dispatch({
         type: 'player/changeLovaSong',
         payLoad: {
-          playList: getLoveSong()
+          loveSong: getLoveSong()
         }
       })
     }
@@ -417,8 +417,6 @@ const Player = props => {
       </div>
     )
   }
-
-  console.log('isLoveSong的变化', isLoveSong)
 
   const renderBottom = () => {
     return (

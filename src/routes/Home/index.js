@@ -232,7 +232,6 @@ const Home = props => {
         <Tabs tabs={tabs}
           initialPage={1}
           swipeable={false}
-          onChange={tab => { console.log(tab.sub); setTab(tab.sub) }}
           onTabClick={tab => { changeData(tab) }}
         >
           {renderMyMusic()}

@@ -66,7 +66,7 @@ export default {
       }
     },
     changeLovaSong(state, action) {
-      console.log('changeLovaSong')
+      console.log('changeLovaSong', action.payLoad.loveSong)
       return {
         ...state,
         loveSong: action.payLoad.loveSong
