@@ -6,6 +6,7 @@ import netLyric from '../../utils/lyric'
 import { getNetSongDetail, getNetSongLyric } from '../../services/netease'
 import Toast from '../../components/Toast'
 import MiniPlay from '../../components/miniPlay'
+import PlayList from '../../components/PlayList'
 import { format, shuffle } from '../../utils/format'
 import styles from './style.less'
 
@@ -27,6 +28,7 @@ const Player = props => {
   const [playSong, setPlaySong] = useState({})
   const [lyric, setLyric] = useState({})
   const [currentLyricNum, setCurrentLyrucNum] = useState(0)
+  const [modal, setModal] = useState(false)
   const currentIndex = player.currentIndex
   const platform = player.platform
   let singerId = ''
@@ -99,7 +101,7 @@ const Player = props => {
 
   const handleClickProgessBar = e => {
     e.stopPropagation()
-    if (player.playUrl.length === 0) {
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
       setIsPlay(false)
       return (Toast.info('没有播放地址'))
     } else {
@@ -111,7 +113,7 @@ const Player = props => {
   }
 
   const handleDotTouchStart = e => {
-    if (player.playUrl.length === 0) {
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
       setIsPlay(false)
       return (Toast.info('没有播放地址'))
     } else {
@@ -121,7 +123,7 @@ const Player = props => {
   }
 
   const handleDotTouchMove = e => {
-    if (player.playUrl.length === 0) {
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
       setIsPlay(false)
       return (Toast.info('没有播放地址'))
     } else {
@@ -134,7 +136,7 @@ const Player = props => {
   }
 
   const handleDotTouchEnd = e => {
-    if (player.playUrl.length === 0) {
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
       setIsPlay(false)
       return (Toast.info('没有播放地址'))
     } else {
@@ -146,7 +148,7 @@ const Player = props => {
 
   const handleChangePlayState = e => {
     e.stopPropagation()
-    if (player.playUrl.length !== 0) {
+    if (playSong && player.playUrl.length !== 0 && JSON.stringify(playSong) !== '{}') {
       if (isPlay) {
         audioRef.current.pause()
       } else {
@@ -171,31 +173,63 @@ const Player = props => {
     })
   }
 
+  const handleClearList = () => {
+    dispatch({
+      type: 'player/changePlayUrl',
+      payLoad: {
+        playUrl: ''
+      }
+    })
+    dispatch({
+      type: 'player/changePlayList',
+      payLoad: {
+        playList: []
+      }
+    })
+    setPlaySong({})
+    setModal(false)
+    setIsPlay(false)
+    setLyric({})
+  }
+
+  const handleShowPlayList = e => {
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
+      Toast.info('播放列表为空')
+    } else {
+      e.stopPropagation()
+      setModal(true)
+    }
+  }
+
   const nextSong = e => {
     e.stopPropagation()
     isFirstLoad.current = false
-    if (playMode === 2) {
-      audioRef.current.currentTime = 0;
-      setIsPlay(true)
-      audioRef.current.play()
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
+      Toast.info('播放列表为空')
     } else {
-      if (playMode === 1) {
-        if (currentIndex < player.playList.length - 1) {
-          changeCurrentIndex(currentIndex + 1)
-          getPlayUrl(player.playList[currentIndex + 1])
-        } else {
-          changeCurrentIndex(0)
-          getPlayUrl(player.playList[0])
-        }
+      if (playMode === 2) {
+        audioRef.current.currentTime = 0;
+        setIsPlay(true)
+        audioRef.current.play()
       } else {
-        if (currentIndex < player.playList.length - 1) {
-          changeCurrentIndex(currentIndex + 1)
-          getPlayUrl(player.playList[currentIndex + 1])
-          setPlaySong(player.playList[currentIndex + 1])
+        if (playMode === 1) {
+          if (currentIndex < player.playList.length - 1) {
+            changeCurrentIndex(currentIndex + 1)
+            getPlayUrl(player.playList[currentIndex + 1])
+          } else {
+            changeCurrentIndex(0)
+            getPlayUrl(player.playList[0])
+          }
         } else {
-          changeCurrentIndex(0)
-          getPlayUrl(player.playList[0])
-          setPlaySong(player.playList[0])
+          if (currentIndex < player.playList.length - 1) {
+            changeCurrentIndex(currentIndex + 1)
+            getPlayUrl(player.playList[currentIndex + 1])
+            setPlaySong(player.playList[currentIndex + 1])
+          } else {
+            changeCurrentIndex(0)
+            getPlayUrl(player.playList[0])
+            setPlaySong(player.playList[0])
+          }
         }
       }
     }
@@ -204,74 +238,82 @@ const Player = props => {
   const prevSong = e => {
     e.stopPropagation()
     isFirstLoad.current = false
-    if (playMode === 2) {
-      audioRef.current.currentTime = 0
-      setIsPlay(true)
-      audioRef.current.play()
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
+      Toast.info('播放列表为空')
     } else {
-      if (playMode === 1) {
-        if (currentIndex > 0) {
-          changeCurrentIndex(currentIndex - 1)
-          getPlayUrl(player.playList[currentIndex - 1])
-        } else {
-          changeCurrentIndex(player.playList.length - 1)
-          getPlayUrl(player.playList[player.playList.length - 1])
-        }
+      if (playMode === 2) {
+        audioRef.current.currentTime = 0
+        setIsPlay(true)
+        audioRef.current.play()
       } else {
-        if (currentIndex > 0) {
-          changeCurrentIndex(currentIndex - 1)
-          getPlayUrl(player.playList[currentIndex - 1])
-          setPlaySong(player.playList[currentIndex - 1])
+        if (playMode === 1) {
+          if (currentIndex > 0) {
+            changeCurrentIndex(currentIndex - 1)
+            getPlayUrl(player.playList[currentIndex - 1])
+          } else {
+            changeCurrentIndex(player.playList.length - 1)
+            getPlayUrl(player.playList[player.playList.length - 1])
+          }
         } else {
-          changeCurrentIndex(player.playList.length - 1)
-          getPlayUrl(player.playList[player.playList.length - 1])
-          setPlaySong(player.playList[player.playList.length - 1])
+          if (currentIndex > 0) {
+            changeCurrentIndex(currentIndex - 1)
+            getPlayUrl(player.playList[currentIndex - 1])
+            setPlaySong(player.playList[currentIndex - 1])
+          } else {
+            changeCurrentIndex(player.playList.length - 1)
+            getPlayUrl(player.playList[player.playList.length - 1])
+            setPlaySong(player.playList[player.playList.length - 1])
+          }
         }
       }
     }
   }
 
   const handleChangePlayMode = async () => {
-    // 1:顺序播放 2.单曲循环 3.随机播放
-    // 数字表示当前状态，但是点击后进入下一状态，所以实际上playList应按下一状态的播放逻辑修改
-    playMode === 3 ? setPlayMode(1) : setPlayMode(playMode + 1)
-    isChangeMode.current = true
-    switch (playMode) {
-      case 1:
-        dispatch({
-          type: 'player/chageCurrentIndex',
-          payLoad: {
-            currentIndex: 0
-          }
-        })
-        await dispatch({
-          type: 'player/changePlayList',
-          payLoad: {
-            playList: [playSong]
-          }
-        })
-        break
-      case 2:
-        const newSequenceList = [...player.sequenceList]
-        const randomList = shuffle(newSequenceList)
-        dispatch({
-          type: 'player/changePlayList',
-          payLoad: {
-            playList: [...randomList]
-          }
-        })
-        break
-      case 3:
-        const loopList = player.sequenceList
-        dispatch({
-          type: 'player/changePlayList',
-          payLoad: {
-            playList: [...loopList]
-          }
-        })
-        break
-      default:
-        return undefined
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
+      Toast.info('播放列表为空')
+    } else {
+      // 1:顺序播放 2.单曲循环 3.随机播放
+      // 数字表示当前状态，但是点击后进入下一状态，所以实际上playList应按下一状态的播放逻辑修改
+      playMode === 3 ? setPlayMode(1) : setPlayMode(playMode + 1)
+      isChangeMode.current = true
+      switch (playMode) {
+        case 1:
+          dispatch({
+            type: 'player/chageCurrentIndex',
+            payLoad: {
+              currentIndex: 0
+            }
+          })
+          await dispatch({
+            type: 'player/changePlayList',
+            payLoad: {
+              playList: [playSong]
+            }
+          })
+          break
+        case 2:
+          const newSequenceList = [...player.sequenceList]
+          const randomList = shuffle(newSequenceList)
+          dispatch({
+            type: 'player/changePlayList',
+            payLoad: {
+              playList: [...randomList]
+            }
+          })
+          break
+        case 3:
+          const loopList = player.sequenceList
+          dispatch({
+            type: 'player/changePlayList',
+            payLoad: {
+              playList: [...loopList]
+            }
+          })
+          break
+        default:
+          return undefined
+      }
     }
   }
 
@@ -371,7 +413,8 @@ const Player = props => {
               <i className="iconfont icon-round-play" /> :
               playMode === 2 ?
                 <i className="iconfont icon-single-play" /> :
-                <i className="iconfont icon-random-play" />}
+                <i className="iconfont icon-random-play" />
+            }
           </div>
           <div className={styles.ctrlIconWrapper} onClick={e => { prevSong(e) }}>
             <i className="iconfont icon-voice-last" />
@@ -387,7 +430,7 @@ const Player = props => {
             <i className="iconfont icon-voice-next" />
           </div>
           <div className={styles.ctrlIconWrapper}>
-            <i className="iconfont icon-lesson_list" />
+            <i className="iconfont icon-lesson_list" onClick={e => { handleShowPlayList(e) }} />
           </div>
         </div>
       </div>
@@ -408,12 +451,13 @@ const Player = props => {
           showBig={() => { handleShowMini() }}
           playSong={playSong}
           isPlay={isPlay}
+          showPlayList={e => { handleShowPlayList(e) }}
           changePlayState={handleChangePlayState}
         /> :
         <div className={styles.player}>
           <div className={styles.backgroundWrapper}>
             <div className={styles.imgWrapper}>
-              <img src={playSong ? playSong.picUrl : 'https://www.kffhi.com/public/images/portfolio/4.png'} alt="" />
+              <img src={playSong !== undefined && JSON.stringify(playSong) !== '{}' ? playSong.picUrl : 'https://www.kffhi.com/public/images/portfolio/4.png'} alt="" />
             </div>
           </div>
           <div className={styles.containerWrapper}>
@@ -423,7 +467,17 @@ const Player = props => {
           </div>
         </div>
       }
-      {player.playUrl.length !== 0 ? renderAudio() : null}
+      {player.playUrl.length !== 0 && JSON.stringify(playSong) !== '{}' ? renderAudio() : null}
+      <PlayList
+        modal={modal}
+        handleClose={() => setModal(false)}
+        playList={player.playList}
+        playSong={playSong}
+        currentIndex={currentIndex}
+        playMode={playMode}
+        platform={platform}
+        clearList={handleClearList}
+      />
     </Fragment>
   )
 }

@@ -5,15 +5,17 @@ import styles from './style.less'
 
 const MiniPlay = props => {
   const {
-    history,
     showBig,
     playSong,
     isPlay,
-    changePlayState
+    changePlayState,
+    showPlayList
   } = props
 
+  console.log(playSong)
+
   const handleClick = () => {
-    if (!playSong) {
+    if (playSong !== undefined && JSON.stringify(playSong) !== '{}') {
       Toast.info('播放列表为空')
     } else {
       showBig()
@@ -23,7 +25,7 @@ const MiniPlay = props => {
   return (
     <div className={styles.miniPlay} onClick={() => { handleClick() }}>
       <div className={className(styles.imgWrapper, { [styles.imgWrapperPlaying]: isPlay })}>
-        <img src={playSong ? playSong.picUrl : 'https://images.haiwainet.cn/20160428/1461790811999686.jpg'} alt="" />
+        <img src={playSong !== undefined ? playSong.picUrl : 'https://images.haiwainet.cn/20160428/1461790811999686.jpg'} alt="" />
       </div>
       <div className={styles.text}>
         <div className={styles.title}>
@@ -41,7 +43,7 @@ const MiniPlay = props => {
             <i className="iconfont icon-video-play" />
           }
         </div>
-        <i className="iconfont icon-lesson_list" />
+        <i className="iconfont icon-lesson_list" onClick={e => showPlayList(e)} />
       </div>
     </div>
   )

@@ -36,8 +36,8 @@ const Search = props => {
   }, [tab])
 
   useEffect(() => {
-    if(searchValue === '')
-    setIsSearch(false)
+    if (searchValue === '')
+      setIsSearch(false)
   }, [searchValue])
 
   // 获取网易云数据
@@ -180,7 +180,12 @@ const Search = props => {
         </div>
         <div className={styles.itemWrapper}>
           {historySearch.map((item, index) => (
-            <span className={styles.tag} key={index} onClick={() => { setSearchValue(item); setIsSearch(true); search(item) }}>{item}</span>
+            <span
+              className={styles.tag}
+              key={index}
+              onClick={() => { setSearchValue(item); setIsSearch(true); search(item) }}>
+              {item}
+            </span>
           ))}
         </div>
       </div>
