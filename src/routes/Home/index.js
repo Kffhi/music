@@ -136,10 +136,11 @@ const Home = props => {
   }
 
   const changeData = tab => {
+    setTab(tab.sub)
     dispatch({
       type: 'player/changePlatform',
       payLoad: {
-        platform: tab
+        platform: tab.sub
       }
     })
     switch (tab.sub) {
