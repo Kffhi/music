@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'dva'
 import { getNetSongDetail } from '../../services/netease'
+import Toast from '../../components/Toast'
 import styles from './style.less'
 
 const SongItem = props => {
@@ -67,7 +68,7 @@ const SongItem = props => {
         </div>
       </div>
       <div className={styles.iconWrapper}>
-        <i className="iconfont icon-more" />
+        <i onClick={e => { e.stopPropagation(); Toast.info('详细操作静待秃头开发的努力吧~') }}  className="iconfont icon-more" />
       </div>
     </div>
   )
