@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'dva'
+import className from 'classnames'
 import { getNetSongListDetail } from '../../services/netease'
-import { saveLoveSong, getLoveSong, deleteLoveSong } from '../../utils/cache'
+import { getLoveSong, saveLoveSongList, deleteLoveSongList, getLoveSongList } from '../../utils/cache'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
@@ -12,12 +13,14 @@ const SongListInfo = props => {
   const {
     history,
     match,
+    dispatch,
     player
   } = props
   const tabSub = match.params.tab
   const songListId = match.params.id
   const [songListDetail, setSongListDetail] = useState({})
   const [modal, setModal] = useState(false)
+  const [isLoveSongList, setIsLoveSongList] = useState(false)
 
   /** 初始化执行 */
   useEffect(() => {
@@ -65,6 +68,51 @@ const SongListInfo = props => {
     }
   }, [player, songListId, tabSub])
 
+  useEffect(() => {
+    const isLove = () => {
+      const loveSongList = getLoveSongList()
+      return loveSongList.some(item => {
+        if (String(item.id) === songListId) {
+          return true
+        } else {
+          return false
+        }
+      })
+    }
+    if (isLove()) {
+      setIsLoveSongList(true)
+    } else {
+      setIsLoveSongList(false)
+    }
+  }, [songListId])
+
+  const changeLoveState = () => {
+    if (isLove()) {
+      deleteLoveSongList(songListDetail)
+      setIsLoveSongList(false)
+    } else {
+      saveLoveSongList(songListDetail)
+      setIsLoveSongList(true)
+    }
+    dispatch({
+      type: 'player/changeLovaSongList',
+      payLoad: {
+        loveSongList: getLoveSongList()
+      }
+    })
+  }
+
+  const isLove = () => {
+    const loveSongList = getLoveSongList()
+    return loveSongList.some(item => {
+      if (String(item.id) === songListId) {
+        return true
+      } else {
+        return false
+      }
+    })
+  }
+
   const renderDetail = () => {
     return (
       <div className={styles.detail}>
@@ -104,8 +152,11 @@ const SongListInfo = props => {
                 <i className="iconfont icon-video-play" />
                 <div className={styles.boxText}>播放</div>
               </div>
-              <div className={styles.box}>
-                <i className="iconfont icon-shoucang" />
+              <div className={className(styles.box, { [styles.isLove]: isLoveSongList })} onClick={() => { changeLoveState() }}>
+                {isLoveSongList ?
+                  <i className="iconfont icon-loveit" /> :
+                  <i className="iconfont icon-shoucang" />
+                }
                 <div className={styles.boxText}>收藏</div>
               </div>
             </div>

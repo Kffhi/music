@@ -6,8 +6,8 @@ const SEARCH_MAX_LEN = 10
 const LOVE_SONG_KEY = '__song__'
 const LOVE_SONG_LEN = 200
 
-const Love_SONG_LIST_KEY = '__songlist__'
-const Love_SONG_LIST_LEN = 20
+const LOVE_SONG_LIST_KEY = '__songlist__'
+const LOVE_SONG_LIST_LEN = 20
 
 
 function mapArr(arr) {
@@ -55,4 +55,23 @@ export function deleteLoveSong(song) {
 
 export const getLoveSong = () => {
   return storage.get(LOVE_SONG_KEY, [])
+}
+
+export function saveLoveSongList(songList) {
+  let localList = storage.get(LOVE_SONG_LIST_KEY, [])
+  localList.unshift(songList)
+  if (localList.length > LOVE_SONG_LIST_LEN) {
+    localList.splice(-1, 1)
+  }
+  storage.set(LOVE_SONG_LIST_KEY, mapArr(localList))
+}
+
+export function deleteLoveSongList(songList) {
+  let localList = storage.get(LOVE_SONG_LIST_KEY, [])
+  const newLocalList = localList.filter(item => item.id !== songList.id)
+  storage.set(LOVE_SONG_LIST_KEY, mapArr(newLocalList))
+}
+
+export const getLoveSongList = () => {
+  return storage.get(LOVE_SONG_LIST_KEY, [])
 }

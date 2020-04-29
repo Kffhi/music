@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { Tabs, Carousel } from 'antd-mobile'
 import { connect } from 'dva'
+import { getLoveSongList } from '../../utils/cache'
 import { getNetBanner, getNetSongList } from '../../services/netease'
 import { getTencentBanner, getTencentSongList } from '../../services/tencent'
 import { getXiamiBanner, getXiamiSongList } from '../../services/xiami'
@@ -32,62 +33,15 @@ const Home = props => {
     }
   ]
 
-  const myCollList = [
-    {
-      'title': 'ACG伤感宣泄向曲目精选',
-      'url': 'https://p.qpic.cn/music_cover/roDbe9tS2lUqucickjGhXicHViblIPcaHWPepdpTiaHAQ4Cic4pLfvk738w/300?n=1',
-      'num': 122,
-      'author': '花痞'
-    },
-    {
-      'title': 'Hardcore: 黑暗沉浸的极致快感',
-      'url': 'https://p.qpic.cn/music_cover/sv5U6cpoN0dCLVrs9ibkz75fPLICuJNYVZKAmoL4q2EoQYia9xzcR4qg/300?n=1',
-      'num': 100,
-      'author': '北鹤'
-    },
-    {
-      'title': '躁动引力 • 电瘾患者的深度迷梦',
-      'url': 'https://p.qpic.cn/music_cover/4J0DcvEPJgEWsf9WgbblMDUdHBPu83H7zO99QL5mNfP1um5LibuwEzg/300?n=1',
-      'num': 298,
-      'author': '大师傅'
-    },
-    {
-      'title': 'ACG伤感宣泄向曲目精选',
-      'url': 'https://p.qpic.cn/music_cover/roDbe9tS2lUqucickjGhXicHViblIPcaHWPepdpTiaHAQ4Cic4pLfvk738w/300?n=1',
-      'num': 122,
-      'author': '花痞'
-    },
-    {
-      'title': 'Hardcore: 黑暗沉浸的极致快感',
-      'url': 'https://p.qpic.cn/music_cover/sv5U6cpoN0dCLVrs9ibkz75fPLICuJNYVZKAmoL4q2EoQYia9xzcR4qg/300?n=1',
-      'num': 100,
-      'author': '北鹤'
-    },
-    {
-      'title': '躁动引力 • 电瘾患者的深度迷梦',
-      'url': 'https://p.qpic.cn/music_cover/4J0DcvEPJgEWsf9WgbblMDUdHBPu83H7zO99QL5mNfP1um5LibuwEzg/300?n=1',
-      'num': 298,
-      'author': '大师傅'
-    },
-    {
-      'title': 'ACG伤感宣泄向曲目精选',
-      'url': 'https://p.qpic.cn/music_cover/roDbe9tS2lUqucickjGhXicHViblIPcaHWPepdpTiaHAQ4Cic4pLfvk738w/300?n=1',
-      'num': 122,
-      'author': '花痞'
-    },
-    {
-      'title': 'Hardcore: 黑暗沉浸的极致快感',
-      'url': 'https://p.qpic.cn/music_cover/sv5U6cpoN0dCLVrs9ibkz75fPLICuJNYVZKAmoL4q2EoQYia9xzcR4qg/300?n=1',
-      'num': 100,
-      'author': '北鹤'
-    },
-    {
-      'title': '躁动引力 • 电瘾患者的深度迷梦',
-      'url': 'https://p.qpic.cn/music_cover/4J0DcvEPJgEWsf9WgbblMDUdHBPu83H7zO99QL5mNfP1um5LibuwEzg/300?n=1',
-      'num': 298,
-      'author': '大师傅'
-    }
-  ]
+  const myCollList = getLoveSongList()
+  // [
+  //   {
+  //     'title': 'ACG伤感宣泄向曲目精选',
+  //     'url': 'https://p.qpic.cn/music_cover/roDbe9tS2lUqucickjGhXicHViblIPcaHWPepdpTiaHAQ4Cic4pLfvk738w/300?n=1',
+  //     'num': 122,
+  //     'author': '花痞'
+  //   },
+  // ]
 
   /** 初始化执行 */
   useEffect(() => {
