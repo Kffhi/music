@@ -4,7 +4,7 @@ import { getNetSingerInfo } from '../../services/netease'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
-import Infomation from '../../components/Information'
+import Information from '../../components/Information'
 import styles from './style.less'
 
 const SingerInfo = props => {
@@ -119,7 +119,7 @@ const SingerInfo = props => {
 
   return (
     <div className={styles.singerInfo}>
-      <Infomation
+      <Information
         modal={modal}
         info={singerInfo}
         handleClose={() => { setModal(false) }}

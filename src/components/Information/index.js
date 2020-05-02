@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal } from 'antd-mobile'
 import styles from './style.less'
 
-const Infomation = props => {
+const Information = props => {
   const {
     modal,
     info,
@@ -35,4 +35,4 @@ const Infomation = props => {
     </div>
   )
 }
-export default Infomation;
+export default Information;

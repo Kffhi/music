@@ -6,7 +6,7 @@ import { getLoveSong, saveLoveSongList, deleteLoveSongList, getLoveSongList } fr
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
-import Infomation from '../../components/Information'
+import Information from '../../components/Information'
 import styles from './style.less'
 
 const SongListInfo = props => {
@@ -186,7 +186,7 @@ const SongListInfo = props => {
 
   return (
     <div className={styles.songListInfo}>
-      <Infomation
+      <Information
         modal={modal}
         info={songListDetail}
         handleClose={() => { setModal(false) }}
