@@ -216,14 +216,12 @@ const Home = props => {
     )
   }
 
-  // render() {
   return (
     <div className={styles.rootContainer}>
       {renderHeader()}
       {renderContainer()}
     </div>
   );
-  // }
 }
 
 export default connect(({ player }) => ({
