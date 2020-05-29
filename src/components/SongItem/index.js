@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'dva'
 import { getNetSongDetail } from '../../services/netease'
+import { getTencentSongDetail } from '../../services/tencent'
 import Toast from '../../components/Toast'
 import styles from './style.less'
 
@@ -17,9 +18,9 @@ const SongItem = props => {
     dispatch({
       type: 'player/changeShowMiniState',
     })
+    let newPlayUrl = ''
     switch (tab) {
       case 'NETEASE':
-        let newPlayUrl = ''
         await getNetSongDetail(songDetail.id).then(res => {
           newPlayUrl = res.data[0].url
         })
@@ -29,33 +30,42 @@ const SongItem = props => {
             playUrl: newPlayUrl
           }
         })
-        dispatch({
-          type: 'player/chageCurrentIndex',
-          payLoad: {
-            currentIndex: num - 1
-          }
-        })
-        dispatch({
-          type: 'player/changePlayList',
-          payLoad: {
-            playList: playList
-          }
-        })
-        dispatch({
-          type: 'player/changeSequenceList',
-          payLoad: {
-            sequenceList: playList
-          }
-        })
         break
       case 'TENCENT':
-        // getTencentData()
+        await getTencentSongDetail(songDetail.mid).then(res => {
+          // console.log(res)
+          newPlayUrl = 'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/' + res.response.req_0.data.midurlinfo[0].purl
+        })
+        dispatch({
+          type: 'player/changePlayUrl',
+          payLoad: {
+            playUrl: newPlayUrl
+          }
+        })
         break
       case 'XIAMI':
         break
       default:
         return null
     }
+    dispatch({
+      type: 'player/chageCurrentIndex',
+      payLoad: {
+        currentIndex: num - 1
+      }
+    })
+    dispatch({
+      type: 'player/changePlayList',
+      payLoad: {
+        playList: playList
+      }
+    })
+    dispatch({
+      type: 'player/changeSequenceList',
+      payLoad: {
+        sequenceList: playList
+      }
+    })
   }
 
   return (
@@ -68,7 +78,7 @@ const SongItem = props => {
         </div>
       </div>
       <div className={styles.iconWrapper}>
-        <i onClick={e => { e.stopPropagation(); Toast.info('详细操作静待秃头开发的努力吧~') }}  className="iconfont icon-more" />
+        <i onClick={e => { e.stopPropagation(); Toast.info('详细操作静待秃头开发的努力吧~') }} className="iconfont icon-more" />
       </div>
     </div>
   )

@@ -48,8 +48,21 @@ export const getTencentCartSongList = (categoryId = '', page = '1', limit = 21, 
  * disstid: 歌单id
  * 接口地址: /getSongListDetail
  */
-export const getTencentSongListDetail = () => {
-  return get('/mock/songlistdetail.json')
+export const getTencentSongListDetail = (disstid = '') => {
+  const URL = `/api/tencent/getSongListDetail?disstid=${disstid}`
+  return get(URL)
+}
+
+// 获取音乐播放地址
+/**
+ * http://www.kffhi.com/api/tencent/getMusicVKey?songmid=0025NhlN2yWrP4
+ * 说明 : 使调用此接口, 可获取歌曲VKey
+ * 必选参数 : songmid : 音乐 id
+ * 接口地址 : /getMusicVKey
+ */
+export const getTencentSongDetail = id => {
+  const URL = `/api/tencent/getMusicVKey?songmid=${id}`
+  return get(URL)
 }
 
 // 获取歌单分类
@@ -105,12 +118,15 @@ export const getTencentSingerInfo = () => {
   return get('/mock/singerInfo.json')
 }
 
-// 获取音乐播放地址
+// 获取歌词
 /**
- * http://www.kffhi.com/api/netease/song/url?id=33894312
- * 说明 : 使用歌单详情接口后 , 能得到的音乐的 id, 但不能得到的音乐 url, 调用此接口 , 传入的音乐 id( 可多个 , 用逗号隔开 ), 可以获取对应的音乐的 url( 不需要登录 )
- * 注 : 部分用户反馈获取的 url 会 403,hwaphon找到的 解决方案是当获取到音乐的 id 后，将 https://music.163.com/song/media/outer/url?id=id.mp3 以 src 赋予 Audio 即可播放
- * 必选参数 : id : 音乐 id
- * 可选参数 : br: 码率,默认设置了 999000 即最大码率,如果要 320k 则可设置为 320000,其他类推
- * 接口地址 : /song/url
+ * http://www.kffhi.com/api/netease/getLyric?songmid=003rJSwm3TechU
+ * 说明 : 调用此接口, 可获取歌曲歌词
+ * 必选参数 : isongmid: 专辑id
+ * 可选参数： isFormat: 是否格式化歌词, 默认值为 false
+ * 接口地址 : /getLyric
  */
+export const getTencentSongLyric = id => {
+  const URL = `/api/tencent/getLyric?songmid=${id}`
+  return get(URL)
+}

@@ -8,7 +8,7 @@ export default {
     sequenceList: [],
     currentIndex: 0,
     playUrl: '',
-    platform: 'NETEASE',
+    platform: 'TENCENT',
     loveSong: [],
     loveSongList: []
   },

@@ -78,6 +78,7 @@ const Home = props => {
       const newSongList = [...res.response.recomPlaylist.data.v_hot]
       newSongList.forEach(item => {
         item.pic = item.cover
+        item.id = item.content_id
       })
       setSongList(newSongList)
     })

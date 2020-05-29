@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'dva'
 import { getNetSongDetail } from '../../services/netease'
+import { getTencentSongDetail } from '../../services/tencent'
 import className from 'classnames'
 import { Modal } from 'antd-mobile'
 import styles from './style.less'
@@ -26,9 +27,9 @@ const PlayList = props => {
         type: 'player/changeShowMiniState',
       })
     }
+    let newPlayUrl = ''
     switch (platform) {
       case 'NETEASE':
-        let newPlayUrl = ''
         await getNetSongDetail(item.id).then(res => {
           newPlayUrl = res.data[0].url
         })
@@ -38,33 +39,42 @@ const PlayList = props => {
             playUrl: newPlayUrl
           }
         })
-        dispatch({
-          type: 'player/chageCurrentIndex',
-          payLoad: {
-            currentIndex: index
-          }
-        })
-        dispatch({
-          type: 'player/changePlayList',
-          payLoad: {
-            playList: playList
-          }
-        })
-        dispatch({
-          type: 'player/changeSequenceList',
-          payLoad: {
-            sequenceList: playList
-          }
-        })
         break
       case 'TENCENT':
-        // getTencentData()
+        await getTencentSongDetail(item.mid).then(res => {
+          // console.log(res)
+          newPlayUrl = 'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/' + res.response.req_0.data.midurlinfo[0].purl
+        })
+        dispatch({
+          type: 'player/changePlayUrl',
+          payLoad: {
+            playUrl: newPlayUrl
+          }
+        })
         break
       case 'XIAMI':
         break
       default:
         return null
     }
+    dispatch({
+      type: 'player/chageCurrentIndex',
+      payLoad: {
+        currentIndex: index
+      }
+    })
+    dispatch({
+      type: 'player/changePlayList',
+      payLoad: {
+        playList: playList
+      }
+    })
+    dispatch({
+      type: 'player/changeSequenceList',
+      payLoad: {
+        sequenceList: playList
+      }
+    })
   }
   return (
     <div className={styles.infrmationWrapper}>

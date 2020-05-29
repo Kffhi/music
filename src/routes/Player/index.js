@@ -4,6 +4,7 @@ import className from 'classnames'
 import { connect } from 'dva'
 import netLyric from '../../utils/lyric'
 import { getNetSongDetail, getNetSongLyric } from '../../services/netease'
+import { getTencentSongDetail, getTencentSongLyric } from '../../services/tencent'
 import { saveLoveSong, getLoveSong, deleteLoveSong } from '../../utils/cache'
 import Toast from '../../components/Toast'
 import MiniPlay from '../../components/miniPlay'
@@ -15,7 +16,7 @@ const Player = props => {
   const {
     history,
     dispatch,
-    player
+    player,
   } = props
   const audioRef = useRef()
   const isChangeMode = useRef(false)
@@ -34,7 +35,13 @@ const Player = props => {
   const platform = player.platform
   let singerId = ''
   if (playSong && JSON.stringify(playSong) !== '{}') {
-    singerId = playSong.ar[0].id
+    if (platform === 'NETEASE') {
+      singerId = playSong.ar[0].id
+    }
+    if (platform === 'TENCENT') {
+      // console.log(playSong)
+      // singerId = playSong.mid
+    }
   }
 
   useEffect((() => {
@@ -53,15 +60,30 @@ const Player = props => {
 
   useEffect((() => {
     if (playSong && JSON.stringify(playSong) !== '{}') {
-      getNetSongLyric(playSong.id).then(res => {
-        if (res.nolyric || !res.lrc.lyric) {
-          setLyric({})
-        } else {
-          let newLyricObj = new netLyric(res.lrc.lyric, changeCurrentLyricNum)
-          // newLyricObj.play()
-          setLyric(newLyricObj)
-        }
-      })
+      switch (platform) {
+        case 'NETEASE':
+          getNetSongLyric(playSong.id).then(res => {
+            if (res.nolyric || !res.lrc.lyric) {
+              setLyric({})
+            } else {
+              let newLyricObj = new netLyric(res.lrc.lyric, changeCurrentLyricNum)
+              // newLyricObj.play()
+              setLyric(newLyricObj)
+            }
+          })
+          break
+        case 'TENCENT':
+          console.log('geci')
+          getTencentSongLyric(playSong.mid).then(res => {
+            let newLyricObj = new netLyric(res.response.lyric, changeCurrentLyricNum)
+            setLyric(newLyricObj)
+          })
+          break
+        case 'XIAMI':
+          break
+        default:
+          return null
+      }
       const loveSong = getLoveSong()
       const isLove = loveSong.some(item => {
         if (item.id === playSong.id) {
@@ -76,7 +98,7 @@ const Player = props => {
         setIsloveSong(false)
       }
     }
-  }), [playSong])
+  }), [platform, playSong])
 
   const changeCurrentLyricNum = ({ lineNum, tex }) => {
     // setCurrentLyrucNum(lineNum)
@@ -92,25 +114,54 @@ const Player = props => {
   }
 
   const getPlayUrl = async song => {
-    await getNetSongDetail(song.id).then(res => {
-      if (res.data[0].url === null) {
-        dispatch({
-          type: 'player/changePlayUrl',
-          payLoad: {
-            playUrl: ''
+    switch (platform) {
+      case 'NETEASE':
+        await getNetSongDetail(song.id).then(res => {
+          if (res.data[0].url === null) {
+            dispatch({
+              type: 'player/changePlayUrl',
+              payLoad: {
+                playUrl: ''
+              }
+            })
+            setIsPlay(false)
+            return (Toast.info('啊哦，这首歌拿不到播放歌曲地址(；′⌒`)'))
+          } else {
+            dispatch({
+              type: 'player/changePlayUrl',
+              payLoad: {
+                playUrl: res.data[0].url
+              }
+            })
           }
         })
-        setIsPlay(false)
-        return (Toast.info('啊哦，这首歌拿不到播放歌曲地址(；′⌒`)'))
-      } else {
-        dispatch({
-          type: 'player/changePlayUrl',
-          payLoad: {
-            playUrl: res.data[0].url
+        break
+      case 'TENCENT':
+        await getTencentSongDetail(song.mid).then(res => {
+          if (res.response.req_0.data.midurlinfo[0].purl === null) {
+            dispatch({
+              type: 'player/changePlayUrl',
+              payLoad: {
+                playUrl: ''
+              }
+            })
+            setIsPlay(false)
+            return (Toast.info('啊哦，这首歌拿不到播放歌曲地址(；′⌒`)'))
+          } else {
+            dispatch({
+              type: 'player/changePlayUrl',
+              payLoad: {
+                playUrl: 'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/' + res.response.req_0.data.midurlinfo[0].purl
+              }
+            })
           }
         })
-      }
-    })
+        break
+      case 'XIAMI':
+        break
+      default:
+        return null
+    }
   }
 
   const handleClickProgessBar = e => {
