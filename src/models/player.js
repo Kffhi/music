@@ -9,6 +9,7 @@ export default {
     currentIndex: 0,
     playUrl: '',
     platform: 'TENCENT',
+    playPlatform: 'TENCENT',
     loveSong: [],
     loveSongList: []
   },
@@ -63,6 +64,13 @@ export default {
       return {
         ...state,
         platform: action.payLoad.platform
+      }
+    },
+    changePlayPlatform(state, action) {
+      console.log('changePlayPlatform')
+      return {
+        ...state,
+        playPlatform: action.payLoad.playPlatform
       }
     },
     changeLovaSong(state, action) {

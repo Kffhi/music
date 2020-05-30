@@ -32,7 +32,7 @@ const Player = props => {
   const [modal, setModal] = useState(false)
   const [isLoveSong, setIsloveSong] = useState(false)
   const currentIndex = player.currentIndex
-  const platform = player.platform
+  const platform = player.playPlatform
   let singerId = ''
   if (playSong && JSON.stringify(playSong) !== '{}') {
     if (playSong.ar) {

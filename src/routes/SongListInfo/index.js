@@ -17,7 +17,7 @@ const SongListInfo = props => {
     dispatch,
     player
   } = props
-  const tabSub = match.params.tab
+  const tabSub = player.playPlatform
   const songListId = match.params.id
   const [songListDetail, setSongListDetail] = useState({})
   const [modal, setModal] = useState(false)
@@ -88,7 +88,7 @@ const SongListInfo = props => {
           return null
       }
     }
-  }, [player, songListId, tabSub])
+  }, [dispatch, player, songListId, tabSub])
 
   useEffect(() => {
     const isLove = () => {

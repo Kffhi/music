@@ -30,6 +30,12 @@ const SongItem = props => {
             playUrl: newPlayUrl
           }
         })
+        dispatch({
+          type: 'player/changePlayPlatform',
+          payLoad: {
+            playPlatform: 'NETEASE'
+          }
+        })
         break
       case 'TENCENT':
         await getTencentSongDetail(songDetail.mid).then(res => {
@@ -44,6 +50,12 @@ const SongItem = props => {
           type: 'player/changePlayUrl',
           payLoad: {
             playUrl: newPlayUrl
+          }
+        })
+        dispatch({
+          type: 'player/changePlayPlatform',
+          payLoad: {
+            playPlatform: 'TENCENT'
           }
         })
         break
