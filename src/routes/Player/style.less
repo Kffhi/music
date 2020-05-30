@@ -3,26 +3,43 @@
   height: 100vh;
   overflow: hidden;
   position: fixed;
-  z-index: 1001;
+  z-index: 500;
 
   .backgroundWrapper {
+    z-index: 500;
     width: 100%;
     height: 100%;
     position: absolute;
     left: 0;
     top: 0;
-    background-color: #666666;
-    overflow: hidden;
-    transform: scale(10);
-    filter: blur(1rem);
+    background-color: #222222;
+
+    .imgWrapper {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+      // transform: scale(5);
+      filter: blur(20rem);
+      opacity: 6;
+    }
 
     img {
       width: 100%;
       height: 100%;
+      opacity: 10;
+    }
+
+    .wrapper {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-color: rgba(200, 200, 200, 0.5);
     }
   }
 
   .containerWrapper {
+    z-index: 500;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -82,22 +99,71 @@
       align-items: center;
       justify-content: center;
 
-      .imgWrapper {
-        width: 60vw;
-        height: 60vw;
-        border-radius: 50%;
-        overflow: hidden;
-        animation: rotate 20s linear infinite;
-        animation-play-state: paused;
+      .lyricWrapeer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
 
-        img {
+        .noLyric {
+          justify-content: center;
+        }
+
+        .linWrapper {
           width: 100%;
-          height: 100%;
+          height: 36rem;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          overflow: hidden;
+          color: #cccccc;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          -ms-overflow-style: none;
+          overflow: -moz-scrollbars-none;
+
+          .lyricLine {
+            // height: 2rem;
+            line-height: 2rem;
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .currentLine {
+            color: #eeeeee;
+            font-weight: bold;
+          }
         }
       }
 
-      .imgWrapperPlaying {
-        animation-play-state: running;
+      .loop {
+        width: 75vw;
+        height: 75vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 0.5rem grey solid;
+
+        .imgWrapper {
+          width: 70vw;
+          height: 70vw;
+          border-radius: 50%;
+          overflow: hidden;
+          animation: rotate 20s linear infinite;
+          animation-play-state: paused;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .imgWrapperPlaying {
+          animation-play-state: running;
+        }
       }
     }
 
@@ -129,6 +195,12 @@
 
           i {
             font-size: 2.4rem;
+          }
+        }
+
+        .isLove {
+          i {
+            color: #ed4014;
           }
         }
       }

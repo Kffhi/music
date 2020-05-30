@@ -10,25 +10,25 @@ const menuGlobal = [
   {
     id: 'songlistall',
     name: '歌单广场',
-    path: '/songlistall',
+    path: '/songlistall/:tab',
     component: () => import('../routes/SongListAll/index'),
   },
   {
     id: 'songlistinfo',
     name: '歌单详情',
-    path: '/songlistinfo',
+    path: '/songlistinfo/:tab/:id',
     component: () => import('../routes/SongListInfo/index'),
   },
   {
     id: 'search',
     name: '搜索页',
-    path: '/search',
+    path: '/search/:tab',
     component: () => import('../routes/Search/index'),
   },
   {
     id: 'singerinfo',
     name: '歌手详情',
-    path: '/singerinfo',
+    path: '/singerinfo/:platform/:singerId',
     component: () => import('../routes/SingerInfo/index'),
   },
   {

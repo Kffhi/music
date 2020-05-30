@@ -1,0 +1,76 @@
+.songsWrapper {
+  height: 65vh;
+  background: #ffffff;
+
+  .header {
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.2rem;
+  }
+
+  .songs {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    text-align: left;
+
+    .songItem {
+      width: 100%;
+      height: 5rem;
+      display: flex;
+      align-items: center;
+
+      .num {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 10%;
+        font-size: 1.4rem;
+        color: #aaaaaa;
+      }
+
+      .numPlaying {
+        color: #108ee9;
+      }
+
+      .textWrapper {
+        display: flex;
+        flex: 0 0 80%;
+        justify-content: center;
+        flex-direction: column;
+
+        .title {
+          font-size: 1.4rem;
+          margin-bottom: 0.1rem;
+        }
+
+        .singer {
+          font-size: 1.1rem;
+          margin-top: 0.1rem;
+          color: #aaaaaa;
+        }
+
+        .singerPlaying {
+          color: #108ee9;
+        }
+      }
+
+      .iconWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          font-size: 1.4rem;
+        }
+      }
+    }
+
+    .songItemPlaying {
+      color: #108ee9;
+    }
+  }
+}

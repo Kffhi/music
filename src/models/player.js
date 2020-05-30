@@ -4,66 +4,14 @@ export default {
 
   state: {
     showMini: true,
-    playList: [
-      {
-        "name": "虹の彼方 (feat. Lasah)",
-        "singer": "小瀬村晶 / lasah",
-        "picUrl": "https://p1.music.126.net/NShWcSXDGYUT3k_ZNP3Gtw==/5650390255271022.jpg",
-        "url": "https://www.kffhi.com/public/images/audio/test.mp3",
-        "time": "446"
-      },
-      {
-        "name": "baby I love you",
-        "singer": "Shiggy Jr.",
-        "picUrl": "https://p1.music.126.net/tsACZWXQAByxJM4uew78UQ==/2544269907035205.jpg",
-        "url": "https://www.kffhi.com/public/images/audio/1.mp3",
-        "time": "224"
-      },
-      {
-        "name": "Enough",
-        "singer": "Maisy Kay",
-        "picUrl": "https://i.kfs.io/album/global/7241972,0v1/fit/500x500.jpg",
-        "url": "https://www.kffhi.com/public/images/audio/2.mp3",
-        "time": "274"
-      },
-      {
-        "name": "长恨歌",
-        "singer": "五色石南叶",
-        "picUrl": "https://p2.music.126.net/0rDEqHG2be0xmPs8AiAS5A==/2545369418305520.jpg",
-        "url": "https://www.kffhi.com/public/images/audio/3.mp3",
-        "time": "177"
-      }
-    ],
-    sequenceList: [
-      {
-        "name": "虹の彼方 (feat. Lasah)",
-        "singer": "小瀬村晶 / lasah",
-        "picUrl": "https://p1.music.126.net/NShWcSXDGYUT3k_ZNP3Gtw==/5650390255271022.jpg",
-        "url": "https://www.kffhi.com/public/images/audio/test.mp3",
-        "time": "446"
-      },
-      {
-        "name": "baby I love you",
-        "singer": "Shiggy Jr.",
-        "picUrl": "https://p1.music.126.net/tsACZWXQAByxJM4uew78UQ==/2544269907035205.jpg",
-        "url": "https://www.kffhi.com/public/images/audio/1.mp3",
-        "time": "224"
-      },
-      {
-        "name": "Enough",
-        "singer": "Maisy Kay",
-        "picUrl": "https://i.kfs.io/album/global/7241972,0v1/fit/500x500.jpg",
-        "url": "https://www.kffhi.com/public/images/audio/2.mp3",
-        "time": "274"
-      },
-      {
-        "name": "长恨歌",
-        "singer": "五色石南叶",
-        "picUrl": "https://p2.music.126.net/0rDEqHG2be0xmPs8AiAS5A==/2545369418305520.jpg",
-        "url": "https://www.kffhi.com/public/images/audio/3.mp3",
-        "time": "177"
-      }
-    ],
+    playList: [],
+    sequenceList: [],
+    currentIndex: 0,
+    playUrl: '',
+    platform: 'TENCENT',
+    playPlatform: 'TENCENT',
+    loveSong: [],
+    loveSongList: []
   },
 
   subscriptions: {
@@ -76,16 +24,67 @@ export default {
 
   reducers: {
     changeShowMiniState(state) {
+      console.log('changeShowMiniState')
       const { showMini } = state
       return {
         ...state,
         showMini: !showMini,
       }
     },
+    chageCurrentIndex(state, action) {
+      console.log('chageCurrentIndex')
+      return {
+        ...state,
+        currentIndex: action.payLoad.currentIndex
+      }
+    },
     changePlayList(state, action) {
+      console.log('changePlayList')
       return {
         ...state,
         playList: action.payLoad.playList
+      }
+    },
+    changePlayUrl(state, action) {
+      console.log('changePlayUrl')
+      return {
+        ...state,
+        playUrl: action.payLoad.playUrl
+      }
+    },
+    changeSequenceList(state, action) {
+      console.log('changeSequenceList')
+      return {
+        ...state,
+        sequenceList: action.payLoad.sequenceList
+      }
+    },
+    changePlatform(state, action) {
+      console.log('changePlatform')
+      return {
+        ...state,
+        platform: action.payLoad.platform
+      }
+    },
+    changePlayPlatform(state, action) {
+      console.log('changePlayPlatform')
+      return {
+        ...state,
+        playPlatform: action.payLoad.playPlatform
+      }
+    },
+    changeLovaSong(state, action) {
+      console.log('changeLovaSong', action.payLoad.loveSong)
+      return {
+        ...state,
+        loveSong: action.payLoad.loveSong
+      }
+    },
+    changeLovaSongList(state, action) {
+      console.log('changeLovaSongList')
+      return {
+        ...state,
+        loveSongList: action.payLoad.loveSongList
       }
     }
   },

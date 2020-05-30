@@ -1,18 +1,23 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { Tabs, Carousel } from 'antd-mobile'
+import { connect } from 'dva'
+import { getLoveSongList } from '../../utils/cache'
 import { getNetBanner, getNetSongList } from '../../services/netease'
 import { getTencentBanner, getTencentSongList } from '../../services/tencent'
 import { getXiamiBanner, getXiamiSongList } from '../../services/xiami'
 import SongList from '../../components/SongList'
 import Accordion from '../../components/Accordion'
 import SongListItem from '../../components/SongListItem'
+import Loading from '../../components/Loading'
 import styles from './style.less'
 // class Home extends Component {
 
 const Home = props => {
-  const { history } = props
+  const { history, player, dispatch } = props
   const [banner, setBanner] = useState([])
   const [songList, setSongList] = useState([])
+  const [tab, setTab] = useState('NETEASE')
+  const platform = player.platform
   const tabs = [
     { title: '我的', sub: 'MY_MUSIC' },
     { title: '网易云音乐', sub: 'NETEASE' },
@@ -25,77 +30,18 @@ const Home = props => {
       'url': 'https://kffhi.com/public/images/end/myLoveSongList.png',
       'num': 23,
       'author': ''
-    },
-    {
-      'title': '旧事甚欠',
-      'url': 'https://p.qpic.cn/music_cover/PiajxSqBRaEISibhtdxpkLprufpT7OzywmZksgnxoguZwkZxZgIsZYug/300?n=1',
-      'num': 424,
-      'author': ''
-    },
-    {
-      'title': '华语&粤语&日语&韩语',
-      'url': 'https://p.qpic.cn/music_cover/xy585mIRLoGjBb9SibEqA5iaSkRbkvAnJvUzL2EdBAsvCVRLOQkt82Zg/300?n=1',
-      'num': 67,
-      'author': ''
     }
   ]
 
-  const myCollList = [
-    {
-      'title': 'ACG伤感宣泄向曲目精选',
-      'url': 'https://p.qpic.cn/music_cover/roDbe9tS2lUqucickjGhXicHViblIPcaHWPepdpTiaHAQ4Cic4pLfvk738w/300?n=1',
-      'num': 122,
-      'author': '花痞'
-    },
-    {
-      'title': 'Hardcore: 黑暗沉浸的极致快感',
-      'url': 'https://p.qpic.cn/music_cover/sv5U6cpoN0dCLVrs9ibkz75fPLICuJNYVZKAmoL4q2EoQYia9xzcR4qg/300?n=1',
-      'num': 100,
-      'author': '北鹤'
-    },
-    {
-      'title': '躁动引力 • 电瘾患者的深度迷梦',
-      'url': 'https://p.qpic.cn/music_cover/4J0DcvEPJgEWsf9WgbblMDUdHBPu83H7zO99QL5mNfP1um5LibuwEzg/300?n=1',
-      'num': 298,
-      'author': '大师傅'
-    },
-    {
-      'title': 'ACG伤感宣泄向曲目精选',
-      'url': 'https://p.qpic.cn/music_cover/roDbe9tS2lUqucickjGhXicHViblIPcaHWPepdpTiaHAQ4Cic4pLfvk738w/300?n=1',
-      'num': 122,
-      'author': '花痞'
-    },
-    {
-      'title': 'Hardcore: 黑暗沉浸的极致快感',
-      'url': 'https://p.qpic.cn/music_cover/sv5U6cpoN0dCLVrs9ibkz75fPLICuJNYVZKAmoL4q2EoQYia9xzcR4qg/300?n=1',
-      'num': 100,
-      'author': '北鹤'
-    },
-    {
-      'title': '躁动引力 • 电瘾患者的深度迷梦',
-      'url': 'https://p.qpic.cn/music_cover/4J0DcvEPJgEWsf9WgbblMDUdHBPu83H7zO99QL5mNfP1um5LibuwEzg/300?n=1',
-      'num': 298,
-      'author': '大师傅'
-    },
-    {
-      'title': 'ACG伤感宣泄向曲目精选',
-      'url': 'https://p.qpic.cn/music_cover/roDbe9tS2lUqucickjGhXicHViblIPcaHWPepdpTiaHAQ4Cic4pLfvk738w/300?n=1',
-      'num': 122,
-      'author': '花痞'
-    },
-    {
-      'title': 'Hardcore: 黑暗沉浸的极致快感',
-      'url': 'https://p.qpic.cn/music_cover/sv5U6cpoN0dCLVrs9ibkz75fPLICuJNYVZKAmoL4q2EoQYia9xzcR4qg/300?n=1',
-      'num': 100,
-      'author': '北鹤'
-    },
-    {
-      'title': '躁动引力 • 电瘾患者的深度迷梦',
-      'url': 'https://p.qpic.cn/music_cover/4J0DcvEPJgEWsf9WgbblMDUdHBPu83H7zO99QL5mNfP1um5LibuwEzg/300?n=1',
-      'num': 298,
-      'author': '大师傅'
-    }
-  ]
+  const myCollList = getLoveSongList()
+  // [
+  //   {
+  //     'title': 'ACG伤感宣泄向曲目精选',
+  //     'url': 'https://p.qpic.cn/music_cover/roDbe9tS2lUqucickjGhXicHViblIPcaHWPepdpTiaHAQ4Cic4pLfvk738w/300?n=1',
+  //     'num': 122,
+  //     'author': '花痞'
+  //   },
+  // ]
 
   /** 初始化执行 */
   useEffect(() => {
@@ -105,14 +51,37 @@ const Home = props => {
 
   // 获取网易云数据
   const getNetData = () => {
-    getNetBanner().then(res => { setBanner(res.data) })
-    getNetSongList().then(res => { setSongList(res.data) })
+    getNetBanner().then(res => {
+      setBanner(res.banners)
+    })
+    getNetSongList().then(res => {
+      const newSongList = [...res.playlists]
+      newSongList.forEach(item => {
+        item.pic = item.coverImgUrl
+        item.title = item.name
+      })
+      setSongList(newSongList)
+    })
   }
 
   // 获取QQ音乐数据
   const getTencentData = () => {
-    getTencentBanner().then(res => { setBanner(res.data) })
-    getTencentSongList().then(res => { setSongList(res.data) })
+    getTencentBanner().then(res => {
+      const newBanner = [...res.response.data.banner]
+      newBanner.forEach(item => {
+        item.url = item.jumpurl
+        item.pic = item.picurl
+      })
+      setBanner(newBanner)
+    })
+    getTencentSongList().then(res => {
+      const newSongList = [...res.response.recomPlaylist.data.v_hot]
+      newSongList.forEach(item => {
+        item.pic = item.cover
+        item.id = item.content_id
+      })
+      setSongList(newSongList)
+    })
   }
 
   // 获取虾米音乐数据
@@ -121,7 +90,14 @@ const Home = props => {
     getXiamiSongList().then(res => { setSongList(res.data) })
   }
 
-  const changeData = (tab) => {
+  const changeData = tab => {
+    setTab(tab.sub)
+    dispatch({
+      type: 'player/changePlatform',
+      payLoad: {
+        platform: tab.sub
+      }
+    })
     switch (tab.sub) {
       case 'MY_MUSIC':
         console.log('来到了我的音乐', tab.sub)
@@ -145,12 +121,12 @@ const Home = props => {
       <div className={styles.songListWrapper}>
         <div className={styles.header}>
           <span className={styles.text}>推荐歌单</span>
-          <span className={styles.more} onClick={() => { history.push('/songlistall') }}>
+          <span className={styles.more} onClick={() => { history.push(`/songlistall/${tab}`) }}>
             歌单广场
             <i className="iconfont icon-jump" style={{ 'fontSize': '1.3rem', 'marginLeft': '0.2rem' }} />
           </span>
         </div>
-        <SongList songList={songList} history={history} showAll={false}></SongList>
+        {JSON.stringify(songList) !== '[]' ? <SongList tab={tab} songList={songList} history={history} showAll={false}></SongList> : <Loading />}
       </div>
     )
   }
@@ -186,14 +162,14 @@ const Home = props => {
             autoplay={true}
             infinite
           >
-            {banner.map(item => (
+            {banner.map((item, index) => (
               <a
-                key={item.id}
+                key={index}
                 href={item.url}
               >
                 <img
                   onLoad={() => { window.dispatchEvent(new Event('resize')); }}
-                  src={item.pic_url}
+                  src={item.pic}
                   alt=""
                 />
               </a>
@@ -212,7 +188,6 @@ const Home = props => {
         <Tabs tabs={tabs}
           initialPage={1}
           swipeable={false}
-          onChange={tab => { console.log(tab) }}
           onTabClick={tab => { changeData(tab) }}
         >
           {renderMyMusic()}
@@ -235,21 +210,21 @@ const Home = props => {
         <div className={styles.name}>
           <img src="https://kffhi.com/public/images/end/name.png" alt="" />
         </div>
-        <div className={styles.search} onClick={() => { history.push('/search') }}>
+        <div className={styles.search} onClick={() => { history.push(`/search/${tab}`) }}>
           <i className="iconfont icon-search" />
         </div>
       </div>
     )
   }
 
-  // render() {
   return (
-    <div>
+    <div className={styles.rootContainer}>
       {renderHeader()}
       {renderContainer()}
     </div>
   );
-  // }
 }
 
-export default Home;
+export default connect(({ player }) => ({
+  player
+}))(Home)
