@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import { saveSearch, getSearch } from '../../utils/cache'
 import { getNetHotSearch, getNetSearchResult, getNetSongDetailData } from '../../services/netease'
+import {getTencentHotSearch, getTencentSearchResult} from '../../services/tencent'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
 import styles from './style.less'
@@ -26,7 +27,7 @@ const Search = props => {
         getNetData()
         break
       case 'TENCENT':
-        // getTencentData()
+        getTencentData()
         break
       case 'XIAMI':
         break
@@ -49,6 +50,19 @@ const Search = props => {
         item.title = item.searchWord
         item.description = item.content
         item.num = item.score
+      })
+      setHotSearch(newHotSearch)
+    })
+  }
+
+  const getTencentData = () => {
+    getTencentHotSearch().then(res=> {
+      const newHotSearch = res.response.data.hotkey
+      newHotSearch.forEach((item, index) => {
+        item.id = index
+        item.title = item.k
+        item.description = ''
+        item.num = item.n
       })
       setHotSearch(newHotSearch)
     })
@@ -95,7 +109,20 @@ const Search = props => {
           setIsSearch(true)
           break
         case 'TENCENT':
-          // getTencentData()
+          await getTencentSearchResult(newValue).then(res => {
+            const newResult = { ...res.response.data.song }
+            newResult.songs = newResult.list
+            newResult.songs.forEach(item => {
+              item.title = item.name
+              item.singerList = item.singer
+              item.singer = item.singer[0].name
+              item.description = item.album.name
+              item.picUrl = 'https://y.gtimg.cn/music/photo_new/T002R300x300M000' + item.album.mid + '.jpg'
+              item.time = item.interval
+            })
+            setSearchResult(newResult)
+            setIsSearch(true)
+          })
           break
         case 'XIAMI':
           break

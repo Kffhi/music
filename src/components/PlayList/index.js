@@ -117,14 +117,14 @@ const PlayList = props => {
             {playList && playSong ?
               playList.map((item, index) => (
                 <div
-                  className={className(styles.songItem, { [styles.songItemPlaying]: playSong.title === item.title })}
+                  className={className(styles.songItem, { [styles.songItemPlaying]: playSong.id === item.id })}
                   onClick={() => { handleGoPlayer(item, index) }}
                   key={index}
                 >
-                  <div className={className(styles.num, { [styles.numPlaying]: playSong.title === item.title })}>{index + 1}</div>
+                  <div className={className(styles.num, { [styles.numPlaying]: playSong.id === item.id })}>{index + 1}</div>
                   <div className={styles.textWrapper}>
                     <div className={styles.title}>{item.title}</div>
-                    <div className={className(styles.singer, { [styles.singerPlaying]: playSong.title === item.title })}>{item.singer}
+                    <div className={className(styles.singer, { [styles.singerPlaying]: playSong.id === item.id })}>{item.singer}
                       {item.description ? <span>&nbsp;-&nbsp;{item.description}&nbsp;</span> : null}
                     </div>
                   </div>

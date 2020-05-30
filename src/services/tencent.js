@@ -82,7 +82,7 @@ export const getTencentSongListCategory = () => {
  * 接口地址: /getHotkey
  */
 export const getTencentHotSearch = () => {
-  return get('/mock/hotsearch.json')
+  return get('/api/tencent/getHotkey')
 }
 
 // 搜索

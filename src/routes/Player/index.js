@@ -35,10 +35,10 @@ const Player = props => {
   const platform = player.platform
   let singerId = ''
   if (playSong && JSON.stringify(playSong) !== '{}') {
-    if (platform === 'NETEASE') {
+    if (playSong.ar) {
       singerId = playSong.ar[0].id
     }
-    if (platform === 'TENCENT') {
+    if (playSong.singerList) {
       singerId = playSong.singerList[0].mid
     }
   }
