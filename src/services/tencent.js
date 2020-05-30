@@ -7,7 +7,7 @@ import { get } from '../utils/request'
  * 接口地址: /getDigitalAlbumLists
  */
 export const getTencentBanner = () => {
-  return get('/api/tencent/getDigitalAlbumLists')
+  return get('http://www.kffhi.com/api/tencent/getDigitalAlbumLists')
 }
 
 
@@ -18,7 +18,7 @@ export const getTencentBanner = () => {
  * 接口地址: /getRecommend
  */
 export const getTencentSongList = () => {
-  return get('/api/tencent/getRecommend')
+  return get('http://www.kffhi.com/api/tencent/getRecommend')
 }
 
 // 获取歌单分类下的歌单列表
@@ -35,7 +35,7 @@ export const getTencentSongList = () => {
  * 接口地址: /getSongLists
  */
 export const getTencentCartSongList = (categoryId = '', page = '1', limit = 21, sortId = '5') => {
-  const URL = `/api/tencent/getSongLists?categoryId=${categoryId}&page=${page}&limit=${limit}&sortId=${sortId}`
+  const URL = `http://www.kffhi.com/api/tencent/getSongLists?categoryId=${categoryId}&page=${page}&limit=${limit}&sortId=${sortId}`
   return get(URL)
 }
 
@@ -49,7 +49,7 @@ export const getTencentCartSongList = (categoryId = '', page = '1', limit = 21, 
  * 接口地址: /getSongListDetail
  */
 export const getTencentSongListDetail = (disstid = '') => {
-  const URL = `/api/tencent/getSongListDetail?disstid=${disstid}`
+  const URL = `http://www.kffhi.com/api/tencent/getSongListDetail?disstid=${disstid}`
   return get(URL)
 }
 
@@ -61,7 +61,7 @@ export const getTencentSongListDetail = (disstid = '') => {
  * 接口地址 : /getMusicVKey
  */
 export const getTencentSongDetail = id => {
-  const URL = `/api/tencent/getMusicVKey?songmid=${id}`
+  const URL = `http://www.kffhi.com/api/tencent/getMusicVKey?songmid=${id}`
   return get(URL)
 }
 
@@ -72,7 +72,7 @@ export const getTencentSongDetail = id => {
  * 接口地址: /getSongListCategories
  */
 export const getTencentSongListCategory = () => {
-  return get('/api/tencent/getSongListCategories')
+  return get('http://www.kffhi.com/api/tencent/getSongListCategories')
 }
 
 // 获取热搜数据
@@ -82,7 +82,7 @@ export const getTencentSongListCategory = () => {
  * 接口地址: /getHotkey
  */
 export const getTencentHotSearch = () => {
-  return get('/api/tencent/getHotkey')
+  return get('http://www.kffhi.com/api/tencent/getHotkey')
 }
 
 // 搜索
@@ -99,7 +99,7 @@ export const getTencentHotSearch = () => {
  * 接口地址: /getSearchByKey
  */
 export const getTencentSearchResult = keyword => {
-  const URL = `/api/tencent/getSearchByKey?key=${keyword}`
+  const URL = `http://www.kffhi.com/api/tencent/getSearchByKey?key=${keyword}`
   return get(URL)
 }
 
@@ -116,7 +116,7 @@ export const getTencentSearchResult = keyword => {
  * 接口地址: /getSingerAlbum
  */
 export const getTencentSingerInfo = id => {
-  const URL = `/api/tencent/getSingerAlbum?singermid=${id}&limit=50`
+  const URL = `http://www.kffhi.com/api/tencent/getSingerAlbum?singermid=${id}&limit=50`
   return get(URL)
 }
 
@@ -129,6 +129,6 @@ export const getTencentSingerInfo = id => {
  * 接口地址 : /getLyric
  */
 export const getTencentSongLyric = id => {
-  const URL = `/api/tencent/getLyric?songmid=${id}`
+  const URL = `http://www.kffhi.com/api/tencent/getLyric?songmid=${id}`
   return get(URL)
 }

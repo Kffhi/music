@@ -13,7 +13,7 @@ import { get } from '../utils/request'
  * 接口地址 : /banner
  */
 export const getNetBanner = () => {
-  return get('/api/netease/banner?type=1')
+  return get('http://www.kffhi.com/api/netease/banner?type=1')
 }
 
 
@@ -28,7 +28,7 @@ export const getNetBanner = () => {
  */
 export const getNetSongList = (cat = '', limit = '21', before = '') => {
   // const url = `/api/netease/top/playlist/highquality?${cat ? 'cat=' + cat : ''}${limit ? '&limit=' + limit : ''}${before ? '&before=' + before : ''}`
-  const URL = `/api/netease/top/playlist/highquality?${'cat=' + cat}${'&limit=' + limit}${'&before=' + before}`
+  const URL = `http://www.kffhi.com/api/netease/top/playlist/highquality?${'cat=' + cat}${'&limit=' + limit}${'&before=' + before}`
   return get(URL)
 }
 
@@ -42,7 +42,7 @@ export const getNetSongList = (cat = '', limit = '21', before = '') => {
  * 接口地址 : /playlist/detail
  */
 export const getNetSongListDetail = id => {
-  const URL = `/api/netease/playlist/detail?id=${id}`
+  const URL = `http://www.kffhi.com/api/netease/playlist/detail?id=${id}`
   return get(URL)
 }
 
@@ -53,7 +53,7 @@ export const getNetSongListDetail = id => {
  * 接口地址 : /playlist/hot
  */
 export const getNetSongListCategory = () => {
-  return get('/api/netease/playlist/hot')
+  return get('http://www.kffhi.com/api/netease/playlist/hot')
 }
 
 // 获取热搜数据
@@ -63,7 +63,7 @@ export const getNetSongListCategory = () => {
  * 接口地址 : /search/hot/detail
  */
 export const getNetHotSearch = () => {
-  return get('/api/netease/search/hot/detail')
+  return get('http://www.kffhi.com/api/netease/search/hot/detail')
 }
 
 // 搜索
@@ -78,7 +78,7 @@ export const getNetHotSearch = () => {
  * 接口地址 : /search
  */
 export const getNetSearchResult = keyword => {
-  const URL = `/api/netease/search?keywords=${keyword}`
+  const URL = `http://www.kffhi.com/api/netease/search?keywords=${keyword}`
   return get(URL)
 }
 
@@ -90,7 +90,7 @@ export const getNetSearchResult = keyword => {
  * 接口地址 : /artists
  */
 export const getNetSingerInfo = id => {
-  const URL = `/api/netease/artists?id=${id}`
+  const URL = `http://www.kffhi.com/api/netease/artists?id=${id}`
   return get(URL)
 }
 
@@ -104,7 +104,7 @@ export const getNetSingerInfo = id => {
  * 接口地址 : /song/url
  */
 export const getNetSongDetail = ids => {
-  const URL = `/api/netease/song/url?id=${ids}`
+  const URL = `http://www.kffhi.com/api/netease/song/url?id=${ids}`
   return get(URL)
 }
 
@@ -116,7 +116,7 @@ export const getNetSongDetail = ids => {
  * 接口地址 : /song/detail
  */
 export const getNetSongDetailData = ids => {
-  const URL = `/api/netease/song/detail?ids=${ids}`
+  const URL = `http://www.kffhi.com/api/netease/song/detail?ids=${ids}`
   return get(URL)
 }
 
@@ -128,6 +128,6 @@ export const getNetSongDetailData = ids => {
  * 接口地址 : /lyric
  */
 export const getNetSongLyric = id => {
-  const URL = `/api/netease/lyric?id=${id}`
+  const URL = `http://www.kffhi.com/api/netease/lyric?id=${id}`
   return get(URL)
 }
