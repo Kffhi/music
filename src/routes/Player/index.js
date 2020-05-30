@@ -39,8 +39,7 @@ const Player = props => {
       singerId = playSong.ar[0].id
     }
     if (platform === 'TENCENT') {
-      // console.log(playSong)
-      // singerId = playSong.mid
+      singerId = playSong.singerList[0].mid
     }
   }
 
@@ -73,7 +72,6 @@ const Player = props => {
           })
           break
         case 'TENCENT':
-          console.log('geci')
           getTencentSongLyric(playSong.mid).then(res => {
             let newLyricObj = new netLyric(res.response.lyric, changeCurrentLyricNum)
             setLyric(newLyricObj)
@@ -138,7 +136,7 @@ const Player = props => {
         break
       case 'TENCENT':
         await getTencentSongDetail(song.mid).then(res => {
-          if (res.response.req_0.data.midurlinfo[0].purl === null) {
+          if (res.response.req_0.data.midurlinfo[0].purl === "") {
             dispatch({
               type: 'player/changePlayUrl',
               payLoad: {

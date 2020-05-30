@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'dva'
 import { getNetSingerInfo } from '../../services/netease'
+import { getTencentSingerInfo } from '../../services/tencent'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
@@ -28,7 +29,7 @@ const SingerInfo = props => {
         getNetData(singerId)
         break
       case 'TENCENT':
-        // getTencentData()
+        getTencentData(singerId)
         break
       case 'XIAMI':
         // getXiamiData()
@@ -50,6 +51,25 @@ const SingerInfo = props => {
         item.description = item.al.name
         item.picUrl = item.al.picUrl
         item.time = Number.parseInt((item.dt) / 1000)
+      })
+      setSingerInfo(newSingerInfo)
+    })
+  }
+
+  const getTencentData = singerId => {
+    getTencentSingerInfo(singerId).then(res => {
+      const newSingerInfo = {...res.response.singer.data}
+      newSingerInfo.description = newSingerInfo.singer_brief
+      newSingerInfo.url = 'https://y.gtimg.cn/music/photo_new/T002R300x300M000' + newSingerInfo.songlist[0].album.mid + '.jpg'
+      newSingerInfo.name = newSingerInfo.singer_info.name
+      newSingerInfo.songList = newSingerInfo.songlist
+      newSingerInfo.songList.forEach(item => {
+        item.title = item.name
+        item.singerList = item.singer
+        item.singer = item.singer[0].name
+        item.description = item.album.name
+        item.picUrl = 'https://y.gtimg.cn/music/photo_new/T002R300x300M000' + item.album.mid + '.jpg'
+        item.time = item.interval
       })
       setSingerInfo(newSingerInfo)
     })

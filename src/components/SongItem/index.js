@@ -33,8 +33,12 @@ const SongItem = props => {
         break
       case 'TENCENT':
         await getTencentSongDetail(songDetail.mid).then(res => {
-          // console.log(res)
-          newPlayUrl = 'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/' + res.response.req_0.data.midurlinfo[0].purl
+          if (res.response.req_0.data.midurlinfo[0].purl === "") {
+            newPlayUrl = ""
+            return (Toast.info('啊哦，这首歌拿不到播放歌曲地址(；′⌒`)'))
+          } else {
+            newPlayUrl = 'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/' + res.response.req_0.data.midurlinfo[0].purl
+          }
         })
         dispatch({
           type: 'player/changePlayUrl',

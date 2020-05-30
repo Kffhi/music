@@ -3,6 +3,7 @@ import { connect } from 'dva'
 import { getNetSongDetail } from '../../services/netease'
 import { getTencentSongDetail } from '../../services/tencent'
 import className from 'classnames'
+import Toast from '../../components/Toast'
 import { Modal } from 'antd-mobile'
 import styles from './style.less'
 
@@ -42,8 +43,12 @@ const PlayList = props => {
         break
       case 'TENCENT':
         await getTencentSongDetail(item.mid).then(res => {
-          // console.log(res)
-          newPlayUrl = 'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/' + res.response.req_0.data.midurlinfo[0].purl
+          if (res.response.req_0.data.midurlinfo[0].purl === "") {
+            newPlayUrl = ""
+            return (Toast.info('啊哦，这首歌拿不到播放歌曲地址(；′⌒`)'))
+          } else {
+            newPlayUrl = 'http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/' + res.response.req_0.data.midurlinfo[0].purl
+          }
         })
         dispatch({
           type: 'player/changePlayUrl',

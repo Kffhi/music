@@ -98,8 +98,9 @@ export const getTencentHotSearch = () => {
  * limit: 取出歌单数量, 默认为 10
  * 接口地址: /getSearchByKey
  */
-export const getTencentSearchResult = () => {
-  return get('/mock/searchresult.json')
+export const getTencentSearchResult = keyword => {
+  const URL = `/api/tencent/getSearchByKey?key=${keyword}`
+  return get(URL)
 }
 
 // 获取歌手详情
@@ -114,8 +115,9 @@ export const getTencentSearchResult = () => {
  * limit: 取出歌单数量, 默认为 20
  * 接口地址: /getSingerAlbum
  */
-export const getTencentSingerInfo = () => {
-  return get('/mock/singerInfo.json')
+export const getTencentSingerInfo = id => {
+  const URL = `/api/tencent/getSingerAlbum?singermid=${id}&limit=50`
+  return get(URL)
 }
 
 // 获取歌词

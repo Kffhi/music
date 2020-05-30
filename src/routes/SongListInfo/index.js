@@ -67,17 +67,17 @@ const SongListInfo = props => {
             newSongListDetail.author = newSongListDetail.nickname
             newSongListDetail.authorPic = newSongListDetail.headurl
             newSongListDetail.description = newSongListDetail.desc
-            newSongListDetail.shareNum = 0
-            newSongListDetail.commentNum = 0
+            // newSongListDetail.shareNum = 0
+            // newSongListDetail.commentNum = 0
             newSongListDetail.songList = newSongListDetail.songlist
             newSongListDetail.songlist.forEach(item => {
               item.title = item.name
+              item.singerList = item.singer
               item.singer = item.singer[0].name
               item.description = item.album.name
               item.picUrl = 'https://y.gtimg.cn/music/photo_new/T002R300x300M000' + item.album.mid + '.jpg'
               item.time = item.interval
             })
-            console.log(newSongListDetail)
             setSongListDetail(newSongListDetail)
           })
           // getTencentData()
@@ -164,11 +164,11 @@ const SongListInfo = props => {
             <div className={styles.operation}>
               <div className={styles.box}>
                 <i className="iconfont icon-pinglun" />
-                <div className={styles.boxText}>{songListDetail.commentNum}</div>
+                <div className={styles.boxText}>{songListDetail.commentNum ? songListDetail.commentNum : '评论'}</div>
               </div>
               <div className={styles.box}>
                 <i className="iconfont icon-fenxiang" />
-                <div className={styles.boxText}>{songListDetail.shareNum}</div>
+                <div className={styles.boxText}>{songListDetail.shareNum ? songListDetail.shareNum : '分享'}</div>
               </div>
               <div className={styles.box}>
                 <i className="iconfont icon-video-play" />
