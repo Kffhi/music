@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'dva'
 import className from 'classnames'
-import { getNetSongListDetail } from '../../services/netease'
+import { getNetSongListDetail, getNetSongDetailData } from '../../services/netease'
 import { getTencentSongListDetail } from '../../services/tencent'
 import { getLoveSong, saveLoveSongList, deleteLoveSongList, getLoveSongList } from '../../utils/cache'
 import Header from '../../components/Header'
@@ -39,7 +39,7 @@ const SongListInfo = props => {
       // 获取歌单详情
       switch (tabSub) {
         case 'NETEASE':
-          getNetSongListDetail(songListId).then(res => {
+          getNetSongListDetail(songListId).then(async res => {
             const newSongListDetail = { ...res.playlist }
             newSongListDetail.title = newSongListDetail.name
             newSongListDetail.url = newSongListDetail.coverImgUrl
@@ -47,7 +47,15 @@ const SongListInfo = props => {
             newSongListDetail.authorPic = newSongListDetail.creator.avatarUrl
             newSongListDetail.shareNum = newSongListDetail.shareCount
             newSongListDetail.commentNum = newSongListDetail.commentCount
-            newSongListDetail.songList = newSongListDetail.tracks
+            let ids = []
+            let newSongList = []
+            newSongListDetail.trackIds.forEach(item => {
+              ids.unshift(item.id)
+            })
+            await getNetSongDetailData(ids.join(',')).then(res => {
+              newSongList = [...res.songs]
+            })
+            newSongListDetail.songList = newSongList
             newSongListDetail.songList.forEach(item => {
               item.title = item.name
               item.singer = item.ar[0].name
@@ -61,7 +69,7 @@ const SongListInfo = props => {
           break
         case 'TENCENT':
           getTencentSongListDetail(songListId).then(res => {
-            const newSongListDetail = {...res.response.cdlist[0]}
+            const newSongListDetail = { ...res.response.cdlist[0] }
             newSongListDetail.title = newSongListDetail.dissname
             newSongListDetail.url = newSongListDetail.logo
             newSongListDetail.author = newSongListDetail.nickname
