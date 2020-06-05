@@ -83,7 +83,14 @@
          * 如果当前窗口是入口页，那么执行退出的逻辑。
          */
         if (currentWebview.id === plus.runtime.appid) {
-          if (window.location.href.search(/\/home/) !== -1) {
+          if (window.location.href.search(/songlistall|songlistinfo|search|singerinfo|userinfo$/) !== -1) {
+            if (evt.canBack) {
+              plus.nativeUI.toast('请点击标题直接返回首页');
+              // history.back();
+            } else {
+              currentWebview.close('auto');
+            }
+          } else if (window.location.href.search(/home$/) !== -1) {
             if (!firstBack) {
               firstBack = now();
               plus.nativeUI.toast('再按一次退出应用');
@@ -91,8 +98,10 @@
                 firstBack = 0;
               }, 2000);
             } else if (now() - firstBack < 2000) {
-              history.back();
+              plus.runtime.quit();
             }
+          } else {
+            history.back();
           }
         } else {
           if (evt.canBack) {
