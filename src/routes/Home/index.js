@@ -34,14 +34,6 @@ const Home = props => {
   ]
 
   const myCollList = getLoveSongList()
-  // [
-  //   {
-  //     'title': 'ACG伤感宣泄向曲目精选',
-  //     'url': 'https://p.qpic.cn/music_cover/roDbe9tS2lUqucickjGhXicHViblIPcaHWPepdpTiaHAQ4Cic4pLfvk738w/300?n=1',
-  //     'num': 122,
-  //     'author': '花痞'
-  //   },
-  // ]
 
   /** 初始化执行 */
   useEffect(() => {

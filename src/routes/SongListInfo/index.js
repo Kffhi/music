@@ -10,6 +10,7 @@ import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
 import Information from '../../components/Information'
 import styles from './style.less'
+import { Toast } from 'antd-mobile'
 
 const SongListInfo = props => {
   const {
@@ -18,7 +19,7 @@ const SongListInfo = props => {
     dispatch,
     player
   } = props
-  const tabSub = player.platform
+  const tabSub = player.platform !== 'MY_MUSIC' ? player.platform : 'NETEASE'
   const songListId = match.params.id
   const [songListDetail, setSongListDetail] = useState({})
   const [modal, setModal] = useState(false)
@@ -121,19 +122,23 @@ const SongListInfo = props => {
   }, [songListId])
 
   const changeLoveState = () => {
-    if (isLove()) {
-      deleteLoveSongList(songListDetail)
-      setIsLoveSongList(false)
-    } else {
-      saveLoveSongList(songListDetail)
-      setIsLoveSongList(true)
-    }
-    dispatch({
-      type: 'player/changeLovaSongList',
-      payLoad: {
-        loveSongList: getLoveSongList()
+    if (tabSub === 'NETEASE') {
+      if (isLove()) {
+        deleteLoveSongList(songListDetail)
+        setIsLoveSongList(false)
+      } else {
+        saveLoveSongList(songListDetail)
+        setIsLoveSongList(true)
       }
-    })
+      dispatch({
+        type: 'player/changeLovaSongList',
+        payLoad: {
+          loveSongList: getLoveSongList()
+        }
+      })
+    } else {
+      Toast.info('暂时只支持收藏网易歌单哦')
+    }
   }
 
   const isLove = () => {
