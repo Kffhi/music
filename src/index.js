@@ -7,7 +7,7 @@ import './iconfont.css'
 // 1. Initialize
 const app = dva({
   history: createHistory({
-    basename: "/kmusic"
+    basename: "/h5music"
   })
 });
 
