@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'dva'
 import { getNetSingerInfo } from '../../services/netease'
 import { getTencentSingerInfo } from '../../services/tencent'
+import { getXiamiSingerInfo } from '../../services/xiami'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
 import Information from '../../components/Information'
 import styles from './style.less'
+import { format } from '../../utils/format'
 
 const SingerInfo = props => {
   const {
@@ -32,7 +34,7 @@ const SingerInfo = props => {
         getTencentData(singerId)
         break
       case 'XIAMI':
-        // getXiamiData()
+        getXiamiData()
         break
       default:
         return null
@@ -58,7 +60,7 @@ const SingerInfo = props => {
 
   const getTencentData = singerId => {
     getTencentSingerInfo(singerId).then(res => {
-      const newSingerInfo = {...res.response.singer.data}
+      const newSingerInfo = { ...res.response.singer.data }
       newSingerInfo.description = newSingerInfo.singer_brief
       newSingerInfo.url = 'https://y.gtimg.cn/music/photo_new/T002R300x300M000' + newSingerInfo.songlist[0].album.mid + '.jpg'
       newSingerInfo.name = newSingerInfo.singer_info.name
@@ -72,6 +74,12 @@ const SingerInfo = props => {
         item.time = item.interval
       })
       setSingerInfo(newSingerInfo)
+    })
+  }
+
+  const getXiamiData = () => {
+    getXiamiSingerInfo().then(res => {
+      setSingerInfo(res.data)
     })
   }
 

@@ -1,7 +1,8 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import { saveSearch, getSearch } from '../../utils/cache'
 import { getNetHotSearch, getNetSearchResult, getNetSongDetailData } from '../../services/netease'
-import {getTencentHotSearch, getTencentSearchResult} from '../../services/tencent'
+import { getTencentHotSearch, getTencentSearchResult } from '../../services/tencent'
+import { getXiamiHotSearch, getXiamiSearchResult } from '../../services/xiami'
 import SongItem from '../../components/SongItem'
 import Loading from '../../components/Loading'
 import styles from './style.less'
@@ -30,6 +31,7 @@ const Search = props => {
         getTencentData()
         break
       case 'XIAMI':
+        getXiamiData()
         break
       default:
         return null
@@ -55,8 +57,9 @@ const Search = props => {
     })
   }
 
+  // 获取QQ音乐数据
   const getTencentData = () => {
-    getTencentHotSearch().then(res=> {
+    getTencentHotSearch().then(res => {
       const newHotSearch = res.response.data.hotkey
       newHotSearch.forEach((item, index) => {
         item.id = index
@@ -65,6 +68,13 @@ const Search = props => {
         item.num = item.n
       })
       setHotSearch(newHotSearch)
+    })
+  }
+
+  // 获取虾米音乐数据
+  const getXiamiData = () => {
+    getXiamiHotSearch().then(res => {
+      setHotSearch(res.data)
     })
   }
 
@@ -125,6 +135,10 @@ const Search = props => {
           })
           break
         case 'XIAMI':
+          await getXiamiSearchResult().then(res => {
+            setSearchResult(res.data)
+            setIsSearch(true)
+          })
           break
         default:
           return null
