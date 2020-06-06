@@ -60,6 +60,13 @@ const SongItem = props => {
         })
         break
       case 'XIAMI':
+        Toast.info('抱歉mock数据暂不支持播放')
+        dispatch({
+          type: 'player/changePlayPlatform',
+          payLoad: {
+            playPlatform: 'XIAMI'
+          }
+        })
         break
       default:
         return null

@@ -3,6 +3,7 @@ import { connect } from 'dva'
 import className from 'classnames'
 import { getNetSongListDetail, getNetSongDetailData } from '../../services/netease'
 import { getTencentSongListDetail } from '../../services/tencent'
+import { getXiamiSongListDetail } from '../../services/xiami'
 import { getLoveSong, saveLoveSongList, deleteLoveSongList, getLoveSongList } from '../../utils/cache'
 import Header from '../../components/Header'
 import SongItem from '../../components/SongItem'
@@ -17,7 +18,7 @@ const SongListInfo = props => {
     dispatch,
     player
   } = props
-  const tabSub = player.playPlatform
+  const tabSub = player.platform
   const songListId = match.params.id
   const [songListDetail, setSongListDetail] = useState({})
   const [modal, setModal] = useState(false)
@@ -91,6 +92,9 @@ const SongListInfo = props => {
           // getTencentData()
           break
         case 'XIAMI':
+          getXiamiSongListDetail().then(res => {
+            setSongListDetail(res.data)
+          })
           break
         default:
           return null

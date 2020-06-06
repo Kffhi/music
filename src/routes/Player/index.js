@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useEffect, useRef } from 'react'
 import className from 'classnames'
-// import Lyric from 'lyric-parser'
+import Lyric from 'lyric-parser'
 import { connect } from 'dva'
 import netLyric from '../../utils/lyric'
 import { getNetSongDetail, getNetSongLyric } from '../../services/netease'
@@ -33,7 +33,7 @@ const Player = props => {
   const [isLoveSong, setIsloveSong] = useState(false)
   const currentIndex = player.currentIndex
   const platform = player.playPlatform
-  let singerId = ''
+  let singerId = '111111'
   if (playSong && JSON.stringify(playSong) !== '{}') {
     if (playSong.ar) {
       singerId = playSong.ar[0].id
@@ -65,7 +65,7 @@ const Player = props => {
             if (res.nolyric || !res.lrc.lyric) {
               setLyric({})
             } else {
-              let newLyricObj = new netLyric(res.lrc.lyric, changeCurrentLyricNum)
+              let newLyricObj = new Lyric(res.lrc.lyric, changeCurrentLyricNum)
               // newLyricObj.play()
               setLyric(newLyricObj)
             }
@@ -73,11 +73,12 @@ const Player = props => {
           break
         case 'TENCENT':
           getTencentSongLyric(playSong.mid).then(res => {
-            let newLyricObj = new netLyric(res.response.lyric, changeCurrentLyricNum)
+            let newLyricObj = new Lyric(res.response.lyric, changeCurrentLyricNum)
             setLyric(newLyricObj)
           })
           break
         case 'XIAMI':
+          setLyric({})
           break
         default:
           return null
@@ -267,7 +268,7 @@ const Player = props => {
   const nextSong = e => {
     e.stopPropagation()
     isFirstLoad.current = false
-    if (!playSong || JSON.stringify(playSong) === '{}') {
+    if (!playSong || JSON.stringify(playSong) === '{}' || player.playUrl.length === 0) {
       Toast.info('播放列表为空')
     } else {
       if (playMode === 2) {
@@ -301,7 +302,7 @@ const Player = props => {
   const prevSong = e => {
     e.stopPropagation()
     isFirstLoad.current = false
-    if (!playSong || player.playUrl.length === 0) {
+    if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
       Toast.info('播放列表为空')
     } else {
       if (playMode === 2) {
@@ -420,7 +421,7 @@ const Player = props => {
           </div>
           {JSON.stringify(playSong) !== '{}' ?
             <div className={styles.text} onClick={() => { history.push(`/singerinfo/${platform}/${singerId}`); handleShowMini() }}>
-              <div className={styles.title}>{playSong ? playSong.name : '发现新音乐'}</div>
+              <div className={styles.title}>{playSong ? (playSong.name ? playSong.name : playSong.title ? playSong.title : '发现新音乐') : '发现新音乐'}</div>
               <div className={styles.singer}>
                 {playSong ? playSong.singer : '歌手'}
                 <i className="iconfont icon-jump" />

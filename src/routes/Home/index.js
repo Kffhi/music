@@ -86,7 +86,7 @@ const Home = props => {
 
   // 获取虾米音乐数据
   const getXiamiData = () => {
-    getXiamiBanner().then(res => { setBanner(res.data) })
+    getXiamiBanner().then(res => {setBanner(res.banners) })
     getXiamiSongList().then(res => { setSongList(res.data) })
   }
 
@@ -98,6 +98,14 @@ const Home = props => {
         platform: tab.sub
       }
     })
+    if(player.playPlatform === ''){
+      dispatch({
+        type: 'player/changePlayPlatform',
+        payLoad: {
+          playPlatform: tab.sub
+        }
+      })
+    }
     switch (tab.sub) {
       case 'MY_MUSIC':
         console.log('来到了我的音乐', tab.sub)

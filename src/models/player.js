@@ -9,7 +9,7 @@ export default {
     currentIndex: 0,
     playUrl: '',
     platform: 'NETEASE',
-    playPlatform: 'NETEASE',
+    playPlatform: '',
     loveSong: [],
     loveSongList: []
   },
