@@ -384,7 +384,7 @@ const Player = props => {
   const changeLoveState = () => {
     if (!playSong || player.playUrl.length === 0 || JSON.stringify(playSong) === '{}') {
       Toast.info('播放列表为空')
-    } else {
+    } else if(platform === 'NETEASE') {
       if (isLove()) {
         deleteLoveSong(playSong)
         setIsloveSong(false)
@@ -398,6 +398,8 @@ const Player = props => {
           loveSong: getLoveSong()
         }
       })
+    } else {
+      Toast.info('暂时只支持收藏网易平台歌曲哦')
     }
   }
 
