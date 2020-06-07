@@ -5,7 +5,7 @@ import Player from './routes/Player'
 import dynamic from 'dva/dynamic'
 
 import { config } from './utils'
-// import Home from './routes/Home';
+import Home from './routes/Home';
 const { menuGlobal } = config
 
 function RouterConfig({ history, app }) {
@@ -15,7 +15,7 @@ function RouterConfig({ history, app }) {
       <Fragment>
         <Player history={history}></Player>
         <Switch>
-          {/* <Route path="/" exact component={Home} /> */}
+          <Route path="/" exact component={Home} />
           <Redirect from="/" to="/home" exact></Redirect>
           {
             menuGlobal.map(({ path, ...dynamics }, index) => (
