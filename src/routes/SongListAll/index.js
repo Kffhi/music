@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { getNetSongListCategory, getNetSongList } from '../../services/netease'
 import { getTencentSongListCategory, getTencentCartSongList } from '../../services/tencent'
+import { getXiamiSongListCategory, getXiamiSongList } from '../../services/xiami'
 import { Tabs } from 'antd-mobile'
 import Header from '../../components/Header'
 import SongList from '../../components/SongList'
@@ -26,6 +27,7 @@ const SongListAll = props => {
         getTencentData()
         break
       case 'XIAMI':
+        getXiamiData()
         break
       default:
         return null
@@ -73,6 +75,16 @@ const SongListAll = props => {
         item.title = item.dissname
       })
       setSongList(newSongList)
+    })
+  }
+
+  // 获取虾米音乐数据
+  const getXiamiData = () => {
+    getXiamiSongList().then(res => {
+      setSongList(res.data)
+    })
+    getXiamiSongListCategory().then(res => {
+      setTabs(res.data)
     })
   }
 
