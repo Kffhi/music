@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import { saveSearch, getSearch } from '../../utils/cache'
+import { connect } from 'dva'
 import { getNetHotSearch, getNetSearchResult, getNetSongDetailData } from '../../services/netease'
 import { getTencentHotSearch, getTencentSearchResult } from '../../services/tencent'
 import { getXiamiHotSearch, getXiamiSearchResult } from '../../services/xiami'
@@ -10,7 +11,8 @@ import styles from './style.less'
 const Search = props => {
   const {
     history,
-    match
+    match,
+    dispatch
   } = props
   const [isSearch, setIsSearch] = useState(false)
   const [searchValue, setSearchValue] = useState('')
@@ -159,6 +161,16 @@ const Search = props => {
     )
   }
 
+  const goBack = () => {
+    history.push('/home')
+    dispatch({
+      type: 'player/changePlatform',
+      payLoad: {
+        platform: 'NETEASE'
+      }
+    })
+  }
+
   const renderReault = () => {
     return (
       <Fragment>
@@ -198,7 +210,7 @@ const Search = props => {
     return (
       <div className={styles.headerWrapper}>
         <div className={styles.header}>
-          <div className={styles.goBack} onClick={() => { history.goBack(-1) }}>
+          <div className={styles.goBack} onClick={() => { goBack() }}>
             <i className="iconfont icon-app_back" />
           </div>
           <div className={styles.inputWrapper}>
@@ -268,4 +280,6 @@ const Search = props => {
     </div>
   )
 }
-export default Search
+export default connect(({ player }) => ({
+  player
+}))(Search)
