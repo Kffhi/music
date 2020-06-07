@@ -1,6 +1,24 @@
 # music
 全平台音乐App
 
+#### 分支操作
+
+##### master
+
+主开发分支
+
+##### feat-nginx
+
+主发布分支
+
+##### feat-app-V
+
+app打包分支
+
+##### feat-web-V
+
+H5打包分支
+
 ### Todo
  - [ ] 数据接口(QQ、虾米)
  - [x] ~~首页轮播autoPlay~~
