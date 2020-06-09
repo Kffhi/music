@@ -2,28 +2,28 @@ import { get } from '../utils/request'
 
 // 获取轮播图
 /**
- * http://www.kffhi.com/api/tencent//getDigitalAlbumLists
+ * https://www.kffhi.com/api/tencent//getDigitalAlbumLists
  * 接口说明: 调用此接口, 可获取数字专辑, 轮播图banner, 专辑列表等信息, 详见API结构图
  * 接口地址: /getDigitalAlbumLists
  */
 export const getTencentBanner = () => {
-  return get('http://www.kffhi.com/api/tencent/getDigitalAlbumLists')
+  return get('https://www.kffhi.com/api/tencent/getDigitalAlbumLists')
 }
 
 
 // 获取歌单列表
 /**
- * http://www.kffhi.com/api/tencent/getRecommend
+ * https://www.kffhi.com/api/tencent/getRecommend
  * 接口说明: 调用此接口, 可获取首页推荐
  * 接口地址: /getRecommend
  */
 export const getTencentSongList = () => {
-  return get('http://www.kffhi.com/api/tencent/getRecommend')
+  return get('https://www.kffhi.com/api/tencent/getRecommend')
 }
 
 // 获取歌单分类下的歌单列表
 /**
- * http://www.kffhi.com/api/tencent/getSongLists?categoryId=10000000
+ * https://www.kffhi.com/api/tencent/getSongLists?categoryId=10000000
  * 接口说明: 调用此接口, 可获取歌单列表
  * 参数列表:
  * 必选参数
@@ -35,59 +35,59 @@ export const getTencentSongList = () => {
  * 接口地址: /getSongLists
  */
 export const getTencentCartSongList = (categoryId = '', page = '1', limit = 21, sortId = '5') => {
-  const URL = `http://www.kffhi.com/api/tencent/getSongLists?categoryId=${categoryId}&page=${page}&limit=${limit}&sortId=${sortId}`
+  const URL = `https://www.kffhi.com/api/tencent/getSongLists?categoryId=${categoryId}&page=${page}&limit=${limit}&sortId=${sortId}`
   return get(URL)
 }
 
 
 // 获取歌单详情
 /**
- * http://www.kffhi.com/api/tencent/getSongListDetail?disstid=7011264340
+ * https://www.kffhi.com/api/tencent/getSongListDetail?disstid=7011264340
  * 接口说明: 调用此接口, 可获取歌单详情
  * 必选参数
  * disstid: 歌单id
  * 接口地址: /getSongListDetail
  */
 export const getTencentSongListDetail = (disstid = '') => {
-  const URL = `http://www.kffhi.com/api/tencent/getSongListDetail?disstid=${disstid}`
+  const URL = `https://www.kffhi.com/api/tencent/getSongListDetail?disstid=${disstid}`
   return get(URL)
 }
 
 // 获取音乐播放地址
 /**
- * http://www.kffhi.com/api/tencent/getMusicVKey?songmid=0025NhlN2yWrP4
+ * https://www.kffhi.com/api/tencent/getMusicVKey?songmid=0025NhlN2yWrP4
  * 说明 : 使调用此接口, 可获取歌曲VKey
  * 必选参数 : songmid : 音乐 id
  * 接口地址 : /getMusicVKey
  */
 export const getTencentSongDetail = id => {
-  const URL = `http://www.kffhi.com/api/tencent/getMusicVKey?songmid=${id}`
+  const URL = `https://www.kffhi.com/api/tencent/getMusicVKey?songmid=${id}`
   return get(URL)
 }
 
 // 获取歌单分类
 /**
- * http://www.kffhi.com/api/tencent/getSongListCategories
+ * https://www.kffhi.com/api/tencent/getSongListCategories
  * 接口说明: 调用此接口, 可获取歌单分类, 包含category信息
  * 接口地址: /getSongListCategories
  */
 export const getTencentSongListCategory = () => {
-  return get('http://www.kffhi.com/api/tencent/getSongListCategories')
+  return get('https://www.kffhi.com/api/tencent/getSongListCategories')
 }
 
 // 获取热搜数据
 /**
- * http://www.kffhi.com/api/tencent/getHotkey
+ * https://www.kffhi.com/api/tencent/getHotkey
  * 接口说明: 调用此接口, 可获取搜索热词
  * 接口地址: /getHotkey
  */
 export const getTencentHotSearch = () => {
-  return get('http://www.kffhi.com/api/tencent/getHotkey')
+  return get('https://www.kffhi.com/api/tencent/getHotkey')
 }
 
 // 搜索
 /**
- * http://www.kffhi.com/api/tencent/getSearchByKey?key=%E5%91%A8%E6%9D%B0%E4%BC%A6
+ * https://www.kffhi.com/api/tencent/getSearchByKey?key=%E5%91%A8%E6%9D%B0%E4%BC%A6
  * 接口说明: 调用此接口, 可获取获取搜索结果
  * 参数列表(部分参数待注释):
  * 必选参数
@@ -99,13 +99,13 @@ export const getTencentHotSearch = () => {
  * 接口地址: /getSearchByKey
  */
 export const getTencentSearchResult = keyword => {
-  const URL = `http://www.kffhi.com/api/tencent/getSearchByKey?key=${keyword}`
+  const URL = `https://www.kffhi.com/api/tencent/getSearchByKey?key=${keyword}`
   return get(URL)
 }
 
 // 获取歌手详情
 /**
- * http://www.kffhi.com/api/tencent/getSingerAlbum?singermid=0025NhlN2yWrP4
+ * https://www.kffhi.com/api/tencent/getSingerAlbum?singermid=0025NhlN2yWrP4
  * 接口说明: 调用此接口, 可获取歌手专辑
  * 参数列表:
  * 必选参数
@@ -116,19 +116,19 @@ export const getTencentSearchResult = keyword => {
  * 接口地址: /getSingerAlbum
  */
 export const getTencentSingerInfo = id => {
-  const URL = `http://www.kffhi.com/api/tencent/getSingerAlbum?singermid=${id}&limit=50`
+  const URL = `https://www.kffhi.com/api/tencent/getSingerAlbum?singermid=${id}&limit=50`
   return get(URL)
 }
 
 // 获取歌词
 /**
- * http://www.kffhi.com/api/netease/getLyric?songmid=003rJSwm3TechU
+ * https://www.kffhi.com/api/netease/getLyric?songmid=003rJSwm3TechU
  * 说明 : 调用此接口, 可获取歌曲歌词
  * 必选参数 : isongmid: 专辑id
  * 可选参数： isFormat: 是否格式化歌词, 默认值为 false
  * 接口地址 : /getLyric
  */
 export const getTencentSongLyric = id => {
-  const URL = `http://www.kffhi.com/api/tencent/getLyric?songmid=${id}`
+  const URL = `https://www.kffhi.com/api/tencent/getLyric?songmid=${id}`
   return get(URL)
 }
