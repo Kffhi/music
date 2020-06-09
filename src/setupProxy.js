@@ -6,7 +6,7 @@ module.exports = function (app) {
     // target: 'https://v1.itooi.cn',
     // target: 'http://localhost:8000',
     //生产环境
-    target: 'http://www.kffhi.com/api',
+    target: 'https://www.kffhi.com/api',
     changeOrigin: true,
     pathRewrite: {
       "^/api": "/" // 把/api 变成空
